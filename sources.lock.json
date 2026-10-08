@@ -2,7 +2,7 @@
   "schema": 1,
   "repository": "saifety-org/lab",
   "commit": "2971ed03e2266b56082d3176a85d387b2cb2d1b1",
-  "tools_version": "v0.0.0-20261008135656-edc78c4729a4",
+  "tools_version": "v0.0.0-20261008141848-ebb9d3a61a92",
   "feature_schema": "hashed-char-ngram-v1",
   "files": [
     {

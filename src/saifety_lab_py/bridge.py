@@ -20,6 +20,7 @@ class Bridge:
         attack_index: int = 1,
     ):
         self.args = [str(executable.resolve()), "-backend", backend]
+        self.backend = backend
         for name, value in (
             ("weights", weights),
             ("model", model),
@@ -59,6 +60,9 @@ class Bridge:
                     key: row[key]
                     for key in ("model_module", "feature_schema", "dim", "weights_sha256")
                 }
+                if self.backend == "onnx":
+                    for key in ("tokenizer_sha256", "runtime_sha256", "attack_index"):
+                        identity[key] = row[key]
                 identity["bridge_sha256"] = self.binary_hash
                 if self.identity and self.identity != identity:
                     raise ValueError("bridge model changed during the run")

@@ -122,3 +122,5 @@ CI выполняет отдельные lint/test/build jobs и offline ML smok
 Go interoperability обязателен в CI; локально тест пропускается, если bootstrap
 ещё не запускался. Полное обучение и скачивание production-моделей в CI не выполняются.
 Связанный Go-мост: [lab PR #4](https://github.com/saifety-org/lab/pull/4).
+
+Первый диагностический результат и его ограничения: [docs/first-run.md](docs/first-run.md).
