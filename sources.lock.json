@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "repository": "saifety-org/lab",
+  "commit": "2971ed03e2266b56082d3176a85d387b2cb2d1b1",
+  "tools_version": "v0.0.0-20261008135656-edc78c4729a4",
+  "feature_schema": "hashed-char-ngram-v1",
+  "files": [
+    {
+      "path": "datasets/training/external.jsonl",
+      "sha256": "940032d582633582b0de7df67e2b6b44357a5036ae10fdeeb10e57f6f73a5a92"
+    },
+    {
+      "path": "datasets/training/local_benign.jsonl",
+      "sha256": "06635965caa267224801f841f55c5e131aa4e037e95b080932c17d6020325c95"
+    },
+    {
+      "path": "datasets/training/ATTRIBUTION.md",
+      "sha256": "1d07ecc1dceb694fa8c186e62cdeca731a68cbbf58b2c8e7e44728821e678419"
+    },
+    {
+      "path": "testdata/missed-injections/cases.json",
+      "sha256": "8ab8aca94e9c2bfc9473809496b7226a6dc6c214e582d6bcd9df26430a5b9e95"
+    },
+    {
+      "path": "testdata/missed-injections/README.md",
+      "sha256": "49ccdb2009937a7097abdf8b8de53000ac41ab4a81633a0aa50378a51688a4d7"
+    },
+    {
+      "path": "internal/training/data.go",
+      "sha256": "feeb83b82759d71e6c5c7f76e6eee408b8cf40fbfc1b8ef126ddc60b9dee2806"
+    }
+  ]
+}
