@@ -1,0 +1,78 @@
+name: check
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: check-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version-file: .python-version
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: '0.11.21'
+          enable-cache: true
+      - run: make lint
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version-file: .python-version
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.0'
+          cache: false
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: '0.11.21'
+          enable-cache: true
+      - run: make bootstrap test
+        env:
+          SAIFETY_BRIDGE: bin/model-bridge
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version-file: .python-version
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: '0.11.21'
+          enable-cache: true
+      - run: make build
+  ml:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version-file: .python-version
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.0'
+          cache: false
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: '0.11.21'
+          enable-cache: true
+      - run: uv sync --locked --extra ml
+      - run: uv run --locked saifety-lab bootstrap --onnx
+      - run: make test-ml
+        env:
+          SAIFETY_BRIDGE: bin/model-bridge
+          HF_HUB_OFFLINE: '1'
+          HF_DATASETS_OFFLINE: '1'

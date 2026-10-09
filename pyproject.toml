@@ -1,0 +1,41 @@
+[project]
+name = "saifety-lab-py"
+version = "0.1.0"
+description = "Reproducible Python experiments and training for sAIfety"
+requires-python = ">=3.12,<3.13"
+dependencies = []
+
+[project.scripts]
+saifety-lab = "saifety_lab_py.cli:main"
+
+[project.optional-dependencies]
+ml = [
+ "torch>=2.7,<3", "transformers>=4.57,<5", "accelerate>=1.10,<2",
+ "optimum-onnx[onnxruntime]>=0.0.3,<1", "onnx>=1.18,<2",
+]
+
+[dependency-groups]
+dev = ["pytest>=8,<9", "ruff>=0.11,<1", "build>=1.2,<2", "hatchling>=1.27,<2"]
+
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["ml: offline transformer training/export tests (requires ml extra)"]
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux'" }]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
