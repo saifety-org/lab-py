@@ -49,12 +49,12 @@ def sync(path: Path, destination: Path) -> dict:
     return pinned
 
 
-def bootstrap(path: Path, destination: Path, *, onnx: bool = False) -> None:
+def bootstrap(path: Path, destination: Path, *, onnx: bool = False, context: bool = False) -> None:
     pinned = lock(path)
     destination = destination.resolve()
     destination.mkdir(parents=True, exist_ok=True)
     env = dict(os.environ, GOWORK="off", GOBIN=str(destination))
-    commands = ["comparison", "model-bridge"]
+    commands = ["context-corpus" if context else "comparison", "model-bridge"]
     for command in commands:
         args = ["go", "install"]
         if onnx and command == "model-bridge":
@@ -77,4 +77,29 @@ def prepare(path: Path, source: Path, output: Path, comparison: Path) -> None:
     subprocess.run(
         [str(comparison.resolve()), "prepare", "-dir", str(output)], cwd=source, check=True
     )
+    write_json(output / "source.json", pinned)
+
+
+def prepare_context(path: Path, source: Path, output: Path, tool: Path) -> None:
+    pinned = sync(path, source)
+    tools = json.loads((tool.parent / "tools.json").read_text())
+    if tools.get("lab_version") != pinned["tools_version"] or tools.get("binaries", {}).get(
+        tool.name
+    ) != sha256(tool):
+        raise ValueError("context tool differs from source lock; run bootstrap-context")
+    source_corpus = source / "datasets/contextual/v1"
+    subprocess.run(
+        [
+            str(tool.resolve()),
+            "-source",
+            str(source_corpus.resolve()),
+            "-out",
+            str(output.resolve()),
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if sha256(output / "manifest.json") != sha256(source_corpus / "manifest.json"):
+        raise ValueError("prepared corpus differs from pinned manifest")
     write_json(output / "source.json", pinned)

@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "repository": "saifety-org/lab",
+  "commit": "e6b7c45d3b47a38e72987588f17d48333240811a",
+  "tools_version": "v0.0.0-20261009103357-e6b7c45d3b47",
+  "feature_schema": "hashed-char-ngram-v1",
+  "files": [
+    {
+      "path": "datasets/contextual/v1/answer-contamination.jsonl",
+      "sha256": "5af147789837a5ad26754e92f3986527037f564b1bca2872888a5fb9f2d95cc8"
+    },
+    {
+      "path": "datasets/contextual/v1/authority-spoofing.jsonl",
+      "sha256": "1b3e0efaa30a5248e27dbecb98d94cb39b09047d264d0f04937f3d7a6eb961e0"
+    },
+    {
+      "path": "datasets/contextual/v1/data-exfiltration.jsonl",
+      "sha256": "ea33f62b16f2df31a25686a5680f7c66deaa7cc27e8993267d02c14f78ead9ec"
+    },
+    {
+      "path": "datasets/contextual/v1/evidence-fabrication.jsonl",
+      "sha256": "3d66a987a44f69cb1c40499019275f6d6dfd7984f21e3e9758f008fe648703d1"
+    },
+    {
+      "path": "datasets/contextual/v1/manifest.json",
+      "sha256": "d770e5dab5c962bf034dfacc5929ddcb01769ac18c1718f3365ebd4ec80af490"
+    },
+    {
+      "path": "datasets/contextual/v1/task-hijacking.jsonl",
+      "sha256": "63427d87edcf179543bec96b51c7cd7ee3d95689e1ca6d67651b00195cd0c734"
+    },
+    {
+      "path": "datasets/contextual/v1/taxonomy.json",
+      "sha256": "b4c46fd902d34ff2a993a537d2088c010612e8ba86bd84df7348e2bd3c69cf3b"
+    },
+    {
+      "path": "datasets/contextual/v1/unauthorized-actions.jsonl",
+      "sha256": "4650a3b96b2fa1eb66e15deb7b9536bd2cafbceaa4a9c3f6c7712afc1bbc9351"
+    },
+    {
+      "path": "datasets/contextual/v1/verification-suppression.jsonl",
+      "sha256": "372c5a31148b2be830a7e2b5ce0342aef6fb184ea5e3a9606c34b07277bdd3a2"
+    },
+    {
+      "path": "datasets/contextual/v1/README.md",
+      "sha256": "2f2ff1d22a5a5c2ccceffa33526b5b8ad20e25473e546392ff8839d8c1495d65"
+    }
+  ],
+  "input_contract": "context-json-v1"
+}

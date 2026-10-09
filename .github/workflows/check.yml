@@ -37,9 +37,12 @@ jobs:
         with:
           version: '0.11.21'
           enable-cache: true
-      - run: make bootstrap test
+      - run: make bootstrap
+      - run: make bootstrap-context prepare-context
+      - run: make test
         env:
           SAIFETY_BRIDGE: bin/model-bridge
+          SAIFETY_CONTEXT_DATA: data/contextual
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 10
