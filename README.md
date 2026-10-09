@@ -124,3 +124,10 @@ Go interoperability обязателен в CI; локально тест про
 Связанный Go-мост: [lab PR #4](https://github.com/saifety-org/lab/pull/4).
 
 Первый диагностический результат и его ограничения: [docs/first-run.md](docs/first-run.md).
+
+## Контекстная модель
+
+[Контекстный workflow](docs/contextual.md): закреплённый многоязычный корпус из lab,
+обучение context/payload-only/task-only native ablations и отдельная оценка сканера.
+[Первый прогон](docs/contextual-first-run.md) показал ограничения линейной модели;
+это ещё не production multilingual detector.

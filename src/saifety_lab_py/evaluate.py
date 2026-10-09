@@ -79,6 +79,8 @@ def compare(
     rows = samples(data, evaluation=True)
     model = NativeModel.load(weights)
     metadata = json.loads(Path(str(weights) + ".meta.json").read_text())
+    if metadata.get("input_contract") == "context-json-v1":
+        raise ValueError("context candidate requires compare-context, not raw comparison")
     if metadata["weights_sha256"] != sha256(weights):
         raise ValueError("candidate metadata does not match weights")
     exclusions = []
@@ -198,6 +200,8 @@ def compare_onnx(
     deberta: Bridge | None = None,
 ) -> dict:
     manifest = json.loads((bundle / "manifest.json").read_text())
+    if manifest.get("input_contract") != "raw-text-binary-classifier-v1":
+        raise ValueError("raw ONNX comparison requires a raw-text input contract")
     verified = json.loads(parity.read_text())
     if (
         verified.get("passed") is not True

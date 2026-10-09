@@ -24,6 +24,19 @@ def validate_partitions(train: list[dict], validation: list[dict]) -> None:
         raise ValueError("training/validation scenario-group leakage")
 
 
+def reject_context_input(rows: list[dict]) -> None:
+    for row in rows:
+        try:
+            value = json.loads(row["text"])
+        except json.JSONDecodeError:
+            continue
+        if isinstance(value, dict) and value.get("contract") == "context-json-v1":
+            raise ValueError(
+                "contextual transformer training/export needs a dedicated contract; "
+                "use train-context for native ablations"
+            )
+
+
 def checkpoint_hashes(path: Path) -> dict:
     files = {str(p.relative_to(path)): sha256(p) for p in sorted(path.rglob("*")) if p.is_file()}
     if not files:
@@ -63,6 +76,7 @@ def train_transformer(
     if not validation_rows or {r["label"] for r in train_rows} != {0, 1}:
         raise ValueError("training requires both classes and nonempty validation")
     validate_partitions(train_rows, validation_rows)
+    reject_context_input(train_rows + validation_rows)
     source_hashes = checkpoint_hashes(model_path)
     set_seed(seed)
     torch.set_num_threads(1)
@@ -151,6 +165,8 @@ def export_onnx(checkpoint: Path, output: Path) -> dict:
     if output.exists() and any(output.iterdir()):
         raise ValueError("export output directory must be empty")
     training = json.loads((checkpoint / "training.json").read_text())
+    if training.get("input_contract") != "raw-text-binary-classifier-v1":
+        raise ValueError("raw ONNX export cannot label a contextual model as raw-text")
     main_export(
         str(checkpoint.resolve()),
         output=output,

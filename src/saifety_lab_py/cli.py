@@ -26,6 +26,28 @@ def parser() -> argparse.ArgumentParser:
             if command == "prepare":
                 p.add_argument("--out", type=Path, default=Path("data/comparison"))
                 p.add_argument("--comparison", type=Path, default=Path("bin/comparison"))
+    p = sub.add_parser("bootstrap-context")
+    p.add_argument("--lock", type=Path, default=Path("context.sources.lock.json"))
+    p.add_argument("--out", type=Path, default=Path("bin"))
+    p.add_argument("--onnx", action="store_true")
+    p = sub.add_parser("prepare-context")
+    p.add_argument("--lock", type=Path, default=Path("context.sources.lock.json"))
+    p.add_argument("--source", type=Path, default=Path("data/context-source"))
+    p.add_argument("--out", type=Path, default=Path("data/contextual"))
+    p.add_argument("--tool", type=Path, default=Path("bin/context-corpus"))
+    p = sub.add_parser("train-context")
+    p.add_argument("--data", type=Path, default=Path("data/contextual"))
+    p.add_argument("--out", type=Path, default=Path("artifacts/contextual"))
+    p.add_argument("--bridge", type=Path, default=Path("bin/model-bridge"))
+    p.add_argument("--epochs", type=int, default=40)
+    p.add_argument("--seed", type=int, default=1)
+    p = sub.add_parser("compare-context")
+    p.add_argument("--data", type=Path, default=Path("data/contextual"))
+    p.add_argument("--models", type=Path, default=Path("artifacts/contextual"))
+    p.add_argument("--out", type=Path, default=Path("artifacts/contextual/comparison"))
+    p.add_argument("--bridge", type=Path, default=Path("bin/model-bridge"))
+    p.add_argument("--max-fpr", type=float, default=0.01)
+    p.add_argument("--deberta", action="store_true")
     p = sub.add_parser("train-native")
     p.add_argument("--train", type=Path, default=Path("data/comparison/train.jsonl"))
     p.add_argument("--out", type=Path, default=Path("artifacts/native/weights.json"))
@@ -96,6 +118,27 @@ def main(argv: list[str] | None = None) -> None:
                 result = sources.sync(args.lock, args.source)
             case "prepare":
                 sources.prepare(args.lock, args.source, args.out, args.comparison)
+            case "bootstrap-context":
+                sources.bootstrap(args.lock, args.out, onnx=args.onnx, context=True)
+            case "prepare-context":
+                sources.prepare_context(args.lock, args.source, args.out, args.tool)
+            case "train-context":
+                from .contextual import train_context
+
+                result = train_context(
+                    args.data, args.out, args.bridge, epochs=args.epochs, seed=args.seed
+                )
+            case "compare-context":
+                from .contextual import compare_context
+
+                result = compare_context(
+                    args.data,
+                    args.models,
+                    args.bridge,
+                    args.out,
+                    max_fpr=args.max_fpr,
+                    deberta=Bridge(args.bridge, backend="onnx") if args.deberta else None,
+                )
             case "train-native":
                 result = train(
                     args.train, args.out, Bridge(args.bridge), epochs=args.epochs, seed=args.seed

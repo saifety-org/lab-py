@@ -21,3 +21,13 @@ misses:
 	uv run --locked saifety-lab misses
 test-ml:
 	uv run --locked --extra ml pytest -m ml
+
+.PHONY: bootstrap-context prepare-context train-context compare-context
+bootstrap-context:
+	uv run --locked saifety-lab bootstrap-context
+prepare-context:
+	uv run --locked saifety-lab prepare-context
+train-context:
+	uv run --locked saifety-lab train-context
+compare-context:
+	uv run --locked saifety-lab compare-context
