@@ -146,3 +146,10 @@ references публикуются отдельно. Все пороги выбр
 [Протокол, результаты и ограничения v4](docs/contextual-encoder-v4.md).
 [Исторический прогон v3](docs/contextual-encoder-v3.md) выявил task-only shortcut;
 его lock/protocol/report сохранены. Production-веса автоматически не заменяются.
+
+## Contextual ONNX
+
+[Export and Go parity](docs/contextual-onnx.md) packages the accepted E5 v4
+checkpoint with a versioned integrity manifest and frozen threshold. This is
+a local research artifact; production defaults and training/corpus locks are
+unchanged.

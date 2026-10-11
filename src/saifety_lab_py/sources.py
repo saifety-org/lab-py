@@ -132,3 +132,36 @@ def prepare_context(path: Path, source: Path, output: Path, tool: Path) -> None:
     if sha256(output / "manifest.json") != sha256(source_corpus / "manifest.json"):
         raise ValueError("prepared corpus differs from pinned manifest")
     write_json(output / "source.json", pinned)
+
+
+def bootstrap_encoder_onnx(path: Path, destination: Path) -> dict:
+    """Install the dedicated contextual bridge without changing corpus pins."""
+    value = json.loads(path.read_text())
+    if (
+        value.get("schema") != 1
+        or value.get("repository") != "saifety-org/lab"
+        or not re.fullmatch(r"[0-9a-f]{40}", value.get("commit", ""))
+        or not re.fullmatch(r"v0\.0\.0-\d{14}-[0-9a-f]{12}", value.get("tools_version", ""))
+        or not value["tools_version"].endswith("-" + value["commit"][:12])
+    ):
+        raise ValueError("unsupported contextual ONNX tools lock")
+    destination = destination.resolve()
+    destination.mkdir(parents=True, exist_ok=True)
+    subprocess.run(
+        [
+            "go",
+            "install",
+            "-tags",
+            "onnx",
+            "github.com/saifety-org/lab/cmd/context-onnx-bridge@" + value["tools_version"],
+        ],
+        env=dict(os.environ, GOWORK="off", GOBIN=str(destination)),
+        check=True,
+    )
+    result = {
+        "lock_sha256": sha256(path),
+        "lab_version": value["tools_version"],
+        "bridge_sha256": sha256(destination / "context-onnx-bridge"),
+    }
+    write_json(destination / "context-onnx-tools.json", result)
+    return result

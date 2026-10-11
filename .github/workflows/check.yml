@@ -76,6 +76,7 @@ jobs:
           enable-cache: true
       - run: uv sync --locked --extra ml
       - run: uv run --locked saifety-lab bootstrap --onnx
+      - run: make bootstrap-encoder-onnx
       - run: make test-ml
         env:
           SAIFETY_BRIDGE: bin/model-bridge
