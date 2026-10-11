@@ -132,10 +132,17 @@ Go interoperability обязателен в CI; локально тест про
 [Первый прогон](docs/contextual-first-run.md) показал ограничения линейной модели;
 это ещё не production multilingual detector.
 
-### Contextual multilingual encoder (v3)
+### Contextual multilingual encoder (v4)
 
 `make bootstrap-encoder prepare-encoder fetch-encoder train-encoder compare-encoder`
-обучает E5-small end-to-end с context/payload/task ablations на reviewed/frozen v3.
+обучает E5-small end-to-end с context/payload/task ablations на принятом
+reviewed/frozen/task-balanced v4 (`encoder-v4.sources.lock.json`).
 Требуются ML extra, MPS для зафиксированного training protocol и cached DeBERTa.
-[Протокол, результаты и ограничения](docs/contextual-encoder-v3.md): task-only
-оказался сильнее context, поэтому кандидат не принят для production.
+Новые defaults используют `artifacts/encoder-v4*`; существующие результаты v3
+не перезаписываются. Go review/history/freeze/task-balance gates повторяются до
+fitting и evaluation. Native и DeBERTa получают тот же context JSON; raw-document
+references публикуются отдельно. Все пороги выбраны на validation до test.
+
+[Протокол, результаты и ограничения v4](docs/contextual-encoder-v4.md).
+[Исторический прогон v3](docs/contextual-encoder-v3.md) выявил task-only shortcut;
+его lock/protocol/report сохранены. Production-веса автоматически не заменяются.
