@@ -31,3 +31,15 @@ train-context:
 	uv run --locked saifety-lab train-context
 compare-context:
 	uv run --locked saifety-lab compare-context
+
+.PHONY: bootstrap-encoder prepare-encoder fetch-encoder train-encoder compare-encoder
+bootstrap-encoder:
+	uv run --locked saifety-lab bootstrap-context --lock encoder.sources.lock.json --out bin/encoder --onnx
+prepare-encoder:
+	uv run --locked saifety-lab prepare-context --lock encoder.sources.lock.json --source data/encoder-source --out data/encoder --tool bin/encoder/context-corpus
+fetch-encoder:
+	uv run --locked --extra ml saifety-lab fetch-encoder
+train-encoder:
+	uv run --locked --extra ml saifety-lab train-encoder --base artifacts/e5-base
+compare-encoder:
+	uv run --locked --extra ml saifety-lab compare-encoder

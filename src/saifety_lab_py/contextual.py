@@ -11,6 +11,7 @@ from .io import samples, sha256, write_json
 from .native import NativeModel, train
 
 CONTRACT = "context-json-v1"
+CONTRACTS = (CONTRACT, "context-json-v2")
 VIEWS = ("context", "payload_only", "task_only")
 
 
@@ -19,7 +20,7 @@ def input_parts(row: dict) -> tuple[str, list[str]]:
     if (
         not isinstance(value, dict)
         or set(value) != {"contract", "task", "documents"}
-        or value["contract"] != CONTRACT
+        or value["contract"] not in CONTRACTS
         or not isinstance(value["task"], str)
         or not value["task"].strip()
         or not isinstance(value["documents"], list)
@@ -32,7 +33,12 @@ def input_parts(row: dict) -> tuple[str, list[str]]:
             not isinstance(doc, dict)
             or set(doc) != {"kind", "trust", "text"}
             or doc["kind"] not in ("mcp", "file", "web")
-            or doc["trust"] != "untrusted"
+            or doc["trust"]
+            not in (
+                ("untrusted", "user-provided")
+                if value["contract"] == "context-json-v2"
+                else ("untrusted",)
+            )
             or not isinstance(doc["text"], str)
             or not doc["text"].strip()
         ):
@@ -45,7 +51,7 @@ def input_parts(row: dict) -> tuple[str, list[str]]:
 
 def partitions(directory: Path) -> tuple[list[dict], list[dict], dict]:
     manifest = json.loads((directory / "manifest.json").read_text())
-    if manifest.get("contract") != CONTRACT:
+    if manifest.get("contract") not in CONTRACTS:
         raise ValueError("unsupported contextual corpus")
     names = {"train.jsonl", "evaluation.jsonl", "development.jsonl"}
     if set(manifest.get("output_sha256", {})) != names:
@@ -78,6 +84,8 @@ def partitions(directory: Path) -> tuple[list[dict], list[dict], dict]:
             if previous != row["split"]:
                 raise ValueError("contextual family crosses splits")
             input_parts(row)
+            if json.loads(row["text"])["contract"] != manifest["contract"]:
+                raise ValueError("mixed contextual contracts")
     if sum(map(len, (training, evaluation, development))) != manifest.get("rows"):
         raise ValueError("corpus row count mismatch")
     return training, evaluation, manifest
@@ -105,6 +113,8 @@ def train_context(
     directory: Path, output: Path, bridge: Path, *, epochs: int = 40, seed: int = 1
 ) -> dict:
     training, _, manifest = partitions(directory)
+    if manifest["contract"] != CONTRACT:
+        raise ValueError("legacy native ablations require v1; use train-encoder for v2")
     corpus = fingerprint(directory)
     models = {}
     for view in VIEWS:

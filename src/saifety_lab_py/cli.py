@@ -48,6 +48,24 @@ def parser() -> argparse.ArgumentParser:
     p.add_argument("--bridge", type=Path, default=Path("bin/model-bridge"))
     p.add_argument("--max-fpr", type=float, default=0.01)
     p.add_argument("--deberta", action="store_true")
+    p = sub.add_parser("fetch-encoder")
+    p.add_argument("--lock", type=Path, default=Path("encoder.model.lock.json"))
+    p.add_argument("--out", type=Path, default=Path("artifacts/e5-base"))
+    for command in ("train-encoder", "compare-encoder"):
+        p = sub.add_parser(command)
+        p.add_argument("--data", type=Path, default=Path("data/encoder"))
+        p.add_argument("--lock", type=Path, default=Path("encoder.sources.lock.json"))
+        p.add_argument("--source", type=Path, default=Path("data/encoder-source"))
+        p.add_argument("--tool", type=Path, default=Path("bin/encoder/context-corpus"))
+        if command == "train-encoder":
+            p.add_argument("--base", type=Path, required=True)
+            p.add_argument("--model-lock", type=Path, default=Path("encoder.model.lock.json"))
+            p.add_argument("--protocol", type=Path, default=Path("encoder.protocol.json"))
+            p.add_argument("--out", type=Path, default=Path("artifacts/encoder"))
+        else:
+            p.add_argument("--models", type=Path, default=Path("artifacts/encoder"))
+            p.add_argument("--out", type=Path, default=Path("artifacts/encoder-comparison"))
+            p.add_argument("--bridge", type=Path, default=Path("bin/encoder/model-bridge"))
     p = sub.add_parser("train-native")
     p.add_argument("--train", type=Path, default=Path("data/comparison/train.jsonl"))
     p.add_argument("--out", type=Path, default=Path("artifacts/native/weights.json"))
@@ -138,6 +156,29 @@ def main(argv: list[str] | None = None) -> None:
                     args.out,
                     max_fpr=args.max_fpr,
                     deberta=Bridge(args.bridge, backend="onnx") if args.deberta else None,
+                )
+            case "fetch-encoder":
+                from .encoder import fetch_encoder
+
+                fetch_encoder(args.lock, args.out)
+            case "train-encoder":
+                from .encoder import train_encoder
+
+                result = train_encoder(
+                    args.data,
+                    args.base,
+                    args.out,
+                    args.protocol,
+                    args.model_lock,
+                    args.lock,
+                    args.source,
+                    args.tool,
+                )
+            case "compare-encoder":
+                from .encoder import compare_encoder
+
+                result = compare_encoder(
+                    args.data, args.models, args.out, args.lock, args.source, args.tool, args.bridge
                 )
             case "train-native":
                 result = train(

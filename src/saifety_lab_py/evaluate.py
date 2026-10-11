@@ -79,7 +79,7 @@ def compare(
     rows = samples(data, evaluation=True)
     model = NativeModel.load(weights)
     metadata = json.loads(Path(str(weights) + ".meta.json").read_text())
-    if metadata.get("input_contract") == "context-json-v1":
+    if metadata.get("input_contract") in ("context-json-v1", "context-json-v2"):
         raise ValueError("context candidate requires compare-context, not raw comparison")
     if metadata["weights_sha256"] != sha256(weights):
         raise ValueError("candidate metadata does not match weights")

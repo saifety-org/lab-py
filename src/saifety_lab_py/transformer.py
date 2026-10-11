@@ -30,7 +30,10 @@ def reject_context_input(rows: list[dict]) -> None:
             value = json.loads(row["text"])
         except json.JSONDecodeError:
             continue
-        if isinstance(value, dict) and value.get("contract") == "context-json-v1":
+        if isinstance(value, dict) and value.get("contract") in (
+            "context-json-v1",
+            "context-json-v2",
+        ):
             raise ValueError(
                 "contextual transformer training/export needs a dedicated contract; "
                 "use train-context for native ablations"
