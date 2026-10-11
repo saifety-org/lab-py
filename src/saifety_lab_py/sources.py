@@ -17,6 +17,11 @@ def lock(path: Path) -> dict:
         raise ValueError("unsupported source lock")
     if not re.fullmatch(r"[0-9a-f]{40}", value.get("commit", "")):
         raise ValueError("source commit must be a full SHA")
+    for key in ("source_corpus", "history"):
+        if key in value:
+            relative = PurePosixPath(value[key])
+            if relative.is_absolute() or ".." in relative.parts:
+                raise ValueError("unsafe contextual source path")
     for item in value["files"]:
         p = PurePosixPath(item["path"])
         if p.is_absolute() or ".." in p.parts or not re.fullmatch(r"[0-9a-f]{64}", item["sha256"]):
@@ -87,7 +92,20 @@ def prepare_context(path: Path, source: Path, output: Path, tool: Path) -> None:
         tool.name
     ) != sha256(tool):
         raise ValueError("context tool differs from source lock; run bootstrap-context")
-    source_corpus = source / "datasets/contextual/v1"
+    source_corpus = source / pinned.get("source_corpus", "datasets/contextual/v1")
+    extra = []
+    if pinned.get("input_contract") == "context-json-v2":
+        extra = [
+            "-reviews",
+            str((source_corpus / "review.json").resolve()),
+            "-require-reviewed",
+            "-freeze",
+            str((source_corpus / "holdout.json").resolve()),
+            "-history",
+            str((source / pinned["history"]).resolve()),
+            "-catalog",
+            str((source_corpus / "scenarios.json").resolve()),
+        ]
     subprocess.run(
         [
             str(tool.resolve()),
@@ -95,6 +113,7 @@ def prepare_context(path: Path, source: Path, output: Path, tool: Path) -> None:
             str(source_corpus.resolve()),
             "-out",
             str(output.resolve()),
+            *extra,
         ],
         check=True,
         capture_output=True,

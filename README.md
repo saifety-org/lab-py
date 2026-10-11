@@ -131,3 +131,11 @@ Go interoperability обязателен в CI; локально тест про
 обучение context/payload-only/task-only native ablations и отдельная оценка сканера.
 [Первый прогон](docs/contextual-first-run.md) показал ограничения линейной модели;
 это ещё не production multilingual detector.
+
+### Contextual multilingual encoder (v3)
+
+`make bootstrap-encoder prepare-encoder fetch-encoder train-encoder compare-encoder`
+обучает E5-small end-to-end с context/payload/task ablations на reviewed/frozen v3.
+Требуются ML extra, MPS для зафиксированного training protocol и cached DeBERTa.
+[Протокол, результаты и ограничения](docs/contextual-encoder-v3.md): task-only
+оказался сильнее context, поэтому кандидат не принят для production.

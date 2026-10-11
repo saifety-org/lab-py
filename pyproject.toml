@@ -10,7 +10,7 @@ saifety-lab = "saifety_lab_py.cli:main"
 
 [project.optional-dependencies]
 ml = [
- "torch>=2.7,<3", "transformers>=4.57,<5", "accelerate>=1.10,<2",
+ "psutil>=7,<8", "torch>=2.7,<3", "transformers>=4.57,<5", "accelerate>=1.10,<2",
  "optimum-onnx[onnxruntime]>=0.0.3,<1", "onnx>=1.18,<2",
 ]
 

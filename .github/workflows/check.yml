@@ -39,10 +39,12 @@ jobs:
           enable-cache: true
       - run: make bootstrap
       - run: make bootstrap-context prepare-context
+      - run: make bootstrap-encoder prepare-encoder
       - run: make test
         env:
           SAIFETY_BRIDGE: bin/model-bridge
           SAIFETY_CONTEXT_DATA: data/contextual
+          SAIFETY_ENCODER_DATA: data/encoder
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 10
