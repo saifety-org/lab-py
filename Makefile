@@ -43,3 +43,7 @@ train-encoder:
 	uv run --locked --extra ml saifety-lab train-encoder --base artifacts/e5-base
 compare-encoder:
 	uv run --locked --extra ml saifety-lab compare-encoder
+
+.PHONY: bootstrap-encoder-onnx
+bootstrap-encoder-onnx:
+	uv run --locked saifety-lab bootstrap-encoder-onnx

@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "purpose": "numerical parity; not a new blind quality evaluation",
+  "production_ready": false,
+  "samples": 575,
+  "exact_token_ids": true,
+  "same_decisions": true,
+  "tolerance": 1e-05,
+  "tolerance_reason": "FP32 CPU operator/reduction differences; exact IDs and decisions required",
+  "pytorch_onnx_max_absolute_delta": 7.737418343700675e-06,
+  "python_go_onnx_max_absolute_delta": 1.5102812607192817e-06,
+  "manifest_sha256": "a749100810cd6cd689bafdd97623d714fbb10aa969f000be514c8da5eddcd73d",
+  "data_sha256": "4ebebaff8287c712ae48a0403b44ae1533bc32ec0dd0fb2eea37c1df5b0e41d2",
+  "go_bridge_sha256": "a4b2d7327d92fc7c856ba89f9f973e21743481e1e58bf8b54dad81c198ade74f",
+  "runtime_sha256": "2b885992d3d6fa4130d39ec84a80d7504ff52750027c547bb22c86165f19406a",
+  "python_runtime_version": "1.30.0",
+  "go_identity": {
+    "manifest_sha256": "a749100810cd6cd689bafdd97623d714fbb10aa969f000be514c8da5eddcd73d",
+    "ready": true,
+    "runtime_sha256": "2b885992d3d6fa4130d39ec84a80d7504ff52750027c547bb22c86165f19406a",
+    "runtime_version": "1.22.0",
+    "threads": 1
+  },
+  "bundle_bytes": 487382725,
+  "benchmark": {
+    "threads": 1,
+    "requests": 575,
+    "go_tokenization_inference_ipc_ms_p50": 64.25770791247487,
+    "go_tokenization_inference_ipc_ms_p95": 108.91003742581232,
+    "go_sampled_resident_rss_bytes_max": 1510522880,
+    "limitations": "sequential requests; first cold request included; sampled RSS after response, not lifetime peak; PyTorch and Python ORT also resident"
+  },
+  "passed": true,
+  "hardware": {
+    "cpu": "Apple M5",
+    "logical_cpus": 10,
+    "ram_bytes": 25769803776,
+    "os": "macOS 26.6.2 arm64"
+  },
+  "rebuild_manifest_identical": true
+}

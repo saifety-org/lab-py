@@ -96,6 +96,25 @@ def parser() -> argparse.ArgumentParser:
     p.add_argument("--batch-size", type=int, default=8)
     p.add_argument("--max-tokens", type=int, default=512)
     p.add_argument("--allow-training-truncation", action="store_true")
+    p = sub.add_parser("bootstrap-encoder-onnx")
+    p.add_argument("--lock", type=Path, default=Path("encoder-onnx.tools.lock.json"))
+    p.add_argument("--out", type=Path, default=Path("bin"))
+    p = sub.add_parser("encoder-parity-inputs")
+    p.add_argument("--evaluation", type=Path, required=True)
+    p.add_argument("--bundle", type=Path, required=True)
+    p.add_argument("--out", type=Path, required=True)
+    p = sub.add_parser("export-encoder-onnx")
+    p.add_argument("--candidate", type=Path, required=True)
+    p.add_argument("--thresholds", type=Path, required=True)
+    p.add_argument("--model-lock", type=Path, default=Path("encoder.model.lock.json"))
+    p.add_argument("--out", type=Path, required=True)
+    p = sub.add_parser("check-encoder-onnx")
+    p.add_argument("--candidate", type=Path, required=True)
+    p.add_argument("--bundle", type=Path, required=True)
+    p.add_argument("--data", type=Path, required=True)
+    p.add_argument("--bridge", type=Path, required=True)
+    p.add_argument("--library", type=Path, required=True)
+    p.add_argument("--out", type=Path, required=True)
     p = sub.add_parser("export-onnx")
     p.add_argument("--checkpoint", type=Path, required=True)
     p.add_argument("--out", type=Path, required=True)
@@ -234,6 +253,23 @@ def main(argv: list[str] | None = None) -> None:
                     max_tokens=args.max_tokens,
                     allow_training_truncation=args.allow_training_truncation,
                 )
+            case "bootstrap-encoder-onnx":
+                result = sources.bootstrap_encoder_onnx(args.lock, args.out)
+            case "encoder-parity-inputs":
+                from .encoder_export import parity_inputs
+
+                result = parity_inputs(args.evaluation, args.bundle, args.out)
+            case "export-encoder-onnx":
+                from .encoder_export import export_encoder
+
+                result = export_encoder(args.candidate, args.thresholds, args.model_lock, args.out)
+            case "check-encoder-onnx":
+                from .encoder_export import parity
+
+                result = parity(
+                    args.bundle, args.candidate, args.data, args.bridge, args.library, args.out
+                )
+                result = {k: v for k, v in result.items() if k != "predictions"}
             case "export-onnx":
                 from .transformer import export_onnx
 
