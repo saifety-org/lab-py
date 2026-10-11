@@ -107,3 +107,12 @@ jobs:
       - run: uv run --locked saifety-lab bootstrap-agent-harness
       - run: uv run --locked saifety-lab prepare-agent-harness
       - run: uv run --locked pytest -m harness
+        env:
+          SAIFETY_HARNESS_REPORT: artifacts/agent-harness-ci
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: agent-harness-${{ matrix.os }}
+          path: artifacts/agent-harness-ci/
+          retention-days: 7
+          if-no-files-found: warn

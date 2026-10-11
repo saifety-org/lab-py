@@ -122,7 +122,7 @@ class OllamaAgent:
         return value
 
     def inspect(self) -> dict:
-        models = self.request("/api/tags")["models"]
+        models = self.request("/api/tags").get("models")
         if not isinstance(models, list) or any(not isinstance(m, dict) for m in models):
             raise ValueError("invalid Ollama model catalog")
         found = [m for m in models if m.get("name") == self.model]
@@ -143,11 +143,14 @@ class OllamaAgent:
             or not re.fullmatch(r"(?:sha256:)?[0-9a-f]{64}", m.get("digest", ""))
         ):
             raise ValueError("model is not a verifiable installed local GGUF model")
+        version = self.request("/api/version").get("version")
+        if not isinstance(version, str) or not version or len(version) > 128:
+            raise ValueError("invalid Ollama version")
         return {
             "kind": "ollama",
             "model": self.model,
             "digest": m["digest"],
-            "version": self.request("/api/version")["version"],
+            "version": version,
             "details": m["details"],
             "context": self.context,
             "temperature": 0,

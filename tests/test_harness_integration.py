@@ -1,6 +1,7 @@
 """Separate, lightweight regression suite through the actual pinned Go MCP proxy."""
 
 import json
+import os
 from pathlib import Path
 
 import pytest
@@ -18,7 +19,7 @@ def test_frozen_scenarios_through_actual_proxy(tmp_path):
     binary = Path("bin/agent-harness") / binary_name()
     assert binary.exists(), "run make bootstrap-agent-harness prepare-agent-harness"
     assert plan(data, "full")[0]["maximum_llm_requests"] == 768
-    output = tmp_path / "full"
+    output = Path(os.environ.get("SAIFETY_HARNESS_REPORT", str(tmp_path / "full")))
     report = run(data, lock, binary, output, preset="full")
     assert report["identity_stable"] and not report["llm_run"]
     assert report["quality_evidence"] is False
