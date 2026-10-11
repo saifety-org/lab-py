@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "seed": 1,
+  "epochs": 2,
+  "batch_size": 8,
+  "learning_rate": 2e-05,
+  "weight_decay": 0.01,
+  "max_tokens": 512,
+  "training_device": "mps",
+  "cpu_threads": 1,
+  "max_fpr": 0.01,
+  "checkpoint_selection": "final fixed epoch; no hyperparameter search",
+  "views": [
+    "context",
+    "payload_only",
+    "task_only"
+  ],
+  "long_input_policy": "fail whole run, never silently truncate or exclude rows",
+  "references": "unmodified shipped native and ProtectAI DeBERTa ONNX on identical context JSON; raw max-document references reported separately",
+  "threshold_rule": "validation only: maximum recall at FPR <= 1%; ties lower FPR then higher threshold",
+  "uncertainty": "whole-family bootstrap seed 1, 1000 replicates; degenerate intervals omitted",
+  "purpose": "context ablation and application references; not an equal-training-budget architecture ranking",
+  "counterfactuals": "matched-task, identical-document authorization, and source-provenance pairs; no test-driven changes",
+  "reference_input": "context-and-raw"
+}

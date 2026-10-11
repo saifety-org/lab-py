@@ -11,6 +11,7 @@ import time
 from pathlib import Path
 
 from .contextual import partitions, view_text
+from .encoder import reference_views
 from .io import text_hash, write_json
 
 
@@ -122,9 +123,12 @@ def benchmark(data: Path, models: Path, bridge: Path, output: Path) -> dict:
             str((models / view).resolve()),
         ]
         results[f"encoder_{view}"] = resident(command, [[view_text(row, view)] for row in workload])
-    for name, backend in (("shipped_raw", "native"), ("deberta_raw", "onnx")):
+    protocol = json.loads((models / "experiment.json").read_text())["protocol"]
+    for name, (backend, documents) in reference_views(
+        workload, protocol.get("reference_input", "raw")
+    ).items():
         command = [str(bridge.resolve()), "-backend", backend, "-mode", "score"]
-        results[name] = resident(command, [row["documents"] for row in workload])
+        results[name] = resident(command, documents)
     report = {
         "hardware": platform.platform(),
         "processor": platform.processor(),
@@ -147,9 +151,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--worker", type=Path)
     parser.add_argument("--data", type=Path, default=Path("data/encoder"))
-    parser.add_argument("--models", type=Path, default=Path("artifacts/encoder"))
-    parser.add_argument("--bridge", type=Path, default=Path("bin/model-bridge"))
-    parser.add_argument("--out", type=Path, default=Path("artifacts/encoder-benchmark.json"))
+    parser.add_argument("--models", type=Path, default=Path("artifacts/encoder-v4"))
+    parser.add_argument("--bridge", type=Path, default=Path("bin/encoder/model-bridge"))
+    parser.add_argument("--out", type=Path, default=Path("artifacts/encoder-v4-benchmark.json"))
     args = parser.parse_args()
     if args.worker:
         worker(args.worker)

@@ -54,17 +54,17 @@ def parser() -> argparse.ArgumentParser:
     for command in ("train-encoder", "compare-encoder"):
         p = sub.add_parser(command)
         p.add_argument("--data", type=Path, default=Path("data/encoder"))
-        p.add_argument("--lock", type=Path, default=Path("encoder.sources.lock.json"))
+        p.add_argument("--lock", type=Path, default=Path("encoder-v4.sources.lock.json"))
         p.add_argument("--source", type=Path, default=Path("data/encoder-source"))
         p.add_argument("--tool", type=Path, default=Path("bin/encoder/context-corpus"))
         if command == "train-encoder":
             p.add_argument("--base", type=Path, required=True)
             p.add_argument("--model-lock", type=Path, default=Path("encoder.model.lock.json"))
-            p.add_argument("--protocol", type=Path, default=Path("encoder.protocol.json"))
-            p.add_argument("--out", type=Path, default=Path("artifacts/encoder"))
+            p.add_argument("--protocol", type=Path, default=Path("encoder-v4.protocol.json"))
+            p.add_argument("--out", type=Path, default=Path("artifacts/encoder-v4"))
         else:
-            p.add_argument("--models", type=Path, default=Path("artifacts/encoder"))
-            p.add_argument("--out", type=Path, default=Path("artifacts/encoder-comparison"))
+            p.add_argument("--models", type=Path, default=Path("artifacts/encoder-v4"))
+            p.add_argument("--out", type=Path, default=Path("artifacts/encoder-v4-comparison"))
             p.add_argument("--bridge", type=Path, default=Path("bin/encoder/model-bridge"))
     p = sub.add_parser("train-native")
     p.add_argument("--train", type=Path, default=Path("data/comparison/train.jsonl"))
