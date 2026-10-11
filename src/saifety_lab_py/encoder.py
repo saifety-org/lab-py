@@ -9,7 +9,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from .contextual import VIEWS, contextual_metrics, fingerprint, partitions, view_text
-from .evaluate import calibrate
+from .evaluate import calibrate, measure
 from .io import sha256, write_json
 from .sources import prepare_context
 from .transformer import checkpoint_hashes
@@ -19,7 +19,7 @@ def verified_corpus(data: Path, lock: Path, source: Path, tool: Path) -> tuple:
     """Re-run canonical review/history/freeze gates before fitting or scoring."""
     pinned = json.loads(lock.read_text())
     if pinned.get("input_contract") != "context-json-v2":
-        raise ValueError("encoder requires the reviewed v3 source lock")
+        raise ValueError("encoder requires a reviewed context-json-v2 source lock")
     with tempfile.TemporaryDirectory() as temporary:
         prepared = Path(temporary)
         prepare_context(lock, source, prepared, tool)
@@ -172,6 +172,28 @@ def fit_view(
         target / "head.safetensors",
     )
     tokenizer.save_pretrained(target)
+    model.to("cpu").eval()
+    diagnostic_rows = training + validation
+    diagnostic_scores = predict(model, tokenizer, train_texts + val_texts, protocol["max_tokens"])
+    prediction_path = output / "train-validation-predictions.jsonl"
+    prediction_path.write_text(
+        "".join(
+            json.dumps({"id": r["id"], "split": r["split"], "score": s}) + "\n"
+            for r, s in zip(diagnostic_rows, diagnostic_scores, strict=True)
+        )
+    )
+    threshold = calibrate(
+        validation, diagnostic_scores[len(training) :], protocol.get("max_fpr", 0.01)
+    )
+    diagnostics = {}
+    for split, selected, values in (
+        ("train", training, diagnostic_scores[: len(training)]),
+        ("validation", validation, diagnostic_scores[len(training) :]),
+    ):
+        metric = measure(selected, values, threshold)
+        metric.pop("recall_ci95")
+        metric.pop("fpr_ci95")
+        diagnostics[split] = {**metric, "pr_auc_ap": average_precision(selected, values)}
     metadata = {
         "input_contract": "context-json-v2" if view == "context" else "raw-text-v1",
         "view": view,
@@ -183,6 +205,8 @@ def fit_view(
         "encoder_embedding_probe_max_delta": delta,
         "end_to_end": True,
         "production_ready": False,
+        "diagnostics": diagnostics,
+        "train_validation_predictions_sha256": sha256(prediction_path),
     }
     write_json(output / "candidate.json", metadata)
     return metadata
@@ -203,8 +227,20 @@ def validate_protocol(protocol: dict) -> None:
         or not 0 <= protocol.get("max_fpr", -1) < 1
         or protocol.get("training_device") not in ("cpu", "mps")
         or protocol.get("cpu_threads") != 1
+        or protocol.get("reference_input", "raw") not in ("raw", "context-and-raw")
     ):
         raise ValueError("invalid fixed encoder protocol")
+
+
+def reference_views(rows: list[dict], mode: str) -> dict:
+    views = {"raw": [row["documents"] for row in rows]}
+    if mode == "context-and-raw":
+        views["context"] = [[row["text"]] for row in rows]
+    return {
+        f"{name}_{view}": (backend, documents)
+        for view, documents in views.items()
+        for name, backend in (("shipped", "native"), ("deberta", "onnx"))
+    }
 
 
 def train_encoder(
@@ -359,6 +395,9 @@ def compare_encoder(
         raise ValueError("evaluation output exists; test is a one-shot report")
     output.mkdir(parents=True)
     protocol = experiment["protocol"]
+    validate_protocol(protocol)
+    if experiment["source_lock_sha256"] != sha256(source_lock):
+        raise ValueError("source lock differs from training record")
     torch.set_num_threads(protocol["cpu_threads"])
     scores = {}
     identities = {}
@@ -371,17 +410,25 @@ def compare_encoder(
             candidate, tokenizer, metadata = load_candidate(models / view)
             if metadata != experiment["models"][view]:
                 raise ValueError("candidate metadata differs from training record")
+            if (
+                "train_validation_predictions_sha256" in metadata
+                and sha256(models / view / "train-validation-predictions.jsonl")
+                != metadata["train_validation_predictions_sha256"]
+            ):
+                raise ValueError("train/validation predictions changed")
             split_scores[f"encoder_{view}"] = predict(
                 candidate, tokenizer, texts(selected, view), protocol["max_tokens"]
             )
             del candidate
-        flat = [doc for row in selected for doc in row["documents"]]
-        for name, backend in (("shipped_raw", "native"), ("deberta_raw", "onnx")):
+        for name, (backend, documents) in reference_views(
+            selected, protocol.get("reference_input", "raw")
+        ).items():
+            flat = [doc for docs in documents for doc in docs]
             reference = Bridge(bridge, backend=backend)
             if backend == "onnx" and any(r["tokens"] > 512 for r in reference.run(flat, "tokens")):
                 raise ValueError("DeBERTa token window exceeded; shared cohort cannot be evaluated")
             values = iter(reference.scores(flat))
-            split_scores[name] = [max(next(values) for _ in row["documents"]) for row in selected]
+            split_scores[name] = [max(next(values) for _ in docs) for docs in documents]
             identities[name] = reference.identity
         if split == "validation":
             thresholds = {
@@ -389,6 +436,16 @@ def compare_encoder(
                 for name, values in split_scores.items()
             }
             write_json(output / "thresholds-before-test.json", thresholds)
+        # Persist each inference pass before derived reporting, so report fixes
+        # can use saved scores without running the observed holdout again.
+        write_json(
+            output / f"{split}-scores.json",
+            {
+                "ids": [row["id"] for row in selected],
+                "scores": split_scores,
+                "identities": identities,
+            },
+        )
         for name, values in split_scores.items():
             scores.setdefault(name, []).extend(values)
     # Prepared corpus order is not assumed; scores above are split-major.
@@ -419,10 +476,26 @@ def compare_encoder(
         "metrics": metrics,
         "exclusions": [],
         "review_status": manifest["review_status"],
+        "reference_policy": protocol["references"],
+        "comparison_limits": "Same frozen rows and validation-only FPR rule; context references "
+        "receive identical JSON without E5's query prefix. Stock references are not fine-tuned; "
+        "this is not an equal-training-budget architecture ranking. Token-window overflow "
+        "fails the whole run, with no truncation/exclusions. Raw references are separate.",
         "authorization_pairs_test": {
             name: pair_metrics(rows, values, thresholds[name]) for name, values in scores.items()
         },
     }
+    if json.loads(source_lock.read_text()).get("task_balance_contract"):
+        from .encoder_pairs import matched_task_metrics, provenance_metrics
+
+        report["matched_task_pairs_test"] = {
+            name: matched_task_metrics(rows, values, thresholds[name])
+            for name, values in scores.items()
+        }
+        report["provenance_pairs_test"] = {
+            name: provenance_metrics(rows, values, thresholds[name])
+            for name, values in scores.items()
+        }
     write_json(output / "report.json", report)
     (output / "predictions.jsonl").write_text(
         "".join(

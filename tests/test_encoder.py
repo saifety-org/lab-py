@@ -107,14 +107,18 @@ def test_real_encoder_fit_reload_and_no_silent_truncation(tmp_path):
         "max_tokens": 64,
     }
     training = [row("a", "train", "t", 1), row("b", "train", "t", 0)]
-    validation = [row("c", "validation", "v", 1)]
+    validation = [row("c", "validation", "v", 1), row("d", "validation", "v", 0)]
     before = sha256(base / "model.safetensors")
     metadata = fit_view(base, training, validation, tmp_path / "fit", "payload_only", protocol)
     assert metadata["end_to_end"]
+    assert set(metadata["diagnostics"]) == {"train", "validation"}
+    assert metadata["train_validation_predictions_sha256"] == sha256(
+        tmp_path / "fit/train-validation-predictions.jsonl"
+    )
     assert sha256(tmp_path / "fit/checkpoint/model.safetensors") != before
     model, tokenizer, _ = load_candidate(tmp_path / "fit")
     scores = predict(model, tokenizer, texts(validation, "payload_only"), 64)
-    assert len(scores) == 1 and 0 <= scores[0] <= 1
+    assert len(scores) == 2 and all(0 <= score <= 1 for score in scores)
     with pytest.raises(ValueError, match="token window"):
         encoded(tokenizer, ["data " * 70], 64)
     with pytest.raises(ValueError, match="overwrite"):
@@ -141,7 +145,7 @@ def test_raw_pipeline_rejects_v2_context():
         reject_context_input([{"text": '{"contract":"context-json-v2"}'}])
 
 
-def test_frozen_v3_integration():
+def test_frozen_encoder_integration():
     import os
 
     name = os.environ.get("SAIFETY_ENCODER_DATA")
@@ -149,12 +153,18 @@ def test_frozen_v3_integration():
         pytest.skip("set SAIFETY_ENCODER_DATA after prepare-encoder")
     training, evaluation, manifest = partitions(Path(name))
     assert manifest["contract"] == "context-json-v2"
-    assert len(training) == 280
-    assert len(evaluation) == 560
+    assert len(training) == 560
+    assert len(evaluation) == 1120
     for split in ("validation", "test"):
         selected = [row for row in evaluation if row["split"] == split]
         assert len({row["group"] for row in selected}) == 14
-        assert pair_metrics(selected, [0.5] * 280, 0.5)["pairs"] == (70 if split == "test" else 0)
+        assert pair_metrics(selected, [0.5] * 560, 0.5)["pairs"] == (70 if split == "test" else 0)
+    from saifety_lab_py.encoder_pairs import matched_task_metrics, provenance_metrics
+
+    scores = [0.5] * len(evaluation)
+    assert matched_task_metrics(evaluation, scores, 0.5)["pairs"] == 280
+    assert provenance_metrics(evaluation, scores, 0.5)["decision_agreement_rate"] == 1
+    assert provenance_metrics(evaluation, scores, 0.5)["pairs"] == 280
 
 
 def test_resident_benchmark_checks_protocol_and_counts(tmp_path):

@@ -34,9 +34,9 @@ compare-context:
 
 .PHONY: bootstrap-encoder prepare-encoder fetch-encoder train-encoder compare-encoder
 bootstrap-encoder:
-	uv run --locked saifety-lab bootstrap-context --lock encoder.sources.lock.json --out bin/encoder --onnx
+	uv run --locked saifety-lab bootstrap-context --lock encoder-v4.sources.lock.json --out bin/encoder --onnx
 prepare-encoder:
-	uv run --locked saifety-lab prepare-context --lock encoder.sources.lock.json --source data/encoder-source --out data/encoder --tool bin/encoder/context-corpus
+	uv run --locked saifety-lab prepare-context --lock encoder-v4.sources.lock.json --source data/encoder-source --out data/encoder --tool bin/encoder/context-corpus
 fetch-encoder:
 	uv run --locked --extra ml saifety-lab fetch-encoder
 train-encoder:

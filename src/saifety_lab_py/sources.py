@@ -22,6 +22,14 @@ def lock(path: Path) -> dict:
             relative = PurePosixPath(value[key])
             if relative.is_absolute() or ".." in relative.parts:
                 raise ValueError("unsafe contextual source path")
+    balance = value.get("task_balance_contract")
+    if balance not in (None, "context-task-balance-v1") or (
+        value.get("source_corpus") == "datasets/contextual/v4"
+        and balance != "context-task-balance-v1"
+    ):
+        raise ValueError("v4 source lock requires the task-balance contract")
+    if balance and value.get("input_contract") != "context-json-v2":
+        raise ValueError("task balance requires context-json-v2")
     for item in value["files"]:
         p = PurePosixPath(item["path"])
         if p.is_absolute() or ".." in p.parts or not re.fullmatch(r"[0-9a-f]{64}", item["sha256"]):
@@ -106,6 +114,8 @@ def prepare_context(path: Path, source: Path, output: Path, tool: Path) -> None:
             "-catalog",
             str((source_corpus / "scenarios.json").resolve()),
         ]
+    if pinned.get("task_balance_contract"):
+        extra.append("-require-task-balanced")
     subprocess.run(
         [
             str(tool.resolve()),
