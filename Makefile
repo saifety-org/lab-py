@@ -5,7 +5,7 @@ lint:
 	uv run --locked ruff check .
 	uv run --locked ruff format --check .
 test:
-	uv run --locked pytest -m 'not ml'
+	uv run --locked pytest -m 'not ml and not harness'
 build:
 	uv run --locked python -m build --no-isolation
 check: lint test build
@@ -47,3 +47,11 @@ compare-encoder:
 .PHONY: bootstrap-encoder-onnx
 bootstrap-encoder-onnx:
 	uv run --locked saifety-lab bootstrap-encoder-onnx
+
+.PHONY: bootstrap-agent-harness prepare-agent-harness test-agent-harness
+bootstrap-agent-harness:
+	uv run --locked saifety-lab bootstrap-agent-harness
+prepare-agent-harness:
+	uv run --locked saifety-lab prepare-agent-harness
+test-agent-harness:
+	uv run --locked pytest -m harness

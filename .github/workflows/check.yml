@@ -82,3 +82,28 @@ jobs:
           SAIFETY_BRIDGE: bin/model-bridge
           HF_HUB_OFFLINE: '1'
           HF_DATASETS_OFFLINE: '1'
+  harness:
+    name: harness (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version-file: .python-version
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.0'
+          cache: false
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: '0.11.21'
+          enable-cache: true
+      - run: uv sync --locked
+      - run: uv run --locked saifety-lab bootstrap-agent-harness
+      - run: uv run --locked saifety-lab prepare-agent-harness
+      - run: uv run --locked pytest -m harness

@@ -140,6 +140,9 @@ def parser() -> argparse.ArgumentParser:
     p.add_argument("--out", type=Path, default=Path("artifacts/transformer/comparison"))
     p.add_argument("--max-fpr", type=float, default=0.01)
     p.add_argument("--deberta", action="store_true")
+    from .harness.cli import add_parser
+
+    add_parser(sub)
     return root
 
 
@@ -149,6 +152,15 @@ def main(argv: list[str] | None = None) -> None:
     result = None
     try:
         match args.command:
+            case (
+                "bootstrap-agent-harness"
+                | "prepare-agent-harness"
+                | "agent-harness-plan"
+                | "run-agent-harness"
+            ):
+                from .harness.cli import dispatch
+
+                result = dispatch(args)
             case "bootstrap":
                 sources.bootstrap(args.lock, args.out, onnx=args.onnx)
             case "sync":
