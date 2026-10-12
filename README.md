@@ -153,3 +153,7 @@ references публикуются отдельно. Все пороги выбр
 checkpoint with a versioned integrity manifest and frozen threshold. This is
 a local research artifact; production defaults and training/corpus locks are
 unchanged.
+
+## Agent harness
+
+[Isolated agent harness](docs/agent-harness.md): paired agent episodes through the actual Go MCP proxy, virtual-only tools, a separate scripted CI suite and an explicit local Ollama mode. Preview PC workload with `saifety-lab agent-harness-plan`; no LLM runs implicitly.

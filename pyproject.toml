@@ -30,7 +30,8 @@ select = ["E", "F", "I", "B", "UP"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-markers = ["ml: offline transformer training/export tests (requires ml extra)"]
+markers = ["ml: offline transformer training/export tests (requires ml extra)",
+           "harness: real Go MCP proxy integration (requires harness bootstrap)"]
 
 [tool.uv.sources]
 torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux'" }]

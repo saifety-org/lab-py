@@ -1,0 +1,22 @@
+{
+  "schema": "agent-harness-sources-v1",
+  "lab": {
+    "repository": "saifety-org/lab",
+    "commit": "de130af7af0b39ecdc3292543342ad0dc78be7bf",
+    "files": [
+      {
+        "name": "cases.json",
+        "sha256": "87e90824a29aa84b99aaf0c46878e28e6de10bc1ba1b4f656bd87dbe59dd27f1"
+      },
+      {
+        "name": "manifest.json",
+        "sha256": "7f26d51b3e95b5e61f82ae63ceb5e0d7848b8a60c1617ae62875cfc1c40b53cf"
+      }
+    ]
+  },
+  "core": {
+    "module": "github.com/saifety-org/sAIfety",
+    "commit": "02492894edb993aff8ae7a5681eaac374d0ed467",
+    "version": "v0.0.0-20261011191755-02492894edb9"
+  }
+}
