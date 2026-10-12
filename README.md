@@ -157,3 +157,7 @@ unchanged.
 ## Agent harness
 
 [Isolated agent harness](docs/agent-harness.md): paired agent episodes through the actual Go MCP proxy, virtual-only tools, a separate scripted CI suite and an explicit local Ollama mode. Preview PC workload with `saifety-lab agent-harness-plan`; no LLM runs implicitly.
+
+[Работа между устройствами](docs/device-work.md): поручения для Windows/RTX 5070 Ti
+хранятся в [device-jobs](device-jobs/README.md), статусы и зависимости — в GitHub
+Project, результаты — в PR. На ПК не нужно переносить промпт с Mac.

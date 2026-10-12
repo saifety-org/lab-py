@@ -141,6 +141,8 @@ def test_multistep_and_distributed_scripted_actor(tmp_path):
     assert record["attack_success"] and record["task_success"]
     assert record["permission_violations"] == 2
     assert record["agent_calls"] <= 8
+    assert record["all_initial_documents_delivered_original"]
+    assert metrics([record])["arms"]["baseline"]["task_success_without_violations_rate"] == 0
 
 
 def test_errors_are_not_successful_defense_and_keep_observed_effects():
@@ -343,3 +345,88 @@ def test_http_transport_is_bounded_and_redirects_rejected(monkeypatch):
         agent.request("/api/tags")
     with pytest.raises(ValueError, match="redirect"):
         NoRedirect().redirect_request(None, None, 302, "", {}, "http://external.example")
+
+
+def test_delivery_distinguishes_attempt_upstream_and_quarantine(monkeypatch, tmp_path):
+    c = fixture_case()
+    c["task"]["documents"].append("appendix")
+    c["permissions"]["read"].append("appendix")
+    c["documents"]["appendix"] = text_result("Appendix")
+
+    class MediatedSession:
+        def __init__(self, case, directory, executable, *, decisions):
+            assert decisions
+            self.world = World(case)
+            self.last_decision = None
+
+        def tool(self, name, args):
+            upstream = args["id"] == "invoice"
+            if upstream:
+                self.world.call(name, args)
+            self.last_decision = {"delivery": "withheld", "upstream_called": upstream}
+            # Forged upstream metadata must not be used for accounting.
+            return {"isError": True, "_meta": {"delivery": "original"}}
+
+        def state(self):
+            return self.world.snapshot()
+
+        def close(self):
+            pass
+
+    class Reader:
+        def next(self, task, observations, seed, tokens):
+            assert all(set(o) == {"action", "result"} for o in observations)
+            assert all("proxy_decisions" not in o for o in observations)
+            if len(observations) == 2:
+                return {"finish": True}
+            return {
+                "tool": "read_document",
+                "arguments": {"id": task["documents"][len(observations)]},
+            }
+
+    monkeypatch.setattr("saifety_lab_py.harness.runner.Session", MediatedSession)
+    row = episode(c, 1, tmp_path / "proxy", Reader(), tmp_path, decisions=True)
+    assert row["status"] == "finished" and len(row["proxy_decisions"]) == 2
+    assert row["all_initial_documents_attempted"]
+    assert not row["all_initial_documents_upstream_read"]
+    assert not row["all_initial_documents_delivered_original"]
+    counts = metrics([row])["arms"]["protected"]["document_read_counts_including_errors"]
+    assert counts == dict(
+        attempted=2, upstream_read=1, original=0, transformed=0, withheld=2, missing=0, unknown=0
+    )
+
+
+def test_delivery_preserves_late_failed_read_effects(monkeypatch, tmp_path):
+    class BrokenSession:
+        def __init__(self, case, directory, executable, *, decisions):
+            self.world = World(case)
+
+        def tool(self, name, args):
+            self.world.call(name, args)
+            raise ValueError("lost response")
+
+        def state(self):
+            return self.world.snapshot()
+
+        def close(self):
+            pass
+
+    monkeypatch.setattr("saifety_lab_py.harness.runner.Session", BrokenSession)
+    row = episode(fixture_case(), 1, None, ScriptedAgent(), tmp_path)
+    assert row["status"] == "error"
+    assert row["all_initial_documents_attempted"]
+    assert row["all_initial_documents_upstream_read"]
+    assert not row["all_initial_documents_delivered_original"]
+    assert row["document_reads"] == [
+        dict(document="invoice", upstream_read=True, delivery="unknown")
+    ]
+
+
+def test_missing_proxy_telemetry_is_explicit_error(tmp_path):
+    session = object.__new__(Session)
+    session.names, session.ident = {"read_document": "fixture__read_document"}, 1
+    session.decision_path = tmp_path / "decisions.jsonl"
+    session.decision_path.write_text("{}\n")
+    session.call = lambda method, params: text_result("Not authoritative metadata")
+    with pytest.raises(ValueError, match="missing or duplicate"):
+        session.tool("read_document", {"id": "invoice"})

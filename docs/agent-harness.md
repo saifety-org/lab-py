@@ -51,6 +51,30 @@ The evaluator never gives labels, permissions, expected effects or attack goals 
 
 Do not compare raw arm rates without checking errors and exposure. `paired` counts show prevented/introduced attacks and benign regressions only where both runs are valid. Reports bind corpus bytes, source lock, binary SHA, core/model identity, harness source hashes, uv.lock, actor model digest/version/parameters, traces and usage. Inputs and traces contain synthetic fixtures only; output directories cannot be overwritten. Completed episodes are checkpointed individually, so an interruption preserves their traces and the frozen inputs. An error exits nonzero after saving the report when possible.
 
+## Delivery and operator diagnostics (report v2)
+
+The historical `initial_document_read_rate` remains the completed read-attempt
+metric. New fields separate all initial documents attempted, read upstream and
+delivered as their original JSON. Per-read counters include errors and distinguish
+`original`, `transformed`, `withheld`, `missing` and `unknown`. Upstream reads come
+from virtual-world events, not a success-looking response. Transformed content is
+not automatically useful or safe; original delivery is not a new task-success oracle.
+Existing task success and ASR stay unchanged; additional task-success-without-
+violations rates retain unauthorized virtual effects instead of suppressing them.
+
+Use `--proxy-decisions` only with a compatible pinned core, such as
+`agent-harness-refusal-v2.sources.lock.json`, and its separately bootstrapped binary.
+The flag requires a private operator JSONL event for each protected tool call;
+missing/incomplete logs fail the episode. Events are stored separately in traces,
+never added to the agent observations. Result `_meta` is untrusted and never used
+as proxy telemetry. Without this flag, changed results from historical binaries
+remain `unknown` rather than being guessed as sanitized/blocked.
+
+The [GPU device request](../device-jobs/proxy-refusal-v2.md) describes the next
+real-LLM experiment, merge gates and result publication. Its lock preserves the
+original core lock and scenario hashes. A new report schema does not retroactively
+rescore or overwrite the accepted first run.
+
 ## CI and interpretation
 
 ```sh
