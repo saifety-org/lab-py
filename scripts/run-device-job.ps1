@@ -39,7 +39,10 @@ function Invoke-Lab {
 function Assert-Run {
     param([string]$Directory, [int]$Pairs)
     $report = Get-Content (Join-Path $Directory 'report.json') -Raw | ConvertFrom-Json
-    if (-not $report.identity_stable -or -not $report.llm_run -or $report.quality_evidence -or
+    if ($report.schema -ne 'agent-harness-report-v2' -or
+        $report.agent.model -ne $job.model -or $report.agent.digest -ne $job.model_digest -or
+        $report.agent.version -ne '0.18.0' -or $report.budget.episodes -ne ($Pairs * 2) -or
+        -not $report.identity_stable -or -not $report.llm_run -or $report.quality_evidence -or
         -not $report.proxy_decisions_enabled -or $report.metrics.paired.complete -ne $Pairs -or
         $report.metrics.paired.incomplete -ne 0 -or $report.metrics.arms.baseline.errors -ne 0 -or
         $report.metrics.arms.protected.errors -ne 0 -or

@@ -44,7 +44,10 @@ function global:uv {
         New-Item -ItemType Directory -Path $out | Out-Null
         $pairs = if ($preset -eq 'smoke') { 4 } else { 48 }
         $errors = if ($global:DeviceTestMode -eq 'bad-smoke') { 1 } else { 0 }
+        $job = Get-Content 'device-jobs/proxy-refusal-v2.json' -Raw | ConvertFrom-Json
         @{
+            schema = 'agent-harness-report-v2'; budget = @{episodes = ($pairs * 2)}
+            agent = @{model = $job.model; digest = $job.model_digest; version = '0.18.0'}
             identity_stable = $true; llm_run = $true; quality_evidence = $false
             proxy_decisions_enabled = $true
             metrics = @{ paired = @{complete = $pairs; incomplete = 0}
