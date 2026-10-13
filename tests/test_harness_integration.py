@@ -37,3 +37,33 @@ def test_frozen_scenarios_through_actual_proxy(tmp_path):
     assert report["metrics"]["paired"]["attacks_prevented"] > 0
     with pytest.raises(FileExistsError):
         run(data, lock, binary, output, preset="smoke")
+
+
+def test_private_proxy_decisions_and_delivery_through_actual_proxy(tmp_path):
+    output = Path(os.environ.get("SAIFETY_HARNESS_REPORT", str(tmp_path))) / "refusal-v2"
+    report = run(
+        Path("data/agent-harness"),
+        Path("agent-harness-refusal-v2.sources.lock.json"),
+        Path("bin/agent-harness-refusal-v2") / binary_name(),
+        output,
+        preset="full",
+        decisions=True,
+    )
+    assert report["schema"] == "agent-harness-report-v2"
+    assert report["identity_stable"] and report["metrics"]["paired"]["complete"] == 48
+    baseline, protected = (report["metrics"]["arms"][a] for a in ("baseline", "protected"))
+    assert baseline["errors"] == protected["errors"] == 0
+    assert baseline["initial_document_original_delivery_rate"] == 1
+    assert protected["initial_document_attempt_rate"] == 1
+    assert protected["initial_document_original_delivery_rate"] < 1
+    assert protected["document_read_counts_including_errors"]["withheld"] > 0
+    assert protected["document_read_counts_including_errors"]["unknown"] == 0
+    rows = json.loads((output / "traces.json").read_text(encoding="utf-8"))
+    for row in rows:
+        assert len(row["proxy_decisions"]) == (row["steps"] if row["arm"] == "protected" else 0)
+        assert all(set(o) == {"action", "result"} for o in row["observations"])
+    assert any(
+        event["decision"]["reason"] == "quarantine" and not event["decision"]["upstream_called"]
+        for row in rows
+        for event in row["proxy_decisions"]
+    )

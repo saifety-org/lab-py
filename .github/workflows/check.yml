@@ -103,6 +103,15 @@ jobs:
       - run: uv sync --locked
       - run: uv run --locked saifety-lab bootstrap-agent-harness
       - run: uv run --locked saifety-lab prepare-agent-harness
+      - run: uv run --locked saifety-lab bootstrap-agent-harness --lock agent-harness-refusal-v2.sources.lock.json --out bin/agent-harness-refusal-v2
+      - name: Validate Windows job plan without model requests
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: ./scripts/run-device-job.ps1 -Plan
+      - name: Test device runner gates without GPU or model requests
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: ./scripts/test-device-job.ps1
       - run: uv run --locked pytest -m harness
         env:
           SAIFETY_HARNESS_REPORT: artifacts/agent-harness-ci

@@ -1,0 +1,17 @@
+{
+  "schema": "saifety-device-job-v1",
+  "id": "proxy-refusal-v2",
+  "device": "windows-rtx5070ti",
+  "task": "https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=269257271",
+  "source_lock": "agent-harness-refusal-v2.sources.lock.json",
+  "core_pull_request": 10,
+  "model": "qwen3:8b-q4_K_M",
+  "model_digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+  "ollama_url": "http://127.0.0.1:11435",
+  "presets": ["smoke", "full"],
+  "output_root": "artifacts/device-jobs/proxy-refusal-v2",
+  "report": "reports/agent-harness-ollama-refusal-v2.json",
+  "analysis": "docs/agent-harness-ollama-refusal-v2.md",
+  "reference": "reports/agent-harness-ollama-first-run.json",
+  "quality_evidence": false
+}

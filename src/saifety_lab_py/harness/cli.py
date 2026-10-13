@@ -30,6 +30,11 @@ def add_parser(sub):
             p.add_argument("--agent", choices=("scripted", "ollama"), required=True)
             p.add_argument("--model")
             p.add_argument("--ollama-url", default="http://127.0.0.1:11434")
+            p.add_argument(
+                "--proxy-decisions",
+                action="store_true",
+                help="require private decision telemetry from the pinned proxy",
+            )
 
 
 def dispatch(args):
@@ -69,6 +74,7 @@ def dispatch(args):
                 preset=args.preset,
                 ollama=agent,
                 progress=progress,
+                decisions=args.proxy_decisions,
             )
             if any(a["errors"] for a in result["metrics"]["arms"].values()):
                 raise RuntimeError("episodes failed; inspect report.json and traces.json")

@@ -1,5 +1,6 @@
 """Real stdio MCP sessions over the pinned Go proxy or the same fake server."""
 
+import hashlib
 import json
 import os
 import queue
@@ -51,12 +52,17 @@ class Session:
         executable: Path | None,
         *,
         timeout: float = 15,
+        decisions: bool = False,
     ):
         self.directory, self.timeout, self.ident = directory, timeout, 0
         self.responses = queue.Queue(maxsize=32)
         self.logs = []
         self.threads = []
         self.process = None
+        self.decision_path = (
+            directory / "proxy-decisions.jsonl" if executable and decisions else None
+        )
+        self.last_decision = None
         directory.mkdir(parents=True, exist_ok=True)
         write_json(directory / "case.json", case)
         server = [
@@ -102,6 +108,8 @@ class Session:
                 "-task",
                 case["task"]["text"],
             ]
+            if self.decision_path:
+                command += ["-decision-log", str(self.decision_path)]
         else:
             command = server
         self.process = subprocess.Popen(
@@ -195,7 +203,30 @@ class Session:
         return result["result"]
 
     def tool(self, name: str, arguments: dict) -> dict:
-        return self.call("tools/call", {"name": self.names[name], "arguments": arguments})
+        self.last_decision = None
+        result = self.call("tools/call", {"name": self.names[name], "arguments": arguments})
+        if self.decision_path:
+            with self.decision_path.open("rb") as stream:
+                raw = stream.read((1 << 20) + 1)
+            if len(raw) > 1 << 20:
+                raise ValueError("proxy decision log exceeds limit")
+            # The real proxy writes the event before replying. Never trust result _meta.
+            rows = [json.loads(line) for line in raw.splitlines()]
+            if any(not isinstance(row, dict) for row in rows):
+                raise ValueError("invalid proxy decision log")
+            expected = hashlib.sha256(str(self.ident).encode()).hexdigest()
+            matches = [r for r in rows if r.get("request_sha256") == expected]
+            if len(matches) != 1:
+                raise ValueError("missing or duplicate proxy decision")
+            decision = matches[0]
+            if (
+                decision.get("schema") != "saifety-proxy-decision-v1"
+                or decision.get("delivery") not in ("original", "transformed", "withheld")
+                or type(decision.get("upstream_called")) is not bool
+            ):
+                raise ValueError("invalid proxy decision")
+            self.last_decision = decision
+        return result
 
     def state(self) -> dict:
         return json.loads((self.directory / "world.json").read_text(encoding="utf-8"))
