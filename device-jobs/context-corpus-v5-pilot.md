@@ -23,10 +23,11 @@
    workflow `check` успешен на HEAD, этот request/runbook есть в main. При локальных
    изменениях использовать отдельный clone, ничего не сбрасывать. Записать HEAD и hash
    request. После обновления main повторно прочитать инструкции и карточку.
-4. В body должна быть ровно одна отдельная строка `Data-License: CC0-1.0` или
-   `Data-License: MIT`, записанная координатором после явного выбора пользователя.
-   Отсутствие/неизвестное значение — остановка до setup/inference. Не выбирать самому
-   по allowed/request, не заменять null догадкой. Request намеренно не задаёт default.
+4. Проверить согласованность карточки и request: данные только локальные,
+   `license.selected=NOASSERTION`, `data_policy.storage=local-only`, публичная
+   лицензия не назначается. Пользователь отказался от публикации под CC0;
+   MIT вместо неё тоже не выбирается автоматически. `NOASSERTION` — маркер отсутствия
+   декларации лицензии, а не разрешение распространения. При расхождении остановиться.
 5. Native Windows / RTX 5070 Ti. Проверить Go, gh, GPU/driver, свободный диск;
    записать версии. Модель и Ollama уже установлены: при отсутствии/несовпадении
    остановиться и записать блокер. Не скачивать новую модель, не подменять digest,
@@ -111,11 +112,14 @@ $env:OLLAMA_MODELS = (Resolve-Path '..\.runtime\ollama-models').Path
 Collector сам проверяет установленный GGUF tag/digest и Ollama до/после генерации;
 не скачивает модель и не следует HTTP redirect/proxy/remote model.
 
-В рабочем PowerShell получить `$license` **из проверенной строки карточки**.
-Остановиться, если она отсутствует; не вводить предполагаемый выбор.
+В рабочем PowerShell использовать только локальный режим из принятого request.
+Raw кандидаты и полные traces сохраняются в ignored artifacts, не в публичном PR.
 
 ```powershell
-if ($license -notin $job.license.allowed) { throw 'No explicit data license in task.' }
+$license = $job.license.selected
+if ($license -ne 'NOASSERTION' -or $job.data_policy.storage -ne 'local-only' -or
+    $job.data_policy.publish_raw_candidates -or $job.data_policy.publish_full_traces -or
+    $job.data_policy.public_license_assigned) { throw 'Expected local-only unlicensed collection.' }
 $common = @('-input', $plan, '-sha256', $job.plan_sha256,
     '-ollama-url', $job.ollama_url, '-model', $job.model,
     '-model-digest', $job.model_digest, '-license', $license, '-tokens', '2048')

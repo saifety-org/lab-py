@@ -8,9 +8,9 @@
   "collector": {
     "repository": "saifety-org/lab",
     "pull_request": 13,
-    "commit": "62ebe646634cb7788c5dbd5e8d12630f7d4ce5e2",
+    "commit": "95b8b2dc6e294a0348c18a5468096390a498acb1",
     "module": "github.com/saifety-org/lab/cmd/context-collect",
-    "version": "v0.0.0-20261015150701-62ebe646634c",
+    "version": "v0.0.0-20261015173350-95b8b2dc6e29",
     "toolchain": "go1.26.0",
     "output": "bin/context-collection-v5"
   },
@@ -21,10 +21,12 @@
   },
   "plan_sha256": "0a4af4d9d6bd05cef70af019b3f33ae7777ba5d082edcc4b30f1e7cc239da695",
   "license": {
-    "selected": null,
-    "allowed": ["CC0-1.0", "MIT"],
-    "source": "explicit user choice recorded by coordinator as Data-License: <SPDX> in task body",
-    "missing_choice": "stop before setup or inference"
+    "selected": "NOASSERTION",
+    "allowed": [
+      "NOASSERTION"
+    ],
+    "source": "user decision: no CC0 publication; local collection without assigning a public license",
+    "meaning": "metadata marker for no license assertion, not a distribution license"
   },
   "model": "qwen3:8b-q4_K_M",
   "model_digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
@@ -38,8 +40,16 @@
     "think": false,
     "truncate": false,
     "shift": false,
-    "smoke": {"start": 0, "count": 4, "wall_time": "10m"},
-    "pilot": {"start": 4, "count": 60, "wall_time": "110m"},
+    "smoke": {
+      "start": 0,
+      "count": 4,
+      "wall_time": "10m"
+    },
+    "pilot": {
+      "start": 4,
+      "count": 60,
+      "wall_time": "110m"
+    },
     "max_requests": 64,
     "max_output_tokens": 131072,
     "max_generation_wall_minutes": 120,
@@ -49,5 +59,11 @@
   "report": "reports/context-corpus-v5-pilot.json",
   "analysis": "docs/context-corpus-v5-pilot.md",
   "training_ready": false,
-  "quality_evidence": false
+  "quality_evidence": false,
+  "data_policy": {
+    "storage": "local-only",
+    "publish_raw_candidates": false,
+    "publish_full_traces": false,
+    "public_license_assigned": false
+  }
 }
