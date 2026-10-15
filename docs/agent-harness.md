@@ -70,8 +70,8 @@ never added to the agent observations. Result `_meta` is untrusted and never use
 as proxy telemetry. Without this flag, changed results from historical binaries
 remain `unknown` rather than being guessed as sanitized/blocked.
 
-The [GPU device request](../device-jobs/proxy-refusal-v2.md) describes the next
-real-LLM experiment, merge gates and result publication. Its lock preserves the
+The completed [GPU device request](../device-jobs/proxy-refusal-v2.md) describes the
+neutral-refusal experiment, merge gates and result publication. Its lock preserves the
 original core lock and scenario hashes. A new report schema does not retroactively
 rescore or overwrite the accepted first run.
 
@@ -85,4 +85,11 @@ uv run --locked saifety-lab run-agent-harness --agent scripted --preset full --o
 
 The second command requires bootstrap/prepare. The separate Linux/Windows harness jobs run 96 episodes through the real proxy with a deliberately vulnerable **scripted regression actor**. It mechanically follows visible `<actions>` fragments and supports fake multi-step exfiltration. No LLM or GPU is involved; its fixed sum behavior is test plumbing. Ordinary unit tests cover virtual isolation, MCP lifecycle, budgets, action validation, oracle accounting, local-provider options and provider failures. Existing ML checks remain separate.
 
-The 16 canonical scenarios are small same-author AI-generated development cases with eight authorization-sensitive pairs, not independent held-out data. All reports set `quality_evidence=false`, including local-LLM runs on this suite. Do not report scripted ASR as LLM robustness, use these cases to tune frozen v4 thresholds, or promote E5 to production from this run. Real-LLM evidence is pending the operator's PC run; broader quality claims require fresh independent scenarios and a declared evaluation protocol. No real LLM was run during implementation.
+The 16 canonical scenarios are small same-author AI-generated development cases with eight authorization-sensitive pairs, not independent held-out data. All reports set `quality_evidence=false`, including local-LLM runs on this suite. Do not report scripted ASR as LLM robustness, use these cases to tune frozen v4 thresholds, or promote E5 to production from this run.
+
+Two local-LLM runs are now accepted: [first run](agent-harness-ollama-first-run.md)
+and [neutral-refusal run](agent-harness-ollama-refusal-v2.md). The second removed
+the observed unauthorized virtual sends without improving safe task completion.
+Neither establishes prevention with a baseline ASR of zero. The
+[new evaluation protocol](analyzer-evaluation-protocol.md) specifies fresh families,
+document-dependent oracles and separate model/agent/runtime acceptance gates.

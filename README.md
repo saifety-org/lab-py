@@ -127,6 +127,12 @@ Go interoperability обязателен в CI; локально тест про
 
 ## Контекстная модель
 
+[Протокол новой оценки](docs/analyzer-evaluation-protocol.md) и
+[численные критерии](analyzer-evaluation.protocol.json) определяют квоты новых
+семейств, validation calibration, model/agent/runtime gates и go/no-go.
+Это спецификация следующего этапа; её критерии ещё не реализованы полностью
+существующими командами и не означают принятие E5 для production-блокировки.
+
 [Контекстный workflow](docs/contextual.md): закреплённый многоязычный корпус из lab,
 обучение context/payload-only/task-only native ablations и отдельная оценка сканера.
 [Первый прогон](docs/contextual-first-run.md) показал ограничения линейной модели;
