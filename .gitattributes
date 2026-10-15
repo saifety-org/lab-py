@@ -1,0 +1,2 @@
+# Preserve the accepted protocol byte pin in native Windows checkouts.
+/analyzer-evaluation.protocol.json text eol=lf
