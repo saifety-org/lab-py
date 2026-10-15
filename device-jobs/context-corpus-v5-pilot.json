@@ -1,0 +1,69 @@
+{
+  "schema": "saifety-context-collection-device-job-v1",
+  "id": "context-corpus-v5-pilot",
+  "execution": "local-agent-runbook",
+  "device": "windows-rtx5070ti",
+  "task": "https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=272703263",
+  "parent_task": "https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=272440792",
+  "collector": {
+    "repository": "saifety-org/lab",
+    "pull_request": 13,
+    "commit": "95b8b2dc6e294a0348c18a5468096390a498acb1",
+    "module": "github.com/saifety-org/lab/cmd/context-collect",
+    "version": "v0.0.0-20261015173350-95b8b2dc6e29",
+    "toolchain": "go1.26.0",
+    "output": "bin/context-collection-v5"
+  },
+  "protocol": {
+    "path": "analyzer-evaluation.protocol.json",
+    "accepted_commit": "d023d19d59e62f6c5e23f8e68651179ab3748b19",
+    "sha256": "c5bd48ef63338196746a9c0b95f228ab9129283d056db9ab67327bdaba8c1676"
+  },
+  "plan_sha256": "0a4af4d9d6bd05cef70af019b3f33ae7777ba5d082edcc4b30f1e7cc239da695",
+  "license": {
+    "selected": "NOASSERTION",
+    "allowed": [
+      "NOASSERTION"
+    ],
+    "source": "user decision: no CC0 publication; local collection without assigning a public license",
+    "meaning": "metadata marker for no license assertion, not a distribution license"
+  },
+  "model": "qwen3:8b-q4_K_M",
+  "model_digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+  "ollama_version": "0.18.0",
+  "ollama_url": "http://127.0.0.1:11435",
+  "generation": {
+    "temperature": 0.8,
+    "seed": 1,
+    "context_tokens": 8192,
+    "tokens_per_request": 2048,
+    "think": false,
+    "truncate": false,
+    "shift": false,
+    "smoke": {
+      "start": 0,
+      "count": 4,
+      "wall_time": "10m"
+    },
+    "pilot": {
+      "start": 4,
+      "count": 60,
+      "wall_time": "110m"
+    },
+    "max_requests": 64,
+    "max_output_tokens": 131072,
+    "max_generation_wall_minutes": 120,
+    "retries": 0
+  },
+  "output_root": "artifacts/device-jobs/context-corpus-v5-pilot",
+  "report": "reports/context-corpus-v5-pilot.json",
+  "analysis": "docs/context-corpus-v5-pilot.md",
+  "training_ready": false,
+  "quality_evidence": false,
+  "data_policy": {
+    "storage": "local-only",
+    "publish_raw_candidates": false,
+    "publish_full_traces": false,
+    "public_license_assigned": false
+  }
+}

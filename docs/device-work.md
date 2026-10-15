@@ -43,8 +43,8 @@ gh project item-list 1 --owner saifety-org --format json --limit 100
 
 ## Проверка перед генерацией
 
-Прогон использует принятый checkout lab-py, immutable lock для Go proxy и сценариев,
-точный локальный model tag/digest и одинаковые бюджеты обеих arms. Задание
+Каждое задание использует принятый checkout lab-py, immutable pins входов и точный
+локальный model tag/digest. Paired agent-прогоны сохраняют одинаковые бюджеты обеих arms. Задание
 `proxy-refusal-v2` имеет [PowerShell runner](../scripts/run-device-job.ps1): `-Plan`
 только читает request; запуск без `-Plan` проверяет clean checkout, принятие core PR
 и успешные main CI обоих репозиториев. Runner не меняет статус карточки — это делает
@@ -54,6 +54,13 @@ Runner не устанавливает ПО, не запускает Ollama, н�
 результаты. Эти действия, если необходимы, локальный агент выполняет по конкретному
 runbook. Файлы на Mac не копируются на ПК, remote access/self-hosted runner не нужен.
 Для первого включения ПК или запуска локальной сессии всё ещё нужен оператор.
+
+Сбор данных [context-corpus-v5-pilot](../device-jobs/context-corpus-v5-pilot.md)
+имеет отдельный request и выполняется локальным агентом по runbook, без этого runner.
+Его предел — smoke 4 + 60 запросов; пока PR не приняты и main CI не прошёл, карточка
+остаётся Backlog. Новые raw данные остаются локальными с `NOASSERTION`, публичная
+лицензия не назначается. Синтаксическая валидность кандидатов не заменяет semantic review,
+проверку происхождения и freeze корпуса.
 
 ## Результат и воспроизводимость
 
