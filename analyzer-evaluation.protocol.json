@@ -201,5 +201,14 @@
     "no_go": "valid complete measurement violates a numeric or safety gate; completion of experiment is not promotion",
     "insufficient_evidence": "missing quotas, unresolved dependence/provenance, unavailable reference, baseline ceiling, incomplete analysis or unsupported scope; no implicit go",
     "change_control": "new protocol version and accepted PR before data access/fit; after confirmation disclosure candidate changes require fresh confirmation families, never reroll the observed test"
+  },
+  "input_scope": {
+    "analyzed": "UTF-8 text in declared file/web/MCP fields, with original trust boundaries",
+    "opaque": [
+      "image",
+      "audio",
+      "binary/blob"
+    ],
+    "rule": "opaque or out-of-scope content is not inspected text; declare coverage gap, never whole-result clean on text-only evidence"
   }
 }
