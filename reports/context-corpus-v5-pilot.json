@@ -1,0 +1,499 @@
+{
+  "schema": "saifety-context-collection-pilot-report-v1",
+  "job": "context-corpus-v5-pilot",
+  "date": "2026-10-16",
+  "task": "https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=272703263",
+  "parent_task": "https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=272440792",
+  "verdict": "stop",
+  "status": "repeat-failed-candidate-validation",
+  "training_ready": false,
+  "quality_evidence": false,
+  "license": "NOASSERTION",
+  "data_policy": {
+    "storage": "local-only",
+    "publish_raw_candidates": false,
+    "publish_full_traces": false,
+    "public_license_assigned": false
+  },
+  "lab_py_commit": "59122840f8bfc02f27b09acba5fea7dd39020330",
+  "pins": {
+    "request_sha256": "6e3fd514d118261213fbafab0b7be2800d49281c1ad658b3c62808be9c4777a9",
+    "original_task_body_sha256": "44fcdaa0542eaf4f65b43f6816b95bd23af72186f76a9a928df61a4fe020358e",
+    "original_task_body_hash_scope": "UTF-8 decoded GitHub body with LF; local text checkpoint uses Windows line endings and has its separate manifest hash",
+    "collector": {
+      "repository": "saifety-org/lab",
+      "pull_request": 13,
+      "commit": "95b8b2dc6e294a0348c18a5468096390a498acb1",
+      "module": "github.com/saifety-org/lab/cmd/context-collect",
+      "version": "v0.0.0-20261015173350-95b8b2dc6e29",
+      "toolchain": "go1.26.0",
+      "output": "bin/context-collection-v5"
+    },
+    "collector_binary_sha256": "acd2e9c095d0c6d630133eb4201154c26a0cbd9a95fe115ddd441200808531c1",
+    "collector_build_info_sha256": "d49aceddafbf0c840385bee4d8a8f19f05a5ee2d89a742632759f80c01ff15aa",
+    "protocol": {
+      "path": "analyzer-evaluation.protocol.json",
+      "accepted_commit": "d023d19d59e62f6c5e23f8e68651179ab3748b19",
+      "sha256": "c5bd48ef63338196746a9c0b95f228ab9129283d056db9ab67327bdaba8c1676"
+    },
+    "plan_sha256": "0a4af4d9d6bd05cef70af019b3f33ae7777ba5d082edcc4b30f1e7cc239da695",
+    "plan_slots": 6380
+  },
+  "dependencies": {
+    "lab": {
+      "pr": 13,
+      "merge_commit": "d48473a7f68a5a0581dcbe6ecb23191ee5369868",
+      "ci": "https://github.com/saifety-org/lab/actions/runs/38795752312",
+      "conclusion": "success"
+    },
+    "lab_py": {
+      "pr": 11,
+      "merge_commit": "59122840f8bfc02f27b09acba5fea7dd39020330",
+      "ci": "https://github.com/saifety-org/lab-py/actions/runs/38795804326",
+      "conclusion": "success"
+    }
+  },
+  "hardware": {
+    "cpu": "AMD Ryzen 9 9950X 16-Core Processor",
+    "physical_cores": 16,
+    "logical_processors": 32,
+    "ram_bytes": 68241707008,
+    "os": "Майкрософт Windows 11 Корпоративная",
+    "os_version": "10.0.26200",
+    "os_build": "26200",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti",
+    "gpu_memory_mib": 16303,
+    "driver_version": "610.88",
+    "disk_free_bytes_before_generation": {
+      "C": 196834115584,
+      "D": 138426826752
+    }
+  },
+  "budgets_per_attempt": {
+    "temperature": 0.8,
+    "seed": 1,
+    "context_tokens": 8192,
+    "tokens_per_request": 2048,
+    "think": false,
+    "truncate": false,
+    "shift": false,
+    "smoke": {
+      "start": 0,
+      "count": 4,
+      "wall_time": "10m"
+    },
+    "pilot": {
+      "start": 4,
+      "count": 60,
+      "wall_time": "110m"
+    },
+    "max_requests": 64,
+    "max_output_tokens": 131072,
+    "max_generation_wall_minutes": 120,
+    "retries": 0
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "description": "original bounded request; timeout before response",
+      "record": {
+        "schema": "saifety-context-collection-pilot-report-v1",
+        "job": "context-corpus-v5-pilot",
+        "date": "2026-10-16",
+        "task": "https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=272703263",
+        "parent_task": "https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=272440792",
+        "verdict": "stop",
+        "verdict_scope": "current bounded pilot; no retry, resume or large collection authorized by this result",
+        "status": "smoke-failed",
+        "training_ready": false,
+        "quality_evidence": false,
+        "license": "NOASSERTION",
+        "data_policy": {
+          "storage": "local-only",
+          "publish_raw_candidates": false,
+          "publish_full_traces": false,
+          "public_license_assigned": false
+        },
+        "lab_py_commit": "59122840f8bfc02f27b09acba5fea7dd39020330",
+        "pins": {
+          "request_sha256": "6e3fd514d118261213fbafab0b7be2800d49281c1ad658b3c62808be9c4777a9",
+          "original_task_body_sha256": "44fcdaa0542eaf4f65b43f6816b95bd23af72186f76a9a928df61a4fe020358e",
+          "original_task_body_hash_scope": "UTF-8 decoded GitHub body with LF; local text checkpoint uses Windows line endings and has its separate manifest hash",
+          "collector": {
+            "repository": "saifety-org/lab",
+            "pull_request": 13,
+            "commit": "95b8b2dc6e294a0348c18a5468096390a498acb1",
+            "module": "github.com/saifety-org/lab/cmd/context-collect",
+            "version": "v0.0.0-20261015173350-95b8b2dc6e29",
+            "toolchain": "go1.26.0",
+            "output": "bin/context-collection-v5"
+          },
+          "collector_binary_sha256": "acd2e9c095d0c6d630133eb4201154c26a0cbd9a95fe115ddd441200808531c1",
+          "collector_build_info_sha256": "d49aceddafbf0c840385bee4d8a8f19f05a5ee2d89a742632759f80c01ff15aa",
+          "protocol": {
+            "path": "analyzer-evaluation.protocol.json",
+            "accepted_commit": "d023d19d59e62f6c5e23f8e68651179ab3748b19",
+            "sha256": "c5bd48ef63338196746a9c0b95f228ab9129283d056db9ab67327bdaba8c1676"
+          },
+          "plan_sha256": "0a4af4d9d6bd05cef70af019b3f33ae7777ba5d082edcc4b30f1e7cc239da695",
+          "plan_slots": 6380
+        },
+        "dependencies": {
+          "lab": {
+            "pr": 13,
+            "merge_commit": "d48473a7f68a5a0581dcbe6ecb23191ee5369868",
+            "ci": "https://github.com/saifety-org/lab/actions/runs/38795752312",
+            "conclusion": "success"
+          },
+          "lab_py": {
+            "pr": 11,
+            "merge_commit": "59122840f8bfc02f27b09acba5fea7dd39020330",
+            "ci": "https://github.com/saifety-org/lab-py/actions/runs/38795804326",
+            "conclusion": "success"
+          }
+        },
+        "hardware": {
+          "cpu": "AMD Ryzen 9 9950X 16-Core Processor",
+          "physical_cores": 16,
+          "logical_processors": 32,
+          "ram_bytes": 68241707008,
+          "os": "Майкрософт Windows 11 Корпоративная",
+          "os_version": "10.0.26200",
+          "os_build": "26200",
+          "gpu": "NVIDIA GeForce RTX 5070 Ti",
+          "gpu_memory_mib": 16303,
+          "driver_version": "610.88",
+          "disk_free_bytes_before_generation": {
+            "C": 196834115584,
+            "D": 138426826752
+          }
+        },
+        "runtime": {
+          "go": "go version go1.26.0 windows/amd64",
+          "gh": "gh version 2.102.0 (2026-09-30)",
+          "ollama": "0.18.0",
+          "model": "qwen3:8b-q4_K_M",
+          "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+          "local_url": "http://127.0.0.1:11435",
+          "ollama_no_cloud": true,
+          "installed_runtime_and_model_reused": true,
+          "model_downloaded": false,
+          "hosted_fallback": false,
+          "cuda_backend": "cuda_v13",
+          "pre_generation_identity": {
+            "model": "qwen3:8b-q4_K_M",
+            "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+            "version": "0.18.0"
+          },
+          "identity_checked_before_generation": true,
+          "identity_checked_after_generation": false,
+          "gpu_offloaded_layers_from_service_log": "37/37",
+          "full_gpu_residency_gate_passed": false,
+          "ollama_ps_after_smoke_available": false,
+          "driver_previous_refusal_run": "591.86",
+          "root_cause_of_runner_loading_delay": "unconfirmed"
+        },
+        "budgets": {
+          "temperature": 0.8,
+          "seed": 1,
+          "context_tokens": 8192,
+          "tokens_per_request": 2048,
+          "think": false,
+          "truncate": false,
+          "shift": false,
+          "smoke": {
+            "start": 0,
+            "count": 4,
+            "wall_time": "10m"
+          },
+          "pilot": {
+            "start": 4,
+            "count": 60,
+            "wall_time": "110m"
+          },
+          "max_requests": 64,
+          "max_output_tokens": 131072,
+          "max_generation_wall_minutes": 120,
+          "retries": 0
+        },
+        "counts": {
+          "smoke_requested": 4,
+          "smoke_attempted_generation_requests": 1,
+          "smoke_accepted_unreviewed_candidates": 0,
+          "pilot_requested_if_smoke_passed": 60,
+          "pilot_attempted_generation_requests": 0,
+          "total_attempted_generation_requests": 1,
+          "accepted_candidates": 0,
+          "saved_response_checkpoints": 0,
+          "saved_candidate_checkpoints": 0,
+          "counterfactual_rows": 0,
+          "known_source_connected_groups": 0,
+          "semantic_independent_families": null,
+          "accepted_language_counts": {},
+          "accepted_type_counts": {},
+          "accepted_channel_counts": {},
+          "attempted_ticket_targets": [
+            {
+              "index": 0,
+              "language": "en",
+              "primary_type": "instruction-override",
+              "channel": "file",
+              "reservation": "train"
+            }
+          ],
+          "retries": 0
+        },
+        "usage": {
+          "reported_generated_tokens": 0,
+          "actual_generated_tokens": null,
+          "reported_prompt_tokens": null,
+          "usage_complete": false,
+          "all_raw_replies_preserved": false,
+          "interpretation": "zero reported tokens is not evidence of zero actual generation; HTTP response headers/body were not received"
+        },
+        "timing": {
+          "setup_started_utc": "2026-10-16T05:42:10.648621+00:00",
+          "setup_completed_before_service_utc": "2026-10-16T05:45:17.755824+00:00",
+          "setup_wall_seconds": 187.107,
+          "setup_scope": "binary directory creation through pre-service metadata; includes operator inspection time",
+          "service_readiness_wall_seconds_approx": 67.175,
+          "smoke_collector_process_wall_seconds": 197.406,
+          "generation_receipt_started_utc": "2026-10-16T05:46:41.5941402Z",
+          "generation_receipt_completed_utc": "2026-10-16T05:49:41.598442Z",
+          "smoke_receipt_generation_wall_seconds": 180.004,
+          "sample_review_seconds": null,
+          "sample_review_performed": false,
+          "pilot_generation_wall_seconds": 0
+        },
+        "errors": [
+          {
+            "phase": "smoke",
+            "ticket_index": 0,
+            "category": "local-ollama-http-timeout",
+            "collector_exit_code": 1,
+            "message": "POST /api/chat: context deadline exceeded (Client.Timeout exceeded while awaiting headers)",
+            "client_timeout_seconds": 180,
+            "service_observation": "weights offloaded 37/37; llama runner remained loading; cancellation aborted load; service logged HTTP 499 after 3m0s",
+            "actual_root_cause_confirmed": false,
+            "request_was_not_retried": true
+          }
+        ],
+        "sample_audit": {
+          "minimum_requested_if_available": 8,
+          "available_candidates": 0,
+          "audited_candidates": 0,
+          "candidate_ids": [],
+          "status": "not-performed-no-candidates",
+          "four_authorization_hypotheses": null,
+          "benign_utility": null,
+          "copying_and_ambiguity": null,
+          "language_quality": null,
+          "review_status_changes": false
+        },
+        "generation_design": {
+          "generator_model": "qwen3:8b-q4_K_M",
+          "common_prompt_template": true,
+          "source_genres": [
+            "handover-log",
+            "technical-manual",
+            "tracker-discussion",
+            "incident-timeline",
+            "repository-note",
+            "service-reply"
+          ],
+          "genre_assignment": "ticket index modulo six; common recipe/generator does not imply independence",
+          "reservation_is_training_split": false
+        },
+        "gpu_telemetry": {
+          "scope": "whole GPU during smoke process, including loading and other processes",
+          "samples": 173,
+          "sample_interval_seconds_approx": 1,
+          "gpu_util_percent": {
+            "min": 0.0,
+            "max": 15.0,
+            "mean": 1.295
+          },
+          "vram_used_mib": {
+            "min": 813.0,
+            "max": 7457.0,
+            "mean": 5214.358
+          },
+          "power_w": {
+            "min": 21.79,
+            "max": 54.23,
+            "mean": 26.769
+          },
+          "temperature_c": {
+            "min": 37.0,
+            "max": 38.0,
+            "mean": 37.127
+          }
+        },
+        "large_collection_forecast": {
+          "accepted_candidates_per_second": null,
+          "generation_tokens_per_second": null,
+          "estimated_generation_wall_seconds": null,
+          "reason": "no completed reply or accepted candidate; no usable throughput measurement",
+          "future_request_required": true
+        },
+        "local_artifacts": {
+          "directory": "artifacts/device-jobs/context-corpus-v5-pilot/20261016T054516Z-0e1f1d06",
+          "metadata_sha256": "de042cef2be363280ace76584d2769a6a3ed57dab0129eb447ede8f6b14cadf9",
+          "receipt_sha256": "e2b8ad2fe2f103a5ea9e6ed95f4914b8fbd0842a2ae1cce4d87034602515bdc8",
+          "execution_sha256": "611eee65cd6f6e50f900c30d147c8e55f468566a356fd57949a1a62623fb9b65",
+          "outputs_hash_manifest_sha256": "883ef01bf12a531597b6c5da462fd562ed8a6cf6aac23fe21c1b6b9c19f27c75",
+          "hashed_output_files": 16,
+          "task_server_stopped": true
+        },
+        "limitations": [
+          "Incomplete collection, not a semantic data-quality or analyzer-quality result",
+          "No candidates: sample audit, copying analysis and known semantic connectivity cannot be measured",
+          "NOASSERTION does not grant distribution rights; raw candidates/full traces stay local-only",
+          "Driver changed since prior successful harness runs; timing correlation is not a causal diagnosis",
+          "No silent retries, parameter changes, model replacement or new generation after failure",
+          "No v4/frozen-test/threshold/weight changes; contextual E5 not enforced/promoted"
+        ],
+        "next_step": "Investigate local Ollama/llama-runner readiness without changing this recorded attempt; any new generation requires a separately accepted request/task before a large-collection decision"
+      }
+    },
+    {
+      "attempt": 2,
+      "description": "separate repeat explicitly authorized by the human after original STOP",
+      "record": {
+        "run": "artifacts/device-jobs/context-corpus-v5-pilot/20261016T061655Z-af6d015e",
+        "status": "smoke-failed-candidate-validation",
+        "authorization": {
+          "source": "direct human instruction: попробуй повторно",
+          "date": "2026-10-16",
+          "one_separate_repeat": true,
+          "same_request_parameters_and_caps": true,
+          "automatic_retries_within_attempt": 0
+        },
+        "metadata_sha256": "b55e6b7e30335dcf837ca185ba38a1eeedca8f8b0acccd545971e5fd55014745",
+        "request_sha256": "6e3fd514d118261213fbafab0b7be2800d49281c1ad658b3c62808be9c4777a9",
+        "task_body_sha256": "bb543baee7d77e8f92267411c260566cb67085bb181d46571f16eb310d24b3d3",
+        "collector_binary_sha256": "acd2e9c095d0c6d630133eb4201154c26a0cbd9a95fe115ddd441200808531c1",
+        "plan_sha256": "0a4af4d9d6bd05cef70af019b3f33ae7777ba5d082edcc4b30f1e7cc239da695",
+        "prior_run": "artifacts/device-jobs/context-corpus-v5-pilot/20261016T054516Z-0e1f1d06",
+        "collector_runtime_model_reused": true,
+        "receipt": {
+          "usage_complete": true,
+          "tokens_per_request_cap": 2048,
+          "license": "NOASSERTION",
+          "started_utc": "2026-10-16T06:16:58.4596422Z",
+          "completed_utc": "2026-10-16T06:17:11.7498388Z",
+          "schema": "saifety-context-collection-receipt-v1",
+          "plan_sha256": "0a4af4d9d6bd05cef70af019b3f33ae7777ba5d082edcc4b30f1e7cc239da695",
+          "identity": {
+            "model": "qwen3:8b-q4_K_M",
+            "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+            "version": "0.18.0"
+          },
+          "start": 0,
+          "requested": 4,
+          "generation_requests": 1,
+          "accepted_unreviewed_candidates": 0,
+          "generated_tokens": 293,
+          "complete": false,
+          "failure": "collection stopped; inspect local checkpoint, do not retry silently"
+        },
+        "response_checkpoint": {
+          "sha256": "f524bcd4d572ff80217bcaa909582c565106bd2895a0e8d1d4edd7419b78c689",
+          "model": "qwen3:8b-q4_K_M",
+          "done": true,
+          "done_reason": "stop",
+          "eval_count": 293,
+          "prompt_eval_count": 344
+        },
+        "candidate_validation_diagnostic": {
+          "json_content_schema_matched": true,
+          "documents_per_array": {
+            "payload": 3,
+            "benign_payload": 3,
+            "escalation_payload": 3
+          },
+          "equal_arrays": {
+            "payload_vs_benign": false,
+            "payload_vs_escalation": true,
+            "benign_vs_escalation": false
+          },
+          "validator_error": "counterfactual documents must differ",
+          "implication": "same permitted_task plus identical payload/escalation documents cannot consistently have required safe/attack labels",
+          "raw_text_published": false
+        },
+        "timing": {
+          "setup_started_utc": "2026-10-16T06:16:51.032164+00:00",
+          "setup_completed_before_service_utc": "2026-10-16T06:16:57.321889+00:00",
+          "setup_scope": "explicit repeat claim through pre-service checks; collector reused, no compilation/download",
+          "smoke_collector_process_wall_seconds": 14.047,
+          "receipt_generation_wall_seconds": 13.29,
+          "llama_runner_started_seconds_from_service_log": 10.44,
+          "http_chat_seconds_from_service_log": 13.285551
+        },
+        "errors": [
+          {
+            "category": "candidate-counterfactual-validation",
+            "message": "counterfactual documents must differ",
+            "exit_code": 1,
+            "http_timeout": false,
+            "response_truncated": false
+          }
+        ],
+        "counts": {
+          "attempted_generation_requests": 1,
+          "accepted_candidates": 0,
+          "saved_response_checkpoints": 1,
+          "saved_candidate_checkpoints": 0,
+          "pilot_attempted_generation_requests": 0
+        },
+        "usage": {
+          "reported_generated_tokens": 293,
+          "reported_prompt_tokens": 344,
+          "usage_complete": true
+        },
+        "identity_checked_before_generation": true,
+        "identity_checked_after_generation": false,
+        "gpu_residency_gate_passed": false,
+        "sample_audit": {
+          "accepted_candidates_available": 0,
+          "audited_candidate_ids": [],
+          "unaccepted_response_diagnostic_only": true,
+          "review_status_changed": false
+        },
+        "local_outputs_manifest_sha256": "3bc72c257a2fe58c3c8061f4562d90bab77358aaee377a46e836204d12703fd2",
+        "hashed_output_files": 19,
+        "task_server_stopped": true
+      }
+    }
+  ],
+  "counts": {
+    "total_attempted_generation_requests_across_attempts": 2,
+    "accepted_candidates_across_attempts": 0,
+    "saved_response_checkpoints_across_attempts": 1,
+    "pilot_attempted_generation_requests_across_attempts": 0,
+    "automatic_generation_retries": 0
+  },
+  "usage": {
+    "reported_generated_tokens_across_attempts": 293,
+    "reported_prompt_tokens_from_completed_reply": 344,
+    "complete_across_attempts": false,
+    "actual_generated_tokens_across_attempts": null,
+    "reason": "first attempt did not return usage; second returned complete usage"
+  },
+  "result_interpretation": {
+    "runtime_response_observed_on_repeat": true,
+    "initial_timeout_did_not_recur": true,
+    "initial_timeout_root_cause_confirmed": false,
+    "candidate_json_schema_valid_on_repeat": true,
+    "candidate_counterfactual_validation_passed": false,
+    "valid_smoke_gate_passed": false,
+    "large_pilot_allowed_by_smoke_gate": false
+  },
+  "original_public_report_snapshot_sha256": "f140ae362f945ad1ad348542a06aa6fa3a5594245f3805a62658ea259bf9c446",
+  "large_collection_forecast": {
+    "accepted_candidate_throughput": null,
+    "estimated_seconds": null,
+    "reason": "no accepted candidate and no valid smoke; one short failed candidate is insufficient for a full-collection forecast"
+  },
+  "next_step": "Revise/diagnose generator counterfactual constraints under a separately authorized request; no silent candidate repair, seed/prompt change or automatic third attempt. Preserve both attempts."
+}
