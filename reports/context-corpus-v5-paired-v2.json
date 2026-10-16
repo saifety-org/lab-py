@@ -1,0 +1,270 @@
+{
+  "schema": "saifety-context-collection-paired-pilot-report-v1",
+  "job": "context-corpus-v5-paired-v2",
+  "date": "2026-10-16",
+  "task": "https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=273503121",
+  "parent_task": "https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=272440792",
+  "verdict": "stop",
+  "execution_stage": "failed",
+  "quality_evidence": false,
+  "training_ready": false,
+  "license": "NOASSERTION",
+  "data_policy": {
+    "storage": "local-only",
+    "publish_raw_candidates": false,
+    "publish_full_traces": false,
+    "public_license_assigned": false
+  },
+  "lab_py_commit": "f2cc17377e56904d6c04e53e884c2dfe0c36b66e",
+  "pins": {
+    "request_sha256": "848f6a6f7196529c289922e969b3b813f88c8298a7dc8e0b087c04ef541fd93a",
+    "task_body_sha256": "6f8f0136529625868f7e77d65e68e9e901e68a37739736351d2e749f8b594ac6",
+    "collector_binary_sha256": "beb35f9a778168af7e324c21fa9e43d4b1f0ada6862b30b768be776d84d78e11",
+    "build_info_sha256": "16f448f460abf388350d1e97337d3f5ff495862e2d696238779f3e6f17872873",
+    "protocol_sha256": "c5bd48ef63338196746a9c0b95f228ab9129283d056db9ab67327bdaba8c1676",
+    "plan_sha256": "0a4af4d9d6bd05cef70af019b3f33ae7777ba5d082edcc4b30f1e7cc239da695"
+  },
+  "task_body_hash_scope": "UTF-8 decoded GitHub body, LF; exact local checkpoint bytes",
+  "collector": {
+    "repository": "saifety-org/lab",
+    "pull_request": 14,
+    "commit": "d42f0d781defdd579225670f03de52fbb2032767",
+    "module": "github.com/saifety-org/lab/cmd/context-collect",
+    "version": "v0.0.0-20261016113305-d42f0d781def",
+    "toolchain": "go1.26.0",
+    "output": "bin/context-collection-v5-paired-v2",
+    "operation": "collect-paired"
+  },
+  "model": {
+    "tag": "qwen3:8b-q4_K_M",
+    "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+    "ollama_version": "0.18.0"
+  },
+  "dependencies": {
+    "lab": {
+      "pr": 14,
+      "head": "d42f0d781defdd579225670f03de52fbb2032767",
+      "merge_commit": "043c44b848d0fe6ba12d78fb76e657bf9d8bdaad",
+      "ci": "https://github.com/saifety-org/lab/actions/runs/38898509574",
+      "conclusion": "success"
+    },
+    "lab_py": {
+      "pr": 13,
+      "merge_commit": "f2cc17377e56904d6c04e53e884c2dfe0c36b66e",
+      "ci": "https://github.com/saifety-org/lab-py/actions/runs/38898553065",
+      "conclusion": "success"
+    }
+  },
+  "hardware": {
+    "cpu": "AMD Ryzen 9 9950X 16-Core Processor",
+    "physical_cores": 16,
+    "logical_processors": 32,
+    "ram_bytes": 68241707008,
+    "os": "Windows 11 Enterprise",
+    "os_version": "10.0.26200",
+    "os_build": "26200"
+  },
+  "disk_free_bytes_before": {
+    "C": 216849715200,
+    "D": 104944746496
+  },
+  "gpu": {
+    "name": "NVIDIA GeForce RTX 5070 Ti",
+    "driver": "610.88",
+    "total_memory_mib": 16303,
+    "telemetry_samples": 272,
+    "max_utilization_percent": 100.0,
+    "max_memory_used_mib": 9275.0,
+    "residency_gates": {
+      "preload": false,
+      "smoke": false,
+      "pilot": false
+    }
+  },
+  "setup": {
+    "started_utc": "2026-10-16T12:43:52.500215+00:00",
+    "service_ready_utc": "2026-10-16T12:47:55.616667+00:00",
+    "seconds": 243.116452,
+    "scope": "claim through installation, operator inspection, prechecks and HTTP readiness; separate from model calls",
+    "old_orphan_cleanup": "Verified stale runner parent PID/port against previous attempt logs, then stopped only that runner."
+  },
+  "budget": {
+    "max_model_calls_including_preload": 33,
+    "max_collector_metadata_http_requests": 108,
+    "max_collector_ollama_http_requests": 141,
+    "max_model_wall_minutes_including_preload": 65,
+    "setup_and_review_time_recorded_separately": true,
+    "caps_are_runtime_estimates": false
+  },
+  "generation_parameters": {
+    "stages": [
+      "base",
+      "escalation"
+    ],
+    "temperature": 0.8,
+    "seed": 1,
+    "context_tokens": 8192,
+    "tokens_per_request": 2048,
+    "think": false,
+    "truncate": false,
+    "shift": false,
+    "keep_alive": "10m",
+    "smoke": {
+      "start": 0,
+      "count": 4,
+      "max_generation_requests": 8,
+      "wall_time": "20m"
+    },
+    "pilot": {
+      "start": 4,
+      "count": 12,
+      "max_generation_requests": 24,
+      "wall_time": "40m"
+    },
+    "max_candidates": 16,
+    "max_generation_requests": 32,
+    "max_output_tokens": 65536,
+    "max_generation_wall_minutes": 60,
+    "retries": 0
+  },
+  "phases": {
+    "preload": {
+      "receipt": {
+        "schema": "saifety-context-preload-receipt-v1",
+        "identity": {
+          "model": "qwen3:8b-q4_K_M",
+          "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+          "version": "0.18.0"
+        },
+        "started_utc": "2026-10-16T12:47:58.1468271Z",
+        "completed_utc": "2026-10-16T12:52:55.6830832Z",
+        "model_load_requests": 1,
+        "request_sha256": "1de97c44159d3b8befff8803717bd2296b5a6ba351b68e67b5e7629507cb581f",
+        "reported_generated_tokens": null,
+        "complete": false,
+        "phase": "model-load",
+        "failure": "preload stopped; preserve diagnostics, do not retry silently"
+      },
+      "process": {
+        "started_utc": "2026-10-16T12:47:55.618209+00:00",
+        "completed_utc": "2026-10-16T12:52:55.685642+00:00",
+        "process_wall_seconds": 300.0629999999983
+      },
+      "started": true
+    },
+    "smoke": {
+      "receipt": null,
+      "process": null,
+      "started": false
+    },
+    "pilot": {
+      "receipt": null,
+      "process": null,
+      "started": false
+    }
+  },
+  "totals": {
+    "model_calls_including_preload": 1,
+    "generation_requests": 0,
+    "accepted_pending_candidates": 0,
+    "completed_pairs": 0,
+    "incomplete_pairs": 0,
+    "rejected_complete_pairs": 0,
+    "reported_generation_output_tokens": 0,
+    "generation_usage_complete": null,
+    "preload_reported_generated_tokens": null,
+    "total_output_tokens_including_preload": null,
+    "model_process_wall_seconds": 300.0629999999983,
+    "throughput_pending_candidates_per_model_minute": null,
+    "throughput_scope": "Unmeasured: no corpus-generation stage started."
+  },
+  "server_completed_http_requests_by_endpoint": {
+    "/api/version": 30,
+    "/api/tags": 1,
+    "/api/show": 1,
+    "/api/generate": 1
+  },
+  "http_count_scope": "All logged completed requests, including wrapper readiness and GPU checks; not solely collector metadata. In-flight/cancelled without log may be absent.",
+  "coverage": {
+    "candidate_families": 0,
+    "counterfactual_rows": 0,
+    "reviewed_families": 0,
+    "candidate_counts": {},
+    "known_source_groups": 0,
+    "training_ready": false,
+    "note": "Partial run: aggregates computed from persisted candidates; full collector coverage command not run."
+  },
+  "sample_audit": {
+    "reviewed_ids": [],
+    "accepted_candidates_available": 0,
+    "requested_minimum_if_available": 8,
+    "all_four_authorization_combinations_checked": false,
+    "status": "not-possible-no-candidates",
+    "semantic_gate_passed": false,
+    "review_status_stays_pending": true,
+    "raw_content_published": false,
+    "limitations": [
+      "No base/escalation or accepted candidate was generated; no semantic, language or duplicate conclusion is possible."
+    ]
+  },
+  "errors": {
+    "preload.log": "local Ollama request failed: Post \"http://127.0.0.1:11435/api/generate\": context deadline exceeded"
+  },
+  "orchestration_error": "preload.log: exit 1",
+  "task_service_stopped": true,
+  "local_artifacts": "artifacts/device-jobs/context-corpus-v5-paired-v2/20261016T124638Z-9a999b79",
+  "limitations": [
+    "All candidates remain pending; no independent review, freeze, training or promotion.",
+    "NOASSERTION means unresolved distribution rights; raw data remains local-only.",
+    "Small pilot and author-model output do not establish model quality or source independence.",
+    "Setup and audit are separate from model wall; caps are not runtime forecasts."
+  ],
+  "protocol": {
+    "path": "analyzer-evaluation.protocol.json",
+    "accepted_commit": "d023d19d59e62f6c5e23f8e68651179ab3748b19",
+    "sha256": "c5bd48ef63338196746a9c0b95f228ab9129283d056db9ab67327bdaba8c1676"
+  },
+  "preload_parameters": {
+    "operation": "preload",
+    "model_calls": 1,
+    "prompt": "",
+    "num_predict": 0,
+    "context_tokens": 8192,
+    "wall_time": "5m",
+    "keep_alive": "10m",
+    "requires_complete_receipt": true,
+    "requires_full_gpu_snapshot": true
+  },
+  "diagnostics": {
+    "schema": "saifety-paired-pilot-diagnostics-v1",
+    "failure_class": "preload-runner-readiness-timeout",
+    "collector_fix_exercised": false,
+    "preload_receipt_wall_seconds": 297.536256,
+    "preload_process_wall_seconds": 300.0629999999983,
+    "model_http_status": 499,
+    "http_status_source": "Ollama server access log; client got context deadline exceeded without a saved response",
+    "raw_preload_response_saved": false,
+    "preload_usage": "unknown; reported_generated_tokens is null, not zero",
+    "runner_ready_observed": false,
+    "observed_layers_offloaded": true,
+    "full_gpu_snapshot_gate_passed": false,
+    "smoke_started": false,
+    "pilot_started": false,
+    "candidate_content_audit_possible": false,
+    "root_cause_established": false,
+    "next_action": "Diagnose bounded cold-start runner readiness in a separately accepted task; no automatic retry, runtime/driver/model replacement or larger collection.",
+    "comparison": "Old pilot attempt 1 also timed out before runner readiness; old attempt 2 returned a response but failed candidate equality validation. This run does not test whether paired authoring fixes that candidate failure.",
+    "audit_finished_utc": "2026-10-16T12:53:44.188267+00:00"
+  },
+  "post_run_review_and_reporting": {
+    "started_utc": "2026-10-16T12:52:55.685642+00:00",
+    "checkpoint_utc": "2026-10-16T12:55:57.713575+00:00",
+    "wall_seconds": 182.027933,
+    "scope": "diagnostics inspection and compact report preparation through this checkpoint; excludes subsequent PR/CI time; no candidate semantic audit available"
+  },
+  "manifest": {
+    "path": "artifacts/device-jobs/context-corpus-v5-paired-v2/20261016T124638Z-9a999b79/SHA256SUMS.json",
+    "sha256": "110c65ea8c56af957a3684234ed6cc6d1ff91f283af39c7f07a067d0e907f52f",
+    "files": 20
+  }
+}
