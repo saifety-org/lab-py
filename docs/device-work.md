@@ -62,6 +62,12 @@ runbook. Файлы на Mac не копируются на ПК, remote access/
 лицензия не назначается. Синтаксическая валидность кандидатов не заменяет semantic review,
 проверку происхождения и freeze корпуса.
 
+Первый corpus pilot завершился [STOP](context-corpus-v5-pilot.md). Для исправленного
+генератора есть отдельный [paired-v2 job](../device-jobs/context-corpus-v5-paired-v2.md):
+один preload и два этапа на кандидата, smoke4+pilot12, до33 model calls/65536outputtokens/
+65мин model wall. Это caps, не прогноз; до usermerge/mainCI карточка остаётся Backlog.
+Raw данные local-only/NOASSERTION. Старое задание не запускается повторно автоматически.
+
 ## Результат и воспроизводимость
 
 В PR публикуются компактные metrics, версии/digest, hashes inputs/traces/lock,
