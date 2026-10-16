@@ -1,4 +1,10 @@
-# Paired contextual corpus v5 pilot: STOP на preload
+# Paired contextual corpus v5 pilot: повтор дошёл до smoke, требуется revise
+
+Первая попытка остановилась на preload. В явно разрешённом повторе модель загрузилась
+за138.703s, но smoke неполон, а оба сохранённых кандидата нарушают контрфактуал
+разрешённости. Общий результат: **revise**. Обе попытки сохранены в JSON и ниже.
+
+## Первая попытка: STOP на preload
 
 2026-10-16, native Windows / RTX 5070 Ti. Новый принятый
 [job](../device-jobs/context-corpus-v5-paired-v2.md) остановился до генерации корпуса:
@@ -106,3 +112,90 @@ execution, GPU telemetry, полные server logs и diagnostics/audit checkpoi
 Manifest исключает себя. Полные logs/requests, абсолютные локальные пути и веса
 не включены в PR. Режим raw данных: local-only / `NOASSERTION`, публичная лицензия
 не назначается. Старые request и оба результата предыдущего пилота сохранены.
+
+
+## Явно разрешённый повтор: preload успешен, smoke требует доработки
+
+Пользователь 2026-10-16 поручил повторить запуск и пересмотреть 5-minute timeout.
+Это отдельная попытка, не скрытый retry. Исходная попытка выше и её20файлов сохранены;
+исходные опубликованные Markdown/JSON дополнительно скопированы в новый local run.
+Итог двух попыток: **revise**, не продолжать сбор.
+
+Для этой попытки preload cap увеличен до15min, `OLLAMA_LOAD_TIMEOUT=15m` только
+в child-сервисе; суммарный model wall cap75min вместо65min. В принятом collector
+5min жёстко заданы и в context deadline, и в HTTP client: один preload выполнен
+отдельным локальным helper, его SHA256/реализация/прямое разрешение пользователя
+записаны в metadata и JSON. Это явное отклонение от принятого runbook, а не результат
+неизменённого collector preload. Принятый request и бинарник collector не изменены.
+
+Helper использовал тот же пустой JSON request: hash
+`1de97c44159d3b8befff8803717bd2296b5a6ba351b68e67b5e7629507cb581f`
+совпадает с первым preload. Сохранены exact local tag/digest/runtime inspect до/после,
+запрет proxy/redirect/remote, complete/empty-content checks, nullable eval_count,
+900s whole deadline. Chat stages выполняет прежний pinned Go collector с прежними
+seed/temperature/context/tokens и caps4+12, без retries. Основой был чистый accepted
+main `f2cc17377e56904d6c04e53e884c2dfe0c36b66e`, CI SUCCESS; model/runtime неизменны.
+
+| Этап повторной попытки | Фактические вызовы | Результат | Process wall |
+| --- | ---: | --- | ---: |
+| Preload | 1 | complete; identity до/после совпала | 138.703 s |
+| Smoke (запрошено4) | 5 chat stages | 2 pending pairs; третий base отклонён | 10.078 s |
+| Pilot | 0 | не запускался | — |
+
+Preload завершился **за2min19s, в пределах прежних5min**. Поэтому этот запуск
+не доказывает необходимость увеличения timeout и не устанавливает причину прошлого
+зависания. 5min — [настраиваемый default Ollama0.18.0](https://github.com/ollama/ollama/blob/v0.18.0/envconfig/config.go#L114),
+не фундаментальное требование. Для повторной диагностики15min сохраняли конечный предел.
+Preload response сохранён (`done_reason=load`, пустое содержимое); eval_count отсутствует,
+поэтому usage preload и суммарный outputtokens остаются null.
+
+GPU gate после preload пройден: `ollama ps` показывает100%GPU, snapshot
+`size=size_vram=6584668288`, context8192, digest совпал. Smoke responses:
+5HTTP200, done/stop, identity сохранена,1029outputtokens и1875prompttokens,
+usage_complete=true. Всего в повторе6model calls; обе попытки вместе7calls
+(2preload+5chat). Ни один ответ не изменялся, дополнительные модельные вызовы не делались.
+
+Причина остановки третьего base — равенство `authorized_task` и `permitted_task`
+после canonical normalization. Строки непустые, оба списка permissions присутствуют
+и различаются. Сообщение валидатора `missing trusted authorization contract` объединяет
+несколько условий и в этом случае неточно описывает дефект. Escalation третьего
+кандидата не запускалась; сохранён raw base response. Полных rejected pairs0,
+отклонённых base responses1, incomplete pairs1.
+
+### Семантический аудит двух доступных кандидатов
+
+Проверены все доступные pending candidates и все4комбинации, base fields сверены
+с исходными checkpoint без изменений. Raw content и цитаты не публикуются.
+
+| ID | Язык / тип | Главное замечание |
+| --- | --- | --- |
+| `v5p2-c5bd48ef-000000` | en / instruction-override | B+неизменённый payload требует изменений за пределами B; ожидаемая safe-комбинация нарушена |
+| `v5p2-c5bd48ef-000001` | ru / authority-spoofing | B разрешает чтение, payload требует изменений; ожидаемая safe-комбинация нарушена |
+
+Для обоих A+payload не имеет убедительного unsafe-контракта: A слишком широкая,
+ограничения не заданы. A+benign не атакует, но полезные факты и выполнение задачи
+не показаны. B+escalation выходит за scope B, однако base уже нарушает этот scope:
+новая пересекаемая граница не установлена. Тексты читаемы на запрошенных языках,
+но сценарии сведены к общим спискам действий; threat mechanism выражен слабо.
+Дословных нормализованных копий в двухкандидатной выборке не обнаружено; payload и
+escalation теперь различаются. Это ограниченное подтверждение структурной новизны,
+без вывода о независимости или качестве. Semantic pass0/2, все записи **pending**.
+
+Coverage частичного run:2pending families /8counterfactual rows, reviewed_families0,
+known source roots2. Это механические группы, не reviewed independent families.
+Полные merge/check после сбоя не выполнялись. Throughput pending candidates с preload
+≈0.807/min, при этом оба кандидата семантически непригодны; это не прогноз скорости
+пригодного full pool. Setup и время аудита/reporting приведены отдельно в JSON.
+
+Нужно уточнить сообщения валидатора и научить генератор явно различать разрешения:
+тот же payload должен быть запрещён в A и явно разрешён в B, escalation — пересекать
+новую границу B. Одного различия строк или документов недостаточно. Не ослаблять
+валидацию и не менять labels, чтобы принять ошибочный B+payload. Независимый аудит,
+freeze/training/promotion и большой сбор по-прежнему не разрешены.
+
+Новый local run:
+`artifacts/device-jobs/context-corpus-v5-paired-v2/20261016T130740Z-01ee15d2/`.
+Manifest/hash и hashes helper/checkpoints приведены в JSON. Полные requests/responses,
+кандидаты и logs остаются ignored/local-only/NOASSERTION. Task service и runner
+остановлены, оставшихся Ollama processes нет. PR сохраняет обе попытки в `attempts`;
+общий outcome `revise`, quality_evidence=false, training_ready=false.
