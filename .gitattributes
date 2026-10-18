@@ -2,3 +2,5 @@
 /analyzer-evaluation.protocol.json text eol=lf
 /device-jobs/context-corpus-v5-paired-v2.json text eol=lf
 /device-jobs/context-corpus-v5-paired-v2.md text eol=lf
+/device-jobs/context-corpus-v5-contracts-v3.json text eol=lf
+/device-jobs/context-corpus-v5-contracts-v3.md text eol=lf
