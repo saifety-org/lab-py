@@ -62,11 +62,14 @@ runbook. Файлы на Mac не копируются на ПК, remote access/
 лицензия не назначается. Синтаксическая валидность кандидатов не заменяет semantic review,
 проверку происхождения и freeze корпуса.
 
-Первый corpus pilot завершился [STOP](context-corpus-v5-pilot.md). Для исправленного
-генератора есть отдельный [paired-v2 job](../device-jobs/context-corpus-v5-paired-v2.md):
-один preload и два этапа на кандидата, smoke4+pilot12, до33 model calls/65536outputtokens/
-65мин model wall. Это caps, не прогноз; до usermerge/mainCI карточка остаётся Backlog.
-Raw данные local-only/NOASSERTION. Старое задание не запускается повторно автоматически.
+Первый corpus pilot завершился [STOP](context-corpus-v5-pilot.md), paired-v2 —
+[REVISE](context-corpus-v5-paired-v2.md), semantic pass0/2. Новый
+[contracts-v3 job](../device-jobs/context-corpus-v5-contracts-v3.md) проверяет
+intent→documents и ограниченные разрешения: 1preload+4smoke+12pilot,
+≤33collector model calls/65536outputtokens/75мин collector wall. Аудит текущего
+агента ограничен8кандидатами/32cases и учитывается отдельно, без дополнительных
+Ollama/provider calls. Это caps, не прогноз. До usermerge/mainCI карточка Backlog,
+ПК пока не нужен. Raw данные local-only/NOASSERTION; старые jobs не повторять.
 
 ## Результат и воспроизводимость
 
