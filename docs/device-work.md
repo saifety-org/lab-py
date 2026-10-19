@@ -99,10 +99,19 @@ intent→documents и ограниченные разрешения: 1preload+4s
 агента ограничен8кандидатами/32cases и учитывается отдельно, без дополнительных
 Ollama/provider calls. Это caps, не прогноз. lab#15 и lab-py#15 приняты;
 main CI проверен. [Issue текущего пилота](https://github.com/saifety-org/lab-py/issues/16)
-готов в Todo; перед запуском проверять живой статус и принятые pins.
+в Review: прогон выполнен с REVISE, результат — в
+[PR#24](https://github.com/saifety-org/lab-py/pull/24). Повторять v3 нельзя.
 Этот значимый пилот по принятому runbook сохраняет итоговый отчёт через PR;
 прогресс и ошибки идут в комментарии Issue. Raw данные local-only/NOASSERTION;
 старые jobs не повторять.
+
+Исправление языка/prose проверяет новый
+[contracts-v4 job](../device-jobs/context-corpus-v5-contracts-v4.md),
+[Issue#25](https://github.com/saifety-org/lab-py/issues/25). Он остаётся Backlog
+до пользовательского merge lab#21 и нового request с успешными main CI.
+После этого координатор фиксирует pins/CI и переводит Todo; локальный агент
+берёт его по обычному порядку. Бюджет и модель прежние, новые guards не заменяют
+key-hidden semantic/fidelity audit. Training/fullpool этим заданием не разрешены.
 
 ## Результат и воспроизводимость
 

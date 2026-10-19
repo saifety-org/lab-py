@@ -1,0 +1,168 @@
+{
+  "schema": "saifety-context-collection-device-job-v4",
+  "id": "context-corpus-v5-contracts-v4",
+  "execution": "local-agent-runbook",
+  "device": "windows-rtx5070ti",
+  "task": "https://github.com/saifety-org/lab-py/issues/25",
+  "parent_task": "https://github.com/saifety-org/lab-py/issues/16",
+  "collector": {
+    "repository": "saifety-org/lab",
+    "pull_request": 21,
+    "commit": "c7130bdb3aba0acbee69872c22f4988eec9c255b",
+    "module": "github.com/saifety-org/lab/cmd/context-collect",
+    "version": "v0.0.0-20261019071857-c7130bdb3aba",
+    "toolchain": "go1.26.0",
+    "output": "bin/context-corpus-v5-contracts-v4",
+    "operation": "collect-contracts-v4"
+  },
+  "protocol": {
+    "path": "analyzer-evaluation.protocol.json",
+    "accepted_commit": "d023d19d59e62f6c5e23f8e68651179ab3748b19",
+    "sha256": "c5bd48ef63338196746a9c0b95f228ab9129283d056db9ab67327bdaba8c1676"
+  },
+  "plan_sha256": "0a4af4d9d6bd05cef70af019b3f33ae7777ba5d082edcc4b30f1e7cc239da695",
+  "license": {
+    "selected": "NOASSERTION",
+    "allowed": [
+      "NOASSERTION"
+    ],
+    "source": "user decision: no CC0 publication; local collection without assigning a public license",
+    "meaning": "metadata marker for no license assertion, not a distribution license"
+  },
+  "model": "qwen3:8b-q4_K_M",
+  "model_digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+  "ollama_version": "0.18.0",
+  "ollama_url": "http://127.0.0.1:11435",
+  "generation": {
+    "stages": [
+      "intent",
+      "documents"
+    ],
+    "temperature": 0.8,
+    "seed": 1,
+    "context_tokens": 8192,
+    "tokens_per_request": 2048,
+    "think": false,
+    "truncate": false,
+    "shift": false,
+    "keep_alive": "10m",
+    "smoke": {
+      "start": 0,
+      "count": 4,
+      "max_generation_requests": 8,
+      "wall_time": "20m"
+    },
+    "pilot": {
+      "start": 4,
+      "count": 12,
+      "max_generation_requests": 24,
+      "wall_time": "40m"
+    },
+    "max_candidates": 16,
+    "max_generation_requests": 32,
+    "max_output_tokens": 65536,
+    "max_generation_wall_minutes": 60,
+    "retries": 0
+  },
+  "output_root": "artifacts/device-jobs/context-corpus-v5-contracts-v4",
+  "report": "reports/context-corpus-v5-contracts-v4.json",
+  "analysis": "docs/context-corpus-v5-contracts-v4.md",
+  "training_ready": false,
+  "quality_evidence": false,
+  "data_policy": {
+    "storage": "local-only",
+    "publish_raw_candidates": false,
+    "publish_full_traces": false,
+    "public_license_assigned": false
+  },
+  "fix_task": "https://github.com/saifety-org/lab/issues/20",
+  "preload": {
+    "operation": "preload",
+    "model_calls": 1,
+    "prompt": "",
+    "num_predict": 0,
+    "context_tokens": 8192,
+    "wall_time": "15m",
+    "keep_alive": "10m",
+    "requires_complete_receipt": true,
+    "requires_full_gpu_snapshot": true,
+    "cli_timeout_flag": "-preload-timeout",
+    "ollama_load_timeout": "15m",
+    "runtime_environment_scope": "dedicated experiment service process only; no persistent settings"
+  },
+  "total_budget": {
+    "max_model_calls_including_preload": 33,
+    "max_collector_metadata_http_requests": 108,
+    "max_collector_ollama_http_requests": 141,
+    "max_model_wall_minutes_including_preload": 75,
+    "setup_and_review_time_recorded_separately": true,
+    "caps_are_runtime_estimates": false,
+    "scope": "collector only; setup, bounded current-session agent audit and reporting recorded separately; no extra Ollama/hosted audit calls"
+  },
+  "reference": "https://github.com/saifety-org/lab-py/pull/24",
+  "receipt_schema": "saifety-context-collection-receipt-v4",
+  "sample_audit": {
+    "minimum_candidates_if_available": 8,
+    "all_four_authorization_combinations": true,
+    "review_status_stays_pending": true,
+    "publish_raw_content": false,
+    "maximum_candidates": 8,
+    "maximum_cases": 32,
+    "selection": "sorted first 4 smoke + sorted first 4 pilot; all available up to 8 if incomplete",
+    "packet_operation": "review-contracts",
+    "packet_schema": "saifety-contract-review-packet-v1",
+    "key_schema": "saifety-contract-review-key-v1",
+    "label_hidden_judgments_before_key": true,
+    "reviewer": "local device agent in current session; disclose identity and generator overlap; no separate provider/API",
+    "additional_ollama_or_hosted_calls": 0,
+    "prose_plan_fidelity_required": true,
+    "all_candidates_stay_pending": true
+  },
+  "contract": {
+    "supported_languages": [
+      "en",
+      "ru",
+      "es",
+      "zh"
+    ],
+    "planned_unsafe_matrix": [
+      true,
+      false,
+      false,
+      true
+    ],
+    "scaffold": "disclosed deterministic fact + verbatim model context + exact imperative action; same layout in all labels",
+    "trusted_report_permission": "source-dependent fact; oracle answer not in trusted task/permissions",
+    "offline_evidence_check": "check-contracts per batch, before review",
+    "template_group": "contract-v4-<type>; never independent families per ticket",
+    "structural_checks_are_semantic_certification": false
+  },
+  "document_guards": {
+    "scope": "original model prose before scaffold; conservative lexical guards, not semantic certification",
+    "languages": [
+      "en",
+      "ru",
+      "es",
+      "zh"
+    ],
+    "language_detector": "github.com/pemistahl/lingua-go v1.4.0",
+    "language_detector_mode": "all languages; low accuracy; minimum relative distance 0.1",
+    "minimum_narrative_letters": {
+      "en": 120,
+      "ru": 120,
+      "es": 120,
+      "zh": 40
+    },
+    "minimum_expected_script_fraction": 0.8,
+    "technical_literals_excluded_from_language_detection": true,
+    "experiment_class_cues_rejected": true,
+    "exact_case_sensitive_action_literals_required": true,
+    "localized_operation_verb_required": true,
+    "recognized_local_operation_negation_rejected": true,
+    "stop_on_first_rejection": true,
+    "rewrite_translate_retry": false,
+    "passing_stage_status": "valid-draft-guards-semantic-review-pending",
+    "rejected_stage_status": "rejected-document-guards",
+    "manual_semantic_fidelity_review_required": true
+  }
+}
