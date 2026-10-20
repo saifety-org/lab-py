@@ -1,4 +1,4 @@
-"""Datasets have one owner: saifety-org/lab. Download only locked bytes."""
+"""Use checksum-locked checkout data; legacy locks remain explicit historical inputs."""
 
 import hashlib
 import json
@@ -8,12 +8,14 @@ import subprocess
 import urllib.request
 from pathlib import Path, PurePosixPath
 
+from . import research
 from .io import sha256, write_json
 
 
 def lock(path: Path) -> dict:
     value = json.loads(path.read_text())
-    if value.get("schema") != 1 or value.get("repository") != "saifety-org/lab":
+    local = value.get("schema") == 2 and value.get("repository") == "saifety-org/lab-py"
+    if not local and (value.get("schema") != 1 or value.get("repository") != "saifety-org/lab"):
         raise ValueError("unsupported source lock")
     if not re.fullmatch(r"[0-9a-f]{40}", value.get("commit", "")):
         raise ValueError("source commit must be a full SHA")
@@ -34,7 +36,13 @@ def lock(path: Path) -> dict:
         p = PurePosixPath(item["path"])
         if p.is_absolute() or ".." in p.parts or not re.fullmatch(r"[0-9a-f]{64}", item["sha256"]):
             raise ValueError("unsafe source path or invalid checksum")
-    if not re.fullmatch(r"v0\.0\.0-\d{14}-[0-9a-f]{12}", value["tools_version"]):
+    if local:
+        for item in value["files"]:
+            research.local_file(item["local_path"])
+        if value["tools_version"] != "checkout":
+            raise ValueError("local lock must use the attested checkout tools")
+        value["tools_version"] = research.identity()
+    elif not re.fullmatch(r"v0\.0\.0-\d{14}-[0-9a-f]{12}", value["tools_version"]):
         raise ValueError("Go tools must be pinned to an immutable pseudo-version")
     return value
 
@@ -49,9 +57,12 @@ def sync(path: Path, destination: Path) -> dict:
             if sha256(target) != item["sha256"]:
                 raise ValueError(f"cache checksum mismatch: {target}")
             continue
-        url = f"https://raw.githubusercontent.com/{pinned['repository']}/{pinned['commit']}/{item['path']}"
-        with urllib.request.urlopen(url, timeout=60) as response:
-            content = response.read((32 << 20) + 1)
+        if pinned["schema"] == 2:
+            content = research.local_file(item["local_path"]).read_bytes()
+        else:
+            url = f"https://raw.githubusercontent.com/{pinned['repository']}/{pinned['commit']}/{item['path']}"
+            with urllib.request.urlopen(url, timeout=60) as response:
+                content = response.read((32 << 20) + 1)
         if len(content) > 32 << 20 or hashlib.sha256(content).hexdigest() != item["sha256"]:
             raise ValueError(f"source checksum/size mismatch: {item['path']}")
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -69,6 +80,9 @@ def bootstrap(path: Path, destination: Path, *, onnx: bool = False, context: boo
     env = dict(os.environ, GOWORK="off", GOBIN=str(destination))
     commands = ["context-corpus" if context else "comparison", "model-bridge"]
     for command in commands:
+        if pinned["schema"] == 2:
+            research.build(command, destination, onnx=onnx and command == "model-bridge")
+            continue
         args = ["go", "install"]
         if onnx and command == "model-bridge":
             args += ["-tags", "onnx"]
@@ -79,7 +93,9 @@ def bootstrap(path: Path, destination: Path, *, onnx: bool = False, context: boo
         {
             "lab_version": pinned["tools_version"],
             "onnx": onnx,
-            "binaries": {name: sha256(destination / name) for name in commands},
+            "binaries": {
+                name: sha256(research.executable(destination / name)) for name in commands
+            },
         },
     )
 
@@ -88,16 +104,19 @@ def prepare(path: Path, source: Path, output: Path, comparison: Path) -> None:
     pinned = sync(path, source)
     output = output.resolve()
     subprocess.run(
-        [str(comparison.resolve()), "prepare", "-dir", str(output)], cwd=source, check=True
+        [str(research.executable(comparison).resolve()), "prepare", "-dir", str(output)],
+        cwd=source,
+        check=True,
     )
     write_json(output / "source.json", pinned)
 
 
 def prepare_context(path: Path, source: Path, output: Path, tool: Path) -> None:
     pinned = sync(path, source)
+    tool = research.executable(tool)
     tools = json.loads((tool.parent / "tools.json").read_text())
     if tools.get("lab_version") != pinned["tools_version"] or tools.get("binaries", {}).get(
-        tool.name
+        tool.stem if tool.suffix == ".exe" else tool.name
     ) != sha256(tool):
         raise ValueError("context tool differs from source lock; run bootstrap-context")
     source_corpus = source / pinned.get("source_corpus", "datasets/contextual/v1")
@@ -137,6 +156,20 @@ def prepare_context(path: Path, source: Path, output: Path, tool: Path) -> None:
 def bootstrap_encoder_onnx(path: Path, destination: Path) -> dict:
     """Install the dedicated contextual bridge without changing corpus pins."""
     value = json.loads(path.read_text())
+    if (
+        value.get("schema") == 2
+        and value.get("repository") == "saifety-org/lab-py"
+        and value.get("tools_version") == "checkout"
+    ):
+        version = research.identity()
+        binary = research.build("context-onnx-bridge", destination, onnx=True)
+        result = {
+            "lock_sha256": sha256(path),
+            "lab_version": version,
+            "bridge_sha256": sha256(binary),
+        }
+        write_json(destination / "context-onnx-tools.json", result)
+        return result
     if (
         value.get("schema") != 1
         or value.get("repository") != "saifety-org/lab"

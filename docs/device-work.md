@@ -1,7 +1,7 @@
 # Работа между Mac и GPU-ПК через GitHub
 
 GitHub хранит поручение и результаты. Чат конкретного устройства и локальная память
-не являются источником требований. Код готовится на Mac/CI; реальный LLM-прогон
+не являются источником требований. Код и данные готовятся локально или в CI в этом репозитории; реальный LLM-прогон
 выполняется локально на Windows-ПК с RTX 5070 Ti, когда он доступен.
 
 ## Где смотреть работу
@@ -108,7 +108,7 @@ main CI проверен. [Issue текущего пилота](https://github.c
 Исправление языка/prose проверяет новый
 [contracts-v4 job](../device-jobs/context-corpus-v5-contracts-v4.md),
 [Issue#25](https://github.com/saifety-org/lab-py/issues/25). Он остаётся Backlog
-до пользовательского merge lab#21 и нового request с успешными main CI.
+до пользовательского merge единого migration PR и успешного lab-py main CI.
 После этого координатор фиксирует pins/CI и переводит Todo; локальный агент
 берёт его по обычному порядку. Бюджет и модель прежние, новые guards не заменяют
 key-hidden semantic/fidelity audit. Training/fullpool этим заданием не разрешены.
@@ -121,3 +121,8 @@ key-hidden semantic/fidelity audit. Training/fullpool этим заданием 
 Сравнение старого и нового core отдельно от paired baseline/protected текущего
 прогона. `quality_evidence=false`; маленький development-набор не доказывает
 обобщение. Успешная сборка, нулевой baseline ASR и сбои LLM не доказывают защиту.
+
+После [объединения](repository-unification.md) Go tools/data и versioned request
+меняются в одном lab-py PR. Collector собирается из принятого checkout по
+`research/tools.lock.json`, а не через install pseudo-version из lab.
+Исторические runbooks сохраняют прежние pins; их наличие не разрешает повтор.

@@ -55,3 +55,14 @@ prepare-agent-harness:
 	uv run --locked saifety-lab prepare-agent-harness
 test-agent-harness:
 	uv run --locked pytest -m harness
+
+.PHONY: research-check research-test research-build bootstrap-collector
+research-check:
+	uv run --locked python -c "from saifety_lab_py.research import identity; print(identity())"
+	$(MAKE) -C research fmt-check vet
+research-test:
+	$(MAKE) -C research ci-test
+research-build:
+	$(MAKE) -C research ci-build
+bootstrap-collector:
+	uv run --locked saifety-lab bootstrap-collector

@@ -1,16 +1,17 @@
 {
-  "schema": "saifety-context-collection-device-job-v4",
+  "schema": "saifety-context-collection-device-job-v5",
   "id": "context-corpus-v5-contracts-v4",
   "execution": "local-agent-runbook",
   "device": "windows-rtx5070ti",
   "task": "https://github.com/saifety-org/lab-py/issues/25",
   "parent_task": "https://github.com/saifety-org/lab-py/issues/16",
   "collector": {
-    "repository": "saifety-org/lab",
-    "pull_request": 21,
-    "commit": "c7130bdb3aba0acbee69872c22f4988eec9c255b",
-    "module": "github.com/saifety-org/lab/cmd/context-collect",
-    "version": "v0.0.0-20261019071857-c7130bdb3aba",
+    "repository": "saifety-org/lab-py",
+    "source": "same clean accepted checkout as this request; exact HEAD recorded before build/model calls",
+    "module": "github.com/saifety-org/lab-py/research/cmd/context-collect",
+    "tools_manifest": "research/tools.lock.json",
+    "tools_sha256": "2523d0d91159e91ae36dc4a2b5691292760bb093ce2014202a2597351b73a07e",
+    "bootstrap": "saifety-lab bootstrap-collector",
     "toolchain": "go1.26.0",
     "output": "bin/context-corpus-v5-contracts-v4",
     "operation": "collect-contracts-v4"
@@ -75,7 +76,7 @@
     "publish_full_traces": false,
     "public_license_assigned": false
   },
-  "fix_task": "https://github.com/saifety-org/lab/issues/20",
+  "fix_task": "https://github.com/saifety-org/lab-py/issues/32",
   "preload": {
     "operation": "preload",
     "model_calls": 1,

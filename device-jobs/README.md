@@ -34,5 +34,7 @@
 `contracts-v3` выполнен с REVISE; его результат находится в
 [PR#24](https://github.com/saifety-org/lab-py/pull/24), Issue#16 — Review.
 Исправленный `contracts-v4` — новое задание [Issue#25](https://github.com/saifety-org/lab-py/issues/25),
-Backlog до пользовательского merge lab#21 и этого request, затем успешных main CI.
+Backlog до пользовательского merge единого lab-py migration PR и успешного общего main CI.
 Не повторять v3 и не запускать v4 по наличию PR.
+
+Новые jobs используют локальный collector из `research/`; отдельные PR в lab не нужны.

@@ -40,3 +40,22 @@ PR. Код, воспроизводимые инструкции/протокол
 Не выполнять тяжёлые LLM-задания на Mac по наличию карточки для GPU-ПК.
 Не применять E5 для production-блокировки, не менять frozen v4 test/пороги,
 не публиковать веса или полные локальные traces без отдельного задания.
+
+## Единая лаборатория
+
+`lab-py` — единственный поддерживаемый research repository. Данные, Go module/
+cmd/internal и их тесты находятся в `research/`; Python — в `src/`, задания —
+в `device-jobs/`. Исправление инструмента, source pins и задание идут одним PR.
+Не создавать новые PR/Issues в историческом `saifety-org/lab`.
+
+Активные source locks schema2 читают локальные данные по SHA256 и собирают Go
+из этого checkout. После изменения Go inputs обновить `research/tools.lock.json`
+через `python scripts/update-research-lock.py`, включить diff manifest в тот же PR.
+Перед сборкой/подготовкой источники проверяются; не подменять identity старой
+pseudo-version. Frozen dataset bytes/manifest/labels и старые reports не менять.
+Исторические locks и исходные commit URLs остаются для воспроизводимости.
+
+Проверки: Python lint/tests/build и Go `make -C research fmt-check vet ci-test
+ci-build`; межъязыковые integration checks и frozen corpus gates остаются обязательны.
+Canonical GPU job ждёт пользовательского merge этого же lab-py PR и успешного
+общего main workflow `check`; отдельного merge/CI в lab больше не требуется.

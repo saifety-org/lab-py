@@ -5,7 +5,7 @@ import json
 import subprocess
 from pathlib import Path
 
-from . import sources
+from . import research, sources
 from .bridge import Bridge
 from .evaluate import compare, compare_onnx
 from .io import write_json
@@ -15,6 +15,8 @@ from .native import train
 def parser() -> argparse.ArgumentParser:
     root = argparse.ArgumentParser(description="sAIfety Python research tools")
     sub = root.add_subparsers(dest="command", required=True)
+    p = sub.add_parser("bootstrap-collector")
+    p.add_argument("--out", type=Path, default=Path("bin/context-collect"))
     for command in ("bootstrap", "sync", "prepare"):
         p = sub.add_parser(command)
         p.add_argument("--lock", type=Path, default=Path("sources.lock.json"))
@@ -152,6 +154,12 @@ def main(argv: list[str] | None = None) -> None:
     result = None
     try:
         match args.command:
+            case "bootstrap-collector":
+                binary = research.build("context-collect", args.out)
+                from .io import sha256
+
+                result = {"tools_version": research.identity(), "binary_sha256": sha256(binary)}
+                write_json(args.out / "tools.json", result)
             case (
                 "bootstrap-agent-harness"
                 | "prepare-agent-harness"

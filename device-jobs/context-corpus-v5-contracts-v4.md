@@ -2,35 +2,35 @@
 
 [Карточка ПК](https://github.com/saifety-org/lab-py/issues/25),
 [request](context-corpus-v5-contracts-v4.json),
-[исправление](https://github.com/saifety-org/lab/pull/21),
-[описание формата](https://github.com/saifety-org/lab/blob/c7130bdb3aba0acbee69872c22f4988eec9c255b/docs/contextual-collection-contracts-v4.md).
+[перенос и исправление](https://github.com/saifety-org/lab-py/issues/27),
+[описание формата](../research/docs/contextual-collection-contracts-v4.md).
 Предыдущий [contracts-v3 results PR](https://github.com/saifety-org/lab-py/pull/24)
 зафиксировал **REVISE**: English-under-ZH, экспериментальные A/B cues и слабую
 связь испанского escalation с отправкой. Это новый конечный request с новыми
 prompts/guards/IDs. Старые inputs/attempts не повторять и не перезаписывать.
-Задача остаётся Backlog до принятия lab#21 и этого request с успешными main CI.
+Задача остаётся Backlog до пользовательского merge единого lab-py migration PR
+с tools и этим request, затем успешного общего main workflow check.
 
 ## Gate до установки и вызовов
 
 Локальный агент читает AGENTS.md и docs/device-work.md. Брать **только Todo**:
 чистый lab-py HEAD равен принятому GitHub main, этот request в main, workflow `check`
-на HEAD успешен. Collector PR#21 должен быть MERGED с exact head из request;
-workflow `ci` на merge commit успешен. Зелёный PR/Backlog не разрешает запуск.
+на HEAD успешен, включая Go research jobs. Collector находится в этом же checkout;
+source manifest hash равен pin в request и все его Go inputs проверены.
+Зелёный PR/Backlog не разрешает запуск. Отдельного PR/merge в lab нет.
 Проверять через настроенный gh; токены не читать. До запуска назначить себя через
 аккаунт оператора, перевести карточку In Progress, сохранить body/hash зависимостей.
 При грязном checkout — отдельный clone, без сброса чужих изменений.
 
 ```powershell
 gh project item-list 1 --owner saifety-org --format json --limit 100
-gh api repos/saifety-org/lab/pulls/21
-gh run list --repo saifety-org/lab --branch main --commit <merge_commit> --json workflowName,status,conclusion
 gh api repos/saifety-org/lab-py/commits/main
 git status --porcelain
 git rev-parse HEAD
 gh run list --repo saifety-org/lab-py --branch main --commit <HEAD> --json workflowName,status,conclusion
 ```
 
-Native Windows/RTX5070Ti, Go1.26.0, ранее установленные Ollama0.18.0 и Qwen3 tag/digest
+Native Windows/RTX5070Ti, Python/uv из README/uv.lock, Go1.26.0, ранее установленные Ollama0.18.0 и Qwen3 tag/digest
 из request. При несовпадении остановиться; не менять драйвер/runtime/модель, не качать
 замену, не использовать WSL/hosted fallback/тяжёлый Mac/remote access/hand off.
 Raw планы/documents/requests/replies/logs/ключи аудита — ignored local artifacts,
@@ -49,7 +49,7 @@ function Invoke-Checked {
 }
 $request = 'device-jobs/context-corpus-v5-contracts-v4.json'
 $requestHash = (Get-FileHash $request -Algorithm SHA256).Hash.ToLowerInvariant()
-if ($requestHash -ne '5d5c4aa592aa84f8338b81d4a5c4f6bbf180e18bc011a51449841a145ee9344b') { throw 'Request pin differs.' }
+if ($requestHash -ne 'dcf1436f015697f3c44a6e5bcb64e6515224a1bf09dadf0258282da5e9982a2b') { throw 'Request pin differs.' }
 $job = Get-Content $request -Raw | ConvertFrom-Json
 if ($job.license.selected -ne 'NOASSERTION' -or $job.data_policy.storage -ne 'local-only' -or
     $job.data_policy.publish_raw_candidates -or $job.data_policy.publish_full_traces -or
@@ -57,19 +57,20 @@ if ($job.license.selected -ne 'NOASSERTION' -or $job.data_policy.storage -ne 'lo
 $bin = Join-Path (Get-Location).Path $job.collector.output
 if (Test-Path $bin) { throw 'Preserve existing binary; no implicit repeat.' }
 New-Item -ItemType Directory -Path $bin | Out-Null
-$previousBin = $env:GOBIN
+if ((Get-FileHash $job.collector.tools_manifest -Algorithm SHA256).Hash.ToLowerInvariant() -ne $job.collector.tools_sha256) { throw 'Tools manifest pin differs.' }
 $previousToolchain = $env:GOTOOLCHAIN
 try {
-    $env:GOBIN = $bin
     $env:GOTOOLCHAIN = $job.collector.toolchain
-    Invoke-Checked go @('install', "$($job.collector.module)@$($job.collector.version)")
+    Invoke-Checked uv @('run', '--locked', 'python', '-c', 'from saifety_lab_py.cli import main; main()', 'bootstrap-collector', '--out', $bin)
 } finally {
-    $env:GOBIN = $previousBin
     $env:GOTOOLCHAIN = $previousToolchain
 }
+$tooling = Get-Content (Join-Path $bin 'tools.json') -Raw | ConvertFrom-Json
+if ($tooling.tools_version -ne ('sha256:' + $job.collector.tools_sha256)) { throw 'Built tool source identity differs.' }
 $cli = Join-Path $bin 'context-collect.exe'
 Invoke-Checked go @('version', '-m', $cli)
 $binaryHash = (Get-FileHash $cli -Algorithm SHA256).Hash.ToLowerInvariant()
+if ($binaryHash -ne $tooling.binary_sha256) { throw 'Built binary hash differs.' }
 $id = (Get-Date).ToUniversalTime().ToString('yyyyMMddTHHmmssZ') + '-' + [guid]::NewGuid().ToString('N').Substring(0,8)
 $run = Join-Path $job.output_root $id
 New-Item -ItemType Directory -Path $run -Force | Out-Null
@@ -78,9 +79,11 @@ Invoke-Checked $cli @('plan', '-input', $job.protocol.path, '-sha256', $job.prot
 if ((Get-FileHash $plan -Algorithm SHA256).Hash.ToLowerInvariant() -ne $job.plan_sha256) { throw 'Plan pin differs.' }
 ```
 
-Проверить `go version -m`: exact module/version/toolchain, нет vcs.modified=true.
-Для versioned install отдельного vcs.revision может не быть; commit связан pseudo-version
-и exact PR head. До модели сохранить metadata.json: UTC/setup time, HEAD/main CI,
+Проверить `go version -m`: module из request, Go1.26.0, readonly dependencies,
+buildvcs=false; source identity — SHA256 локального manifest, не старая lab pseudo-version.
+До/после build проверяются все Go inputs; accepted lab-py HEAD и tools.json/hash
+фиксируются отдельно. Python bootstrap не вызывает LLM и не устанавливает модель.
+До модели сохранить metadata.json: UTC/setup time, HEAD/main CI,
 request/task-body/binary/protocol/plan hashes, model/runtime/pins, CPU/GPU/VRAM/driver/
 RAM/disk, параметры окружения только эксперимента и caps. Не сохранять секреты.
 

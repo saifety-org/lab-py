@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "repository": "saifety-org/lab",
+  "commit": "a4386de8d745737a781039e536c8a007e778b206",
+  "tools_version": "v0.0.0-20261011142957-a4386de8d745",
+  "model_repository": "saifety-org/prompt-injection-model",
+  "model_commit": "7c0700c200daff2e198a27c5209b4517baf50649",
+  "manifest_sha256": "a749100810cd6cd689bafdd97623d714fbb10aa969f000be514c8da5eddcd73d"
+}

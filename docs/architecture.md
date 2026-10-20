@@ -1,9 +1,10 @@
 # Границы Python-лаборатории
 
-`lab-py` принимает закреплённые данные lab и локальные checkpoints, обучает
+`lab-py` содержит канонические данные и Go tools в `research/`, принимает
+локальные checkpoints, обучает
 кандидатов и формирует артефакты. Production-приложение не зависит от Python.
 
-Путь кандидата: данные lab → обучение в lab-py → артефакт с manifest → Python/Go
+Путь кандидата: локальные данные research/ → обучение в lab-py → артефакт с manifest → Python/Go
 parity → свежая оценка → отдельное решение о включении → явное обновление
 закреплённой модели приложения. Ни одна команда не публикует веса автоматически.
 
@@ -49,5 +50,5 @@ observed v4 FPR 1,43% превышает ориентир 1%. Structured MCP sca
 Задачи и точные зависимости — в
 [GitHub Project](https://github.com/orgs/saifety-org/projects/1).
 [Device workflow](device-work.md) хранит задания ПК в репозитории; подготовка кода
-и обычный CI не запускают обучение или LLM на Mac. Данные/Go research остаются
-в lab, runtime в sAIfety, model artifacts в prompt-injection-model.
+и обычный CI не запускают обучение или LLM на Mac. Данные/Go research находятся в `research/` внутри lab-py;
+runtime — в sAIfety, model artifacts — в prompt-injection-model.

@@ -8,14 +8,18 @@ import subprocess
 import urllib.request
 from pathlib import Path
 
+from .. import research
 from ..io import sha256, write_json
 
 
 def lock(path: Path) -> dict:
     value = json.loads(path.read_text(encoding="utf-8"))
     if (
-        value.get("schema") != "agent-harness-sources-v1"
-        or value["lab"]["repository"] != "saifety-org/lab"
+        (value.get("schema"), value["lab"]["repository"])
+        not in {
+            ("agent-harness-sources-v1", "saifety-org/lab"),
+            ("agent-harness-sources-v2", "saifety-org/lab-py"),
+        }
         or not re.fullmatch(r"[0-9a-f]{40}", value["lab"]["commit"])
         or value["core"]["module"] != "github.com/saifety-org/sAIfety"
         or not re.fullmatch(r"v0\.0\.0-\d{14}-[0-9a-f]{12}", value["core"]["version"])
@@ -28,6 +32,8 @@ def lock(path: Path) -> dict:
     for item in value["lab"]["files"]:
         if not re.fullmatch(r"[0-9a-f]{64}", item["sha256"]):
             raise ValueError("invalid corpus checksum")
+        if value["schema"] == "agent-harness-sources-v2":
+            research.local_file(item["local_path"])
     return value
 
 
@@ -40,6 +46,8 @@ def prepare(path: Path, directory: Path) -> dict:
             raise ValueError("scenario cache cannot be a symlink")
         if target.exists():
             raw = target.read_bytes()
+        elif value["schema"] == "agent-harness-sources-v2":
+            raw = research.local_file(item["local_path"]).read_bytes()
         else:
             url = (
                 f"https://raw.githubusercontent.com/{value['lab']['repository']}/"

@@ -21,6 +21,11 @@ jobs:
           version: '0.11.21'
           enable-cache: true
       - run: make lint
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: research/go.mod
+          cache: false
+      - run: make research-check
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -122,3 +127,69 @@ jobs:
           path: artifacts/agent-harness-ci/
           retention-days: 7
           if-no-files-found: warn
+  research-lint:
+    name: research lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: research
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
+        with:
+          go-version-file: research/go.mod
+          cache-dependency-path: research/go.sum
+      - run: make fmt-check vet
+      - uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9.3.0
+        with:
+          version: v2.14.0
+          working-directory: research
+          args: --config .golangci.yml ./...
+      - uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9.3.0
+        with:
+          version: v2.14.0
+          working-directory: research
+          args: --config .golangci.yml --build-tags onnx ./...
+  research-test:
+    name: research test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: research
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
+        with:
+          go-version-file: research/go.mod
+          cache-dependency-path: research/go.sum
+      - run: make ci-test
+  research-build:
+    name: research build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: research
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
+        with:
+          go-version-file: research/go.mod
+          cache-dependency-path: research/go.sum
+      - run: make ci-build
+  research-windows:
+    name: research collection (windows)
+    runs-on: windows-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: research
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
+        with:
+          go-version-file: research/go.mod
+          cache-dependency-path: research/go.sum
+      - run: go test -race ./cmd/context-collect ./internal/contextcollection

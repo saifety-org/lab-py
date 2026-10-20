@@ -1,0 +1,104 @@
+{
+  "source_repository": "https://github.com/saifety-org/sAIfety",
+  "source_commit": "b395a80ec357cf20daa9dfa640a9ffa73d40326b",
+  "original_file_sha256": {
+    "cmd/bench/main.go": "6807cb5f9b75db28da3a9811e93dfad84e3e5436f1facddc2ffad31b68d01c3a",
+    "cmd/comparison/prepare_test.go": "e3752b8c3be62268a96ff18b2342d6af56da41b883bb9e30aaa6ad71b9a9200a",
+    "cmd/comparison/prepare.go": "68083c4c03e10d117d7434e6b966dd8894975ea450287153aa5d783d6b946652",
+    "cmd/comparison/report.go": "e04403c496052c85fa9b3211f47d2be285bddb61aff7e38e933f90ece43f3854",
+    "cmd/comparison/main.go": "618fcd38f5f273694a973dd2e61014949c1eea15f054b6e34633f8206dccd7cc",
+    "internal/evaluation/evaluation.go": "4adb0da8efbd0a2faeebb51fa4bed67da6f0161f551c3750288307225cfe6420",
+    "internal/evaluation/evaluation_test.go": "2e5515efad3aa3191beacf4dadc0c26163ddce16c738333a4217f298f4f91155",
+    "internal/classifier/data/ATTRIBUTION.md": "e5b76940d30f172d73993d3f2f9da060ee9162ca4cbcb8b9eff03b22c1bbab52",
+    "internal/classifier/data/local_benign.jsonl": "06635965caa267224801f841f55c5e131aa4e037e95b080932c17d6020325c95",
+    "internal/classifier/data/external.jsonl": "940032d582633582b0de7df67e2b6b44357a5036ae10fdeeb10e57f6f73a5a92",
+    "internal/classifier/data.go": "1711dd27d518fa6e8bbcfb0a906d2212bcf9f6100b266b21bd30d3b04deda436",
+    "internal/classifier/train.go": "c232ec1abe44dd2a47b12817022919ad9c0f49ea4b87d958cdb3ce462341ba67",
+    "internal/classifier/corpus.go": "1379066abf2ad27e1309e4fece8f5b3b477d6f358404ad316ea510143f8b72d6",
+    "internal/classifier/classifier_test.go": "5bcc49121cbed6a978b32246166df2a2a8d463785d5a9148727ed139e3fae92f",
+    "internal/classifier/train_test.go": "4aab33401ef9721b26c679fe3c6087713bdc73a8ae48e01564ba9a565a208c8b",
+    "internal/classifier/corpus_test.go": "d7a1c3004d426e23e6768760c15964905c454960193e3423dbf33ce2767a2d56",
+    "internal/classifier/gen/main.go": "d48b248f01adecc14dfb3157297cec31f73f6e620ff4257d109ca7335e982b42",
+    "scripts/fetch-classifier-data.sh": "8a047d12a1f03387be44762d6c546b43e5c289484560e8a4929b45410342cf44",
+    "testdata/adversarial/README.md": "31a95ca547268b9cb9b7535aa2e84c56a5de07b3cb6e3712e02c0d8a52ca462c",
+    "testdata/adversarial/cases.json": "07a240e7c5b4ca7c091ecc12141b6df79072033d61b2b78accc80eccd885fc0f",
+    "testdata/corpus/benign/08-git.md": "f5a9c0131b3e96eebcd97c1db117b42e47e2d3e35080bd09131dac3834954662",
+    "testdata/corpus/benign/03-code.go": "a373134f0c29797ec79d951ca475f105b1635d4c596619e5292ff5d24f22f438",
+    "testdata/corpus/benign/05-ru-docs.md": "1d1669136b1d458520fb3188b7894f334c61597753ed29a3d5e2369ba4c38035",
+    "testdata/corpus/benign/09-changelog.txt": "581d46c9bda36cb718a540f7bf1c8d904340fef76a569c8b750ebcb90aa3f8b4",
+    "testdata/corpus/benign/04-style-guide.md": "f57de3aac1de7c5b793b0cfbf930d7f77aed85c635d862ab3f0611c76f6f686c",
+    "testdata/corpus/benign/10-encoding-docs.md": "4e4c93670f7161abf0d05d86de8dca58b9b763b159635ea3e5df189cd3ef92af",
+    "testdata/corpus/benign/02-install-docs.md": "7e607c99a8e74fdf8e27d373ed867060a6332cde7add882ab2c9548ae1cca829",
+    "testdata/corpus/benign/07-ssh-config.md": "a14a18f5d593051bb8c7ac482485fd882d2ad00c63416d733cf795484ab438b6",
+    "testdata/corpus/benign/06-curl-download.md": "d65ca6b25d38c311d0c1e4f6fbb1c2cb365c22fe8e99da4d05ac417dfbf8dbf7",
+    "testdata/corpus/benign/01-readme.md": "f251c9989668b1f30a39f762ce5d5c72dfd87899c5c9fdf3219486e6f417c82a",
+    "testdata/corpus/malicious/11-abort-bait.md": "6947b2df6f7f392694680101093777630a5d98f20d23ccc0e89ba41775fd9085",
+    "testdata/corpus/malicious/04-ru-override.md": "328946b4b67b1d9e21468151ef806228521db619df16c0d4abdeaebbe3b56020",
+    "testdata/corpus/malicious/03-base64.txt": "4d1cd2603d1e2fcc2c93e8717f1ce138b5afefb47a7a0aba48e2d7669fb98aee",
+    "testdata/corpus/malicious/07-hidden-comment.md": "ffbd7c5799b0d122d5729e4490a17d547370e830e29dc73cdca95cf488f3ba87",
+    "testdata/corpus/malicious/06-curl-pipe-sh.md": "0afdc76938a50265d4ce5a8fe024d67edcd3b60add38dbe1957059aa35244743",
+    "testdata/corpus/malicious/05-fake-system.txt": "42ac0fab523de78a6f13638bf249e77ce2548480c67f0c232183ec609f3c948c",
+    "testdata/corpus/malicious/10-charcode.js": "5fe2de5d14bc8735eebaacad804a78bc9db91351a30b07c10c7c12dda4978460",
+    "testdata/corpus/malicious/01-override.md": "37018bc9ccdcfcabfe13776103613cea6e0b4fe7f66b71b83967ef1ef47d3e3f",
+    "testdata/corpus/malicious/09-repo-swap.sh": "04c519df64deb484bf95db8b52fdf3d802029d4e3c73bc19b1b7f39880a5b61e",
+    "testdata/corpus/malicious/02-conceal-exfil.txt": "f66a10bd7a73c8daf915eca7e52e3a5d8abf17e27add0e46d54429f3c7d05a73",
+    "testdata/corpus/malicious/08-zerowidth.txt": "fb0a868594dae602e778f0669fb3bae81578db63bc172d2aa17aeecac58c5edf",
+    "internal/scan/metrics_test.go": "8af06347bf6ac237eb04017f5ba7549c7932bea428521df2f5921f2b57da00b0",
+    "docs/model-comparison.md": "03446c944726172a933ffd2e75fdd46757ea4af03af60454a2e420e85e2f81e2",
+    "docs/model-comparison-results.md": "f0f07db869136bae0fc4ec0ce396a3482fbd8a48ab7870a61ffe3cc8ec3d52ff",
+    "internal/scan/adversarial_test.go": "114f3c350ee17733ee901a80d400697cca2674991b2804f9d6b51203b3876ed5"
+  },
+  "embedded_model_sha256": "679108547f662836e3056ddb44a76d0a093bdfaaf12447782a685a4a57474e5a",
+  "additional_migrations": [
+    {
+      "source_commit": "90431804aaaa8f6d6d25946d130f35da377b8719",
+      "files": [
+        {
+          "source_path": "internal/scan/normalize/gen/main.go",
+          "destination_path": "cmd/gen-confusables/main.go",
+          "original_sha256": "d50ac2a45d58cc57cbe508d9a6eff2d320629530cf2018b7c0fd874762750ff9"
+        },
+        {
+          "source_path": "internal/scan/normalize/gen/confusables.txt",
+          "destination_path": "datasets/unicode/confusables.txt",
+          "original_sha256": "6ed3ee967c9dfdf6677d563c9985182fbc50a2efb7d6059cd57b2e2ce18f5b92"
+        },
+        {
+          "source_path": "docs/idea.md",
+          "destination_path": "docs/history/idea.md",
+          "original_sha256": "172fe024945d4e2f07221df8207485b7ac1f7767794b292c5efc2e794b051e31"
+        },
+        {
+          "source_path": "docs/status.md",
+          "destination_path": "docs/history/status.md",
+          "original_sha256": "af63967a32dea120fd62c5ef5f8cebfbce0ffe9227c50966f2e6c8b40627b805"
+        },
+        {
+          "source_path": "testdata/clean/README.md",
+          "destination_path": "testdata/examples/clean/README.md",
+          "original_sha256": "b249166f3ecddd289df367d0e5d62329a73bc26abd325f46e413f290146bf170"
+        },
+        {
+          "source_path": "testdata/clean/main.go",
+          "destination_path": "testdata/examples/clean/main.go",
+          "original_sha256": "2942b1972754222d88fb5d048d32302ce6806e7460e650b283402b87bf8677ab"
+        },
+        {
+          "source_path": "testdata/poisoned/.claude/settings.json",
+          "destination_path": "testdata/examples/poisoned/.claude/settings.json",
+          "original_sha256": "4b70606e2b3180cf8c52f55c92968bcdc433052288cc5502afb03e23694b6c1b"
+        },
+        {
+          "source_path": "testdata/poisoned/CLAUDE.md",
+          "destination_path": "testdata/examples/poisoned/CLAUDE.md",
+          "original_sha256": "f9bf8fd09405747925585b9251dbf5db667a6af816c8659b1c40b082424fe0f6"
+        },
+        {
+          "source_path": "testdata/poisoned/README.md",
+          "destination_path": "testdata/examples/poisoned/README.md",
+          "original_sha256": "373068dcc0e4be2be2ff36797e8eea7a55d58266c56835cce5ba4bafcf2230a2"
+        }
+      ]
+    }
+  ]
+}

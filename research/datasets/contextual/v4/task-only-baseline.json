@@ -1,0 +1,85 @@
+{
+  "execution": {
+    "go_version": "go1.26.4",
+    "goarch": "arm64",
+    "goos": "darwin"
+  },
+  "feature_schema": "hashed-char-ngram-v1",
+  "limitations": "Diagnostic for task-only leakage; no new encoder fit/test comparison, no guarantee against document/style shortcuts. Dependent translations and provenance variants; no row-wise confidence intervals.",
+  "metrics": {
+    "train": {
+      "fixed_0_5": {
+        "accuracy": 0.5,
+        "fn": 160,
+        "fp": 120,
+        "fpr": 0.42857142857142855,
+        "n": 560,
+        "pr_auc_ap": 0.49999999999999983,
+        "recall": 0.42857142857142855,
+        "threshold": 0.5,
+        "tn": 160,
+        "tp": 120
+      },
+      "validation_fpr_0_01": {
+        "accuracy": 0.5,
+        "fn": 280,
+        "fp": 0,
+        "fpr": 0,
+        "n": 560,
+        "pr_auc_ap": 0.49999999999999983,
+        "recall": 0,
+        "threshold": 1.0000000000000002,
+        "tn": 280,
+        "tp": 0
+      }
+    },
+    "validation": {
+      "fixed_0_5": {
+        "accuracy": 0.5,
+        "fn": 140,
+        "fp": 140,
+        "fpr": 0.5,
+        "n": 560,
+        "pr_auc_ap": 0.49999999999999983,
+        "recall": 0.5,
+        "threshold": 0.5,
+        "tn": 140,
+        "tp": 140
+      },
+      "validation_fpr_0_01": {
+        "accuracy": 0.5,
+        "fn": 280,
+        "fp": 0,
+        "fpr": 0,
+        "n": 560,
+        "pr_auc_ap": 0.49999999999999983,
+        "recall": 0,
+        "threshold": 1.0000000000000002,
+        "tn": 280,
+        "tp": 0
+      }
+    }
+  },
+  "model": "native logistic regression on task text only",
+  "options": {
+    "Epochs": 40,
+    "LR": 0.5,
+    "L2": 0.00001,
+    "Seed": 1
+  },
+  "production_ready": false,
+  "schema": 1,
+  "source_sha256": {
+    "answer-contamination.jsonl": "dfc76ca32c94195e871e55ac3d47665259b227a04ec460d09bbd007678827c26",
+    "authority-spoofing.jsonl": "5a2c93c01175d086f57f361ae046837db4f9258675dc9f0f1791b8ed093cc73d",
+    "data-exfiltration.jsonl": "b12c7d8541eecc1c69334f909bfce7afcc5c0b26c64a2f125a730c040b89d722",
+    "evidence-fabrication.jsonl": "0f630579be6407985c34873fc5ea5e6827bc7056551846cc1488d18efba49a2b",
+    "task-hijacking.jsonl": "29d6fcb2d2a003c8973312dd57184d13a260f1dfaa81798743c7c88cf01f8bc2",
+    "taxonomy.json": "b4c46fd902d34ff2a993a537d2088c010612e8ba86bd84df7348e2bd3c69cf3b",
+    "unauthorized-actions.jsonl": "5596c2d383405a4580b8f9dfd2f8ea582bd6e1eb8bfea2849938b867fa303edf",
+    "verification-suppression.jsonl": "81636222b14a80916529982eea5ce5e26b29a491f141700a0cef4fa6a79de400"
+  },
+  "test_scored": false,
+  "train_input_sha256": "92aa74b2ebaf16dcf3effeb3266ce23f46460f1ab7b001edb25db4fe48ee03ab",
+  "weights_sha256": "2633b95bd6336d63255111556d6d8f51ef236fdf8c3c1453b382aae1b4859ad2"
+}
