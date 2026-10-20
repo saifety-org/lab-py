@@ -7,6 +7,7 @@ require golang.org/x/text v0.42.0
 require (
 	github.com/pemistahl/lingua-go v1.4.0
 	github.com/saifety-org/prompt-injection-model v0.0.0-20261011142547-7c0700c200da
+	github.com/santhosh-tekuri/jsonschema/v6 v6.0.3
 )
 
 require (

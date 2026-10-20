@@ -51,12 +51,18 @@ def test_frozen_and_regression_files_match_import_manifest():
 
 
 def test_collector_request_pins_checkout_without_changing_experiment():
-    path = Path("device-jobs/context-corpus-v5-contracts-v4.json")
+    path = Path("device-jobs/context-corpus-v5-contracts-v5.json")
     job = json.loads(path.read_text())
-    old = json.loads(Path("device-jobs/context-corpus-v5-contracts-v3.json").read_text())
+    old_path = Path("device-jobs/context-corpus-v5-contracts-v4.json")
+    old = json.loads(old_path.read_text())
+    assert sha256(old_path) == "dcf1436f015697f3c44a6e5bcb64e6515224a1bf09dadf0258282da5e9982a2b"
     assert job["collector"]["repository"] == "saifety-org/lab-py"
     assert job["collector"]["tools_sha256"] == sha256(Path("research/tools.lock.json"))
-    assert job["collector"]["operation"] == "collect-contracts-v4"
+    assert job["collector"]["operation"] == "collect-contracts-v5"
+    assert job["receipt_schema"] == "saifety-context-collection-receipt-v5"
+    assert job["intent_constraints"]["send_destination_max_bytes"] == 120
+    assert job["intent_constraints"]["stop_on_first_rejection"] is True
+    assert job["intent_constraints"]["repair_retry_normalization"] is False
     assert sha256(path) in path.with_suffix(".md").read_text(encoding="utf-8")
     for key in (
         "generation",

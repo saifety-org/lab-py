@@ -44,8 +44,9 @@ artifacts остаются отдельными pinned dependencies. Отдел�
 [Task исправленного прогона](https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=276945651):
 v4 выполнен с REVISE, первый intent невалиден, documents/pilot не достигнуты.
 [Отчёт](context-corpus-v5-contracts-v4.md).
-[Следующее исправление](https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=276953222)
-остаётся Backlog; новые model calls требуют нового принятого versioned request.
+[Исправление destination](https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=276953222)
+взято в работу по прямому поручению пользователя; новые model calls требуют
+нового принятого versioned request.
 
 [Очередь](../device-jobs/README.md) не заменяет live статус/проверку зависимостей.
 Старые jobs не повторять по наличию файла. Issue URLs в accepted JSON requests
@@ -59,3 +60,5 @@ local-only/NOASSERTION; неизвестный usage — null, не ноль. П
 metrics/hashes/errors/limitations, без raw текста/личных paths/configs/secrets/weights.
 Не менять frozen v4/test/thresholds и не запускать fullpool/training/freeze/promotion
 вне отдельного принятого задания; scripted actor не заменяет модельные выводы.
+
+Новый [contracts-v5 runbook](../device-jobs/context-corpus-v5-contracts-v5.md) и [GPU task](https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=276982660) подготовлены вместе с исправлением в PR#34; запуск только после usermerge/mainCI, затем Todo → In Progress. Текущие исправления по прямому поручению пользователя брать в разработку сразу, не оставлять в Backlog из-за ожидания будущего GPU run.

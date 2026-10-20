@@ -214,7 +214,7 @@ func Validate(f Family) error {
 	if f.Origin.Method == "ollama" && (f.Origin.Model == "" || !hexDigest.MatchString(f.Origin.Digest) || f.Origin.Runtime == "" || !hexDigest.MatchString(f.Origin.PromptSHA256) || !hexDigest.MatchString(f.Origin.ResponseSHA256)) {
 		return fmt.Errorf("missing generation receipt")
 	}
-	contract := strings.HasPrefix(f.Origin.Recipe, "contract-v3-") || strings.HasPrefix(f.Origin.Recipe, "contract-v4-")
+	contract := strings.HasPrefix(f.Origin.Recipe, "contract-v3-") || strings.HasPrefix(f.Origin.Recipe, "contract-v4-") || strings.HasPrefix(f.Origin.Recipe, "contract-v5-")
 	if contract && !hexDigest.MatchString(f.Origin.ContractSHA256) {
 		return fmt.Errorf("missing contract plan evidence")
 	}

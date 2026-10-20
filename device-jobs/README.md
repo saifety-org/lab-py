@@ -12,6 +12,7 @@
 | `context-corpus-v5-paired-v2` | Windows / RTX 5070 Ti | [Проверить исправленный генератор](https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=273503121) | [runbook](context-corpus-v5-paired-v2.md), [pins и caps](context-corpus-v5-paired-v2.json) |
 | `context-corpus-v5-contracts-v3` | Windows / RTX 5070 Ti | [Проверить явные контракты](https://github.com/saifety-org/lab-py/issues/16) | [runbook](context-corpus-v5-contracts-v3.md), [pins и caps](context-corpus-v5-contracts-v3.json) |
 | `context-corpus-v5-contracts-v4` | Windows / RTX 5070 Ti | [Исправленный prose](https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=276945651) | [runbook](context-corpus-v5-contracts-v4.md), [pins и caps](context-corpus-v5-contracts-v4.json) |
+| `context-corpus-v5-contracts-v5` | Windows / RTX 5070 Ti | [Destination + prose](https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=276982660) | [runbook](context-corpus-v5-contracts-v5.md), [pins и caps](context-corpus-v5-contracts-v5.json) |
 
 Первый `context-corpus-v5-pilot` завершён с [STOP/0 кандидатов](../docs/context-corpus-v5-pilot.md).
 Его request не разрешает третью попытку. `paired-v2` завершён с
@@ -39,4 +40,4 @@
 
 Новые jobs используют локальный collector из `research/`; отдельные PR в lab не нужны.
 
-Следующее [исправление destination constraints](https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=276953222) — task Backlog, без разрешения нового model call.
+Новый contracts-v5 подготовлен в PR#34; [GPU task](https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=276982660) ждёт usermerge и successful main check. [Задача исправления](https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=276953222) взята In Progress по поручению пользователя. Старые v4 inputs не повторять.
