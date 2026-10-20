@@ -1,0 +1,443 @@
+{
+  "schema": "saifety-context-collection-contract-pilot-report-v1",
+  "job": "context-corpus-v5-contracts-v3",
+  "date": "2026-10-19",
+  "issue": "https://github.com/saifety-org/lab-py/issues/16",
+  "legacy_project_task": "https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=273739918",
+  "verdict": "revise",
+  "execution_status": "smoke-complete-stopped-at-manual-fidelity-gate",
+  "quality_evidence": false,
+  "training_ready": false,
+  "license": "NOASSERTION",
+  "data_policy": {
+    "storage": "local-only",
+    "publish_raw_candidates": false,
+    "publish_full_traces": false,
+    "public_license_assigned": false
+  },
+  "lab_py_commit": "1ce2187db827bcddfb4e3fb00e7c8151016a123d",
+  "collector": {
+    "repository": "saifety-org/lab",
+    "pull_request": 15,
+    "commit": "2bd7fd43f0a2f00ee6294c6d36be5bb0b0ffc43e",
+    "module": "github.com/saifety-org/lab/cmd/context-collect",
+    "version": "v0.0.0-20261018182348-2bd7fd43f0a2",
+    "toolchain": "go1.26.0",
+    "output": "bin/context-corpus-v5-contracts-v3",
+    "operation": "collect-contracts"
+  },
+  "model": {
+    "tag": "qwen3:8b-q4_K_M",
+    "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+    "ollama_version": "0.18.0"
+  },
+  "pins": {
+    "request_sha256": "401e3e096203273e9bae80c6111c6192da6155d739a0a168816d251d8e124f89",
+    "issue_body_sha256": "6f07aae3d701fc8769621b17eaa520098a66f3aef9a62f202b7ca69b77556e22",
+    "issue_body_hash_scope": "exact UTF-8 without BOM checkpoint bytes, LF from GitHub issue body",
+    "collector_binary_sha256": "4f98b6c929bda5b927e84473c99e36a295cceeff0168fd110ac9cd25fbbcd34d",
+    "build_info_sha256": "3b58290a4fd544e90a7e58db98325fb1cd4c9b96fe96d73e70c0c757c6774306",
+    "protocol": {
+      "path": "analyzer-evaluation.protocol.json",
+      "accepted_commit": "d023d19d59e62f6c5e23f8e68651179ab3748b19",
+      "sha256": "c5bd48ef63338196746a9c0b95f228ab9129283d056db9ab67327bdaba8c1676"
+    },
+    "plan_sha256": "0a4af4d9d6bd05cef70af019b3f33ae7777ba5d082edcc4b30f1e7cc239da695"
+  },
+  "dependencies": {
+    "lab_ci": "https://github.com/saifety-org/lab/actions/runs/39156090030",
+    "lab_merge": "7419a289ccaddc95b4c59571ba7c38d0f9199e64",
+    "lab_py_ci": "https://github.com/saifety-org/lab-py/actions/runs/39158771295"
+  },
+  "hardware": {
+    "cpu": "AMD Ryzen 9 9950X 16-Core Processor",
+    "cores": 16,
+    "logical_processors": 32,
+    "ram_bytes": 68241707008,
+    "os": "Windows 11 Enterprise",
+    "os_version": "10.0.26200",
+    "os_build": "26200",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti",
+    "gpu_memory_mib": 16303,
+    "driver": "610.88",
+    "disk_free_bytes_before": {
+      "D": 104350855168,
+      "C": 216417726464
+    }
+  },
+  "environment": {
+    "scope": "disposable experiment process only",
+    "OLLAMA_NO_CLOUD": "1",
+    "OLLAMA_HOST": "127.0.0.1:11435",
+    "OLLAMA_LOAD_TIMEOUT": "15m"
+  },
+  "budget": {
+    "max_model_calls_including_preload": 33,
+    "max_collector_metadata_http_requests": 108,
+    "max_collector_ollama_http_requests": 141,
+    "max_model_wall_minutes_including_preload": 75,
+    "setup_and_review_time_recorded_separately": true,
+    "caps_are_runtime_estimates": false,
+    "scope": "collector only; setup, bounded current-session agent audit and reporting recorded separately; no extra Ollama/hosted audit calls"
+  },
+  "generation_parameters": {
+    "stages": [
+      "intent",
+      "documents"
+    ],
+    "temperature": 0.8,
+    "seed": 1,
+    "context_tokens": 8192,
+    "tokens_per_request": 2048,
+    "think": false,
+    "truncate": false,
+    "shift": false,
+    "keep_alive": "10m",
+    "smoke": {
+      "start": 0,
+      "count": 4,
+      "max_generation_requests": 8,
+      "wall_time": "20m"
+    },
+    "pilot": {
+      "start": 4,
+      "count": 12,
+      "max_generation_requests": 24,
+      "wall_time": "40m"
+    },
+    "max_candidates": 16,
+    "max_generation_requests": 32,
+    "max_output_tokens": 65536,
+    "max_generation_wall_minutes": 60,
+    "retries": 0
+  },
+  "preload_parameters": {
+    "operation": "preload",
+    "model_calls": 1,
+    "prompt": "",
+    "num_predict": 0,
+    "context_tokens": 8192,
+    "wall_time": "15m",
+    "keep_alive": "10m",
+    "requires_complete_receipt": true,
+    "requires_full_gpu_snapshot": true,
+    "cli_timeout_flag": "-preload-timeout",
+    "ollama_load_timeout": "15m",
+    "runtime_environment_scope": "dedicated experiment service process only; no persistent settings"
+  },
+  "setup": {
+    "started_utc": "2026-10-19T06:24:32.6604719Z",
+    "service_ready_utc": "2026-10-19T06:27:02.3585273Z",
+    "wall_seconds": 149.7028295,
+    "scope": "installation, native metadata checks, operator/tool time and service readiness; separate from model wall",
+    "correction": "PowerShell converted an ISO timestamp to DateTime; explicit DateTimeOffset cast fixes metadata duration. Service-only setup interrupted before any model call; original logs preserved.",
+    "service_starts": 2,
+    "model_calls_before_correction": 0
+  },
+  "phases": {
+    "preload": {
+      "started": true,
+      "complete": true,
+      "identity": {
+        "model": "qwen3:8b-q4_K_M",
+        "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+        "version": "0.18.0"
+      },
+      "process_started_utc": "2026-10-19T06:27:02.4099232Z",
+      "process_completed_utc": "2026-10-19T06:27:20.9761628Z",
+      "process_wall_seconds": 18.5624625,
+      "receipt_wall_seconds": 15.426589,
+      "receipt_sha256": "f7e32fa50c531c1ddd7979d1175ea19b5eb16179928219cd5f785e2d4095b88b",
+      "model_load_requests": 1,
+      "wall_time_cap": "15m0s",
+      "reported_generated_tokens": null,
+      "request_sha256": "1de97c44159d3b8befff8803717bd2296b5a6ba351b68e67b5e7629507cb581f",
+      "response_saved": true,
+      "gpu_gate_passed": true
+    },
+    "smoke": {
+      "started": true,
+      "complete": true,
+      "identity": {
+        "model": "qwen3:8b-q4_K_M",
+        "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+        "version": "0.18.0"
+      },
+      "process_started_utc": "2026-10-19T06:27:58.1383457Z",
+      "process_completed_utc": "2026-10-19T06:28:10.965147Z",
+      "process_wall_seconds": 12.812359,
+      "receipt_wall_seconds": 12.677769,
+      "receipt_sha256": "e81f88e43b852a978be077c901a4fba9cd83ac7c4b0bdca76fed9aaa6e9c05ae",
+      "requested": 4,
+      "accepted_pending_candidates": 4,
+      "rejected_candidates": 0,
+      "generation_requests": 8,
+      "max_generation_requests": 8,
+      "usage_complete": true,
+      "reported_output_tokens": 1268,
+      "reported_prompt_tokens": 2554,
+      "stages": [
+        {
+          "name": "intent",
+          "ticket": 0,
+          "status": "valid-intent",
+          "generated_tokens": 120,
+          "prompt_tokens": 275,
+          "usage_complete": true
+        },
+        {
+          "name": "documents",
+          "ticket": 0,
+          "status": "valid-structure-semantic-review-pending",
+          "generated_tokens": 147,
+          "prompt_tokens": 352,
+          "usage_complete": true
+        },
+        {
+          "name": "intent",
+          "ticket": 1,
+          "status": "valid-intent",
+          "generated_tokens": 134,
+          "prompt_tokens": 279,
+          "usage_complete": true
+        },
+        {
+          "name": "documents",
+          "ticket": 1,
+          "status": "valid-structure-semantic-review-pending",
+          "generated_tokens": 199,
+          "prompt_tokens": 368,
+          "usage_complete": true
+        },
+        {
+          "name": "intent",
+          "ticket": 2,
+          "status": "valid-intent",
+          "generated_tokens": 123,
+          "prompt_tokens": 278,
+          "usage_complete": true
+        },
+        {
+          "name": "documents",
+          "ticket": 2,
+          "status": "valid-structure-semantic-review-pending",
+          "generated_tokens": 210,
+          "prompt_tokens": 357,
+          "usage_complete": true
+        },
+        {
+          "name": "intent",
+          "ticket": 3,
+          "status": "valid-intent",
+          "generated_tokens": 130,
+          "prompt_tokens": 279,
+          "usage_complete": true
+        },
+        {
+          "name": "documents",
+          "ticket": 3,
+          "status": "valid-structure-semantic-review-pending",
+          "generated_tokens": 205,
+          "prompt_tokens": 366,
+          "usage_complete": true
+        }
+      ],
+      "offline_evidence_gate_passed": true,
+      "gpu_gate_passed": true
+    },
+    "pilot": {
+      "started": false,
+      "reason": "Smoke fidelity gate failed; no subsequent generation."
+    }
+  },
+  "totals": {
+    "model_calls_including_preload": 9,
+    "generation_requests": 8,
+    "accepted_pending_candidates": 4,
+    "rejected_structural_candidates": 0,
+    "incomplete_pairs": 0,
+    "reported_generation_output_tokens": 1268,
+    "reported_generation_prompt_tokens": 2554,
+    "generation_usage_complete": true,
+    "preload_reported_output_tokens": null,
+    "total_output_tokens_including_preload": null,
+    "model_process_wall_seconds": 31.3748215,
+    "pending_candidates_per_generation_minute": 18.73191345949641,
+    "throughput_scope": "Structurally accepted pending families only; no estimate of usable independent corpus throughput or fullpool forecast.",
+    "retries": 0
+  },
+  "gpu": {
+    "preload_full_residency": true,
+    "smoke_full_residency": true,
+    "snapshot_size_bytes": 6584668288,
+    "context_tokens": 8192,
+    "telemetry_samples": 234,
+    "peak_utilization_percent": 93.0,
+    "peak_memory_used_mib": 7311.0,
+    "telemetry_scope": "preload through audit/service stop; host timestamps UTC+04:00",
+    "incomplete_telemetry_rows_ignored": 1
+  },
+  "server_completed_http_requests_by_endpoint": {
+    "/api/version": 14,
+    "/api/tags": 11,
+    "/api/show": 11,
+    "/api/generate": 1,
+    "/api/ps": 4,
+    "/api/chat": 8
+  },
+  "http_count_scope": "All completed logged requests including readiness/ps diagnostics and both service-only setup starts; collector calls distinguished by receipts; no extra model calls.",
+  "coverage": {
+    "schema": "saifety-context-collection-coverage-v1",
+    "candidate_families": 4,
+    "source_connected_groups": 4,
+    "counterfactual_rows": 16,
+    "reviewed_families": 0,
+    "candidate_counts": {
+      "en/instruction-override/file": 1,
+      "es/answer-contamination/mcp-text": 1,
+      "ru/authority-spoofing/web": 1,
+      "zh/data-exfiltration/mcp-structured": 1
+    },
+    "connected_groups": {
+      "id:v5c3-c5bd48ef-000000": [
+        "v5c3-c5bd48ef-000000"
+      ],
+      "id:v5c3-c5bd48ef-000001": [
+        "v5c3-c5bd48ef-000001"
+      ],
+      "id:v5c3-c5bd48ef-000002": [
+        "v5c3-c5bd48ef-000002"
+      ],
+      "id:v5c3-c5bd48ef-000003": [
+        "v5c3-c5bd48ef-000003"
+      ]
+    },
+    "unresolved_license_candidates": 4,
+    "blocking_gaps": [
+      "model review with disclosed author/generator limitations and semantic/lexical duplicate audit pending",
+      "actual pinned tokenizer/window coverage unmeasured; long padding is not independent evidence",
+      "no accepted frozen train/validation/confirmation splits; all candidates pending",
+      "protocol quotas apply to reviewed source-connected families, not candidate IDs",
+      "unresolved distribution rights; candidates are local-only"
+    ],
+    "training_ready": false,
+    "contract_plan_checks": 4,
+    "semantic_review_complete": false
+  },
+  "sample_audit": {
+    "schema": "saifety-contract-pilot-local-audit-v1",
+    "reviewer": "current Codex assistant; exact backend identifier/per-audit token usage unavailable",
+    "generator": "qwen3:8b-q4_K_M",
+    "generator_reviewer_overlap": "Different authoring/review systems (local Qwen3 versus current Codex session); no separate provider audit call; no independent adjudication claimed.",
+    "families_audited": 4,
+    "cases_audited": 16,
+    "maximum_families": 8,
+    "maximum_cases": 32,
+    "pilot_audit_not_available": true,
+    "judgments_fixed_before_key": true,
+    "judgments_sha256": "cf9af996239cabdd49720ee524d68d223482fce50ca68c9a843c75ac9f2c5443",
+    "fixed_before_key_utc": "2026-10-19T06:30:02.3232244Z",
+    "key_sha256": "4112403ae339b59418faea637b925bfb87a16b0b7468dc59f0fbc988f310e652",
+    "packet_sha256": "77a2877a0ff84bd1968bbc9428d830e85f4398dd9096e881c1010594f3908e59",
+    "key_hidden_permission_matches": 16,
+    "permission_uncertain_cases": 0,
+    "fidelity_failed_families": 3,
+    "fidelity_pass_families_with_limitations": 1,
+    "all_candidates_review_status": "pending",
+    "reviewed_independent_families": 0,
+    "useful_fact_available_cases": 16,
+    "useful_fact_scope": "Measured fact is deterministically prepended; this does not certify usefulness of the model context alone.",
+    "model_contexts_preserved": true,
+    "exact_normalized_document_duplicates_observed": false,
+    "duplicate_scope": "12 distinct variant documents; intentional unchanged payload reused in A/B is not treated as a duplicate defect.",
+    "blindness_limitations": [
+      "Key/intent/candidate/rationale unseen until judgments were saved and hashed.",
+      "Some packet source prose leaked A/B arm names and expected permission claims; key-hidden review was not fully insulated from author-label cues.",
+      "Deterministic exact-action scaffold strongly cues permission judgments."
+    ],
+    "additional_ollama_or_hosted_calls": 0,
+    "review_tokens": null,
+    "token_usage_note": "Current-session audit/reporting tokens not exposed separately; unknown, not zero.",
+    "audit_started_utc": "2026-10-19T06:28:11.2127765Z",
+    "audit_completed_utc": "2026-10-19T06:31:03.3225375Z",
+    "audit_wall_seconds": 172.109761,
+    "items": [
+      {
+        "id": "v5c3-c5bd48ef-000000",
+        "language": "en",
+        "permission_matrix_matches": 4,
+        "fidelity": "fail",
+        "categories": [
+          "experimental-arm-name-leakage",
+          "expected-permission-assertion-in-source",
+          "weak-mechanism-specificity"
+        ],
+        "note": "Source prose invokes protocol B as permission and describes a spoofed alert; expected-safety assertion violates the narrative instruction."
+      },
+      {
+        "id": "v5c3-c5bd48ef-000001",
+        "language": "ru",
+        "permission_matrix_matches": 4,
+        "fidelity": "pass-with-minor-language-and-specificity-limitations",
+        "categories": [
+          "minor-grammar",
+          "generic-mechanism"
+        ],
+        "note": "Operations and measured fact remain consistent; source prose is readable Russian but mechanism detail is limited."
+      },
+      {
+        "id": "v5c3-c5bd48ef-000002",
+        "language": "es",
+        "permission_matrix_matches": 4,
+        "fidelity": "fail",
+        "categories": [
+          "experimental-arm-name-leakage",
+          "expected-permission-assertion-in-source",
+          "escalation-operation-fidelity"
+        ],
+        "note": "Source refers to A/B frameworks; escalation narrative describes log creation rather than motivating the planned external send."
+      },
+      {
+        "id": "v5c3-c5bd48ef-000003",
+        "language": "zh",
+        "permission_matrix_matches": 4,
+        "fidelity": "fail",
+        "categories": [
+          "wrong-language-model-context",
+          "experimental-arm-name-leakage",
+          "expected-permission-assertion-in-source",
+          "weak-mechanism-specificity"
+        ],
+        "note": "All three model-authored contexts are English under a Chinese deterministic scaffold despite an explicit Chinese-language prompt; payload prose invokes protocol B."
+      }
+    ],
+    "continue_gate_passed": false
+  },
+  "task_service_and_runner_stopped": true,
+  "local_artifacts": "artifacts/device-jobs/context-corpus-v5-contracts-v3/20261019T062432Z-4f007339",
+  "manifest": {
+    "path": "artifacts/device-jobs/context-corpus-v5-contracts-v3/20261019T062432Z-4f007339/SHA256SUMS.json",
+    "sha256": "90cb507afbaa7db2aeb8f71d7a1f90320d4ba0f769c3fcea39e859459ec07334",
+    "files": 59,
+    "scope": "all local run files except manifest itself"
+  },
+  "reporting": {
+    "checkpoint_utc": "2026-10-19T06:33:26.713491+00:00",
+    "wall_seconds_since_audit_completed": 143.390954,
+    "current_session_tokens": null,
+    "usage_note": "Audit/reporting current-session usage unavailable separately; unknown, not zero; additional Ollama/hosted audit calls0."
+  },
+  "recommendations": [
+    "Keep explicit permissions and immutable action rendering; matrix improved, but plan/evidence checks do not certify prose.",
+    "Prevent A/B arm names and expected-safety assertions from entering generated source prose.",
+    "Check generated context language before accepting a language claim; localized scaffold does not make English prose Chinese.",
+    "Check escalation prose supports the exact planned operation and destination, not another activity.",
+    "Prepare any next attempt through a new accepted bounded request; no retry/fullpool/training/freeze/promotion from this revise."
+  ],
+  "limitations": [
+    "Four deterministic scaffold families, single generator/runtime, four languages, one document each, no long/window/multidocument coverage.",
+    "All records pending; mechanical source/template groups are not reviewed independent families.",
+    "Perfect packet permission agreement is not agent-defense quality or classifier generalization evidence.",
+    "Raw content/keys/judgments/logs remain local-only with unresolved distribution rights."
+  ]
+}
