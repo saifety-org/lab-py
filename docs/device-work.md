@@ -1,128 +1,61 @@
-# Работа между Mac и GPU-ПК через GitHub
+# Работа через задачи GitHub Project
 
-GitHub хранит поручение и результаты. Чат конкретного устройства и локальная память
-не являются источником требований. Код и данные готовятся локально или в CI в этом репозитории; реальный LLM-прогон
-выполняется локально на Windows-ПК с RTX 5070 Ti, когда он доступен.
+По указанию пользователя от 2026-10-20 поручения оформляем самостоятельными tasks
+в [Project](https://github.com/orgs/saifety-org/projects/1), без repository Issues.
+API type ProjectV2DraftIssue используется как постоянная task, не как будущий Issue.
+Цель/критерии/зависимости/job/журнал — body, Status/Priority/Component/Device/
+Assignees — поля Project. Перед append сначала прочитать актуальный текст.
 
-## Где смотреть работу
-
-- Issues соответствующего репозитория: поручение, критерии готовности, обсуждение,
-  журнал запусков, ошибки и результаты в комментариях.
-- [Project](https://github.com/orgs/saifety-org/projects/1): общая доска Issues,
-  статусы, приоритеты, устройства и исполнители.
-- [device-jobs](../device-jobs/README.md): версионированные инструкции/JSON requests.
-- `reports/` и `docs/`: значимые итоговые отчёты и методика через PR.
-- `artifacts/`: полные traces/измерения на исполняющем устройстве, исключены из Git.
-
-На ПК достаточно открыть локальный `lab-py` в Codex и поручить:
-«Возьми готовое задание для этого ПК по AGENTS.md». Контекст и команды агент читает
-из репозитория и карточки. Перед выбором задания он обновляет чистый checkout main
-через `git pull --ff-only`; изменения пользователя не сбрасывает. Если checkout
-грязный — использует отдельный clone/worktree. Входы в аккаунты выполняет оператор.
-
-## Статусы и ответственность
-
-1. Координатор создаёт Issue в репозитории по компоненту, добавляет в Project,
-   указывает цель, критерии, устройство и зависимости. Самому поручению PR не нужен.
-   Новые или изменённые воспроизводимые инструкции/JSON requests проходят PR.
-   Пока необходимые изменения не приняты, прогон остаётся Backlog.
-2. После пользовательского merge координатор проверяет main CI, фиксирует принятые
-   версии в Issue и переводит задачу прогона в Todo.
-3. Локальный агент ПК читает Issue и комментарии, проверяет Project, pins и зависимости,
-   назначает себя через аккаунт оператора и отмечает In Progress.
-   Второй агент ту же задачу не запускает.
-4. Выполняет принятый runbook. Прогресс, ошибки, недоступность и обычный результат
-   записывает комментариями в Issue без нового PR. Не подменяет модель/сценарии
-   и не делает бесконечные повторные прогоны.
-5. Если требуется изменение файлов или сохранение значимого отчёта, создаёт PR,
-   добавляет ссылку в Issue и переводит Project в Review. Done и закрытие Issue —
-   после пользовательского merge, зелёного main CI и выполнения критериев.
-   Не закрывать Issue одним merge, если ещё нужен отдельный реальный прогон.
-6. Для задачи без PR достаточно выполненных критериев и результата в Issue;
-   если нужна приёмка, сначала Review. После завершения закрыть Issue и отметить
-   Done в Project. Завершение этапа не является production promotion.
-
-Прочитать очередь и текущее задание через настроенный CLI, без браузера:
+Через настроенный gh, без браузера:
 
 ```sh
 gh project item-list 1 --owner saifety-org --format json --limit 100
-gh issue view 16 --repo saifety-org/lab-py --comments
 ```
 
-Постоянные задачи создаём как Issues; draft-карточки Project подходят для ещё
-не оформленных идей. Активные задачи конвертированы в Issues с сохранением
-Project item IDs и полей: старые ссылки на карточки остаются применимыми.
+Task body читать через gh GraphQL DraftIssue, дописывать через
+updateProjectV2DraftIssue. Для Project нужен scope project; токены не извлекать.
+Старые Issues/comments и [прежнее описание](history/issue-device-work-before-project-tasks.md)
+сохраняют историю. Массовый перенос/закрытие старых карточек не входит в обычный run.
 
-## Журнал запусков
+## Исполнение
 
-В комментарии Issue указывать: job ID/attempt, дату и устройство, принятые commits,
-request/model hashes, что запущено, фактические затраты или unknown, метрики,
-ошибки/ограничения, verdict и следующий шаг. Не копировать весь task body в каждый
-комментарий и не включать raw документы/prompts/replies/ключи/секреты.
+1. Создать task с устройством, критериями и versioned job. Изменения tooling/
+   request/runbook — одним PR lab-py; до usermerge/main CI статус Backlog.
+2. Проверить принятый main и общий check, exact source/request/model pins;
+   записать версии в task, перевести Todo. Локальный агент назначает исполнителя
+   и In Progress до первого model call, сохраняет body snapshot/hash.
+3. Использовать чистый принятый checkout (git pull --ff-only) или отдельный clone,
+   не сбрасывать чужие изменения. Выполнить конечный runbook; partial/invalid/error
+   не разрешает скрытый retry, repair или hosted fallback.
+4. В журнале фиксировать attempt/device/UTC/accepted commits/hashes, actual
+   calls/usage/time/GPU, errors/nulls, verdict и URL results PR. Значимые compact
+   JSON/Markdown — PR; обычный status update PR не требует.
+5. При results PR — Review, затем Done только после usermerge/main CI и выполнения
+   критериев. Завершение этапа не является model promotion. Без требуемого PR
+   достаточно выполненных критериев и журнала, либо Review при требуемой приёмке.
 
-Для важного результата оставлять компактные JSON/Markdown в `reports/`/`docs/`
-через PR и ссылку на него в Issue. Так решение и доказательства сохраняются с кодом.
-Промежуточный timeout или обычный status update отдельного PR не требуют, если
-принятый runbook не требует сохранить итог попытки. Действующие требования
-конкретного эксперимента, pins, budgets и правила остановки сохраняются.
+Go tools/data, Python workflow и jobs находятся в lab-py; lab архивирован.
+Collector собирается из accepted checkout по research/tools.lock.json, source и
+binary identities записываются отдельно. Runtime sAIfety и production model
+artifacts остаются отдельными pinned dependencies. Отдельного lab merge нет.
 
-Для Project нужен scope `project` настроенного `gh`. При отсутствии доступа
-зафиксировать ограничение; не извлекать токены и не запускать задачу вслепую.
-Публиковать изменения Issue и Project только в рамках порученной работы.
+## Текущий результат и ограничения
 
-## Проверка перед генерацией
+[Task исправленного прогона](https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=276945651):
+v4 выполнен с REVISE, первый intent невалиден, documents/pilot не достигнуты.
+[Отчёт](context-corpus-v5-contracts-v4.md).
+[Следующее исправление](https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=276953222)
+остаётся Backlog; новые model calls требуют нового принятого versioned request.
 
-Каждое задание использует принятый checkout lab-py, immutable pins входов и точный
-локальный model tag/digest. Paired agent-прогоны сохраняют одинаковые бюджеты обеих arms. Задание
-`proxy-refusal-v2` имеет [PowerShell runner](../scripts/run-device-job.ps1): `-Plan`
-только читает request; запуск без `-Plan` проверяет clean checkout, принятие core PR
-и успешные main CI обоих репозиториев. Runner не меняет статус карточки — это делает
-локальный агент до запуска. Наличие скрипта не включает постоянно работающую очередь.
+[Очередь](../device-jobs/README.md) не заменяет live статус/проверку зависимостей.
+Старые jobs не повторять по наличию файла. Issue URLs в accepted JSON requests
+остаются provenance; смена учёта не меняет experimental hashes/budgets.
+Старый scripts/run-device-job.ps1 исполняет только proxy-refusal-v2; -Plan offline.
 
-Runner не устанавливает ПО, не запускает Ollama, не скачивает модель и не публикует
-результаты. Эти действия, если необходимы, локальный агент выполняет по конкретному
-runbook. Файлы на Mac не копируются на ПК, remote access/self-hosted runner не нужен.
-Для первого включения ПК или запуска локальной сессии всё ещё нужен оператор.
-
-Сбор данных [context-corpus-v5-pilot](../device-jobs/context-corpus-v5-pilot.md)
-имеет отдельный request и выполняется локальным агентом по runbook, без этого runner.
-Его предел — smoke 4 + 60 запросов; пока PR не приняты и main CI не прошёл, карточка
-остаётся Backlog. Новые raw данные остаются локальными с `NOASSERTION`, публичная
-лицензия не назначается. Синтаксическая валидность кандидатов не заменяет semantic review,
-проверку происхождения и freeze корпуса.
-
-Первый corpus pilot завершился [STOP](context-corpus-v5-pilot.md), paired-v2 —
-[REVISE](context-corpus-v5-paired-v2.md), semantic pass0/2. Новый
-[contracts-v3 job](../device-jobs/context-corpus-v5-contracts-v3.md) проверяет
-intent→documents и ограниченные разрешения: 1preload+4smoke+12pilot,
-≤33collector model calls/65536outputtokens/75мин collector wall. Аудит текущего
-агента ограничен8кандидатами/32cases и учитывается отдельно, без дополнительных
-Ollama/provider calls. Это caps, не прогноз. lab#15 и lab-py#15 приняты;
-main CI проверен. [Issue текущего пилота](https://github.com/saifety-org/lab-py/issues/16)
-в Review: прогон выполнен с REVISE, результат — в
-[PR#24](https://github.com/saifety-org/lab-py/pull/24). Повторять v3 нельзя.
-Этот значимый пилот по принятому runbook сохраняет итоговый отчёт через PR;
-прогресс и ошибки идут в комментарии Issue. Raw данные local-only/NOASSERTION;
-старые jobs не повторять.
-
-Исправление языка/prose проверяет новый
-[contracts-v4 job](../device-jobs/context-corpus-v5-contracts-v4.md),
-[Issue#25](https://github.com/saifety-org/lab-py/issues/25). Он остаётся Backlog
-до пользовательского merge единого migration PR и успешного lab-py main CI.
-После этого координатор фиксирует pins/CI и переводит Todo; локальный агент
-берёт его по обычному порядку. Бюджет и модель прежние, новые guards не заменяют
-key-hidden semantic/fidelity audit. Training/fullpool этим заданием не разрешены.
-
-## Результат и воспроизводимость
-
-В Issue и значимом итоговом отчёте публикуются компактные metrics, версии/digest, hashes inputs/traces/lock,
-ошибки, затраты и анализ. Полные synthetic traces остаются в `artifacts/` на ПК;
-не публикуются конфиги клиентов, личные файлы, абсолютные пути и секреты.
-Сравнение старого и нового core отдельно от paired baseline/protected текущего
-прогона. `quality_evidence=false`; маленький development-набор не доказывает
-обобщение. Успешная сборка, нулевой baseline ASR и сбои LLM не доказывают защиту.
-
-После [объединения](repository-unification.md) Go tools/data и versioned request
-меняются в одном lab-py PR. Collector собирается из принятого checkout по
-`research/tools.lock.json`, а не через install pseudo-version из lab.
-Исторические runbooks сохраняют прежние pins; их наличие не разрешает повтор.
+Реальный LLM run — локальный Windows/RTX5070Ti агент. Без hand off/remote access/
+self-hosted runner/тяжёлого Mac. Браузер/Gmail/secrets не использовать.
+Raw plans/prompts/replies/keys/judgments/logs — ignored artifacts на ПК,
+local-only/NOASSERTION; неизвестный usage — null, не ноль. Публиковать только compact
+metrics/hashes/errors/limitations, без raw текста/личных paths/configs/secrets/weights.
+Не менять frozen v4/test/thresholds и не запускать fullpool/training/freeze/promotion
+вне отдельного принятого задания; scripted actor не заменяет модельные выводы.

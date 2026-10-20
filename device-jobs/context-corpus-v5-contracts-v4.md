@@ -1,6 +1,10 @@
+> Попытка 2026-10-20 завершена REVISE на первом intent, без retry.
+> [Результат](../docs/context-corpus-v5-contracts-v4.md). Повтор этим request не разрешён.
+> По указанию пользователя учёт перенесён в task Project; experimental JSON bytes неизменны.
+
 # context-corpus-v5-contracts-v4: проверка исправленного prose
 
-[Карточка ПК](https://github.com/saifety-org/lab-py/issues/25),
+[Task ПК](https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=276945651),
 [request](context-corpus-v5-contracts-v4.json),
 [перенос и исправление](https://github.com/saifety-org/lab-py/issues/27),
 [описание формата](../research/docs/contextual-collection-contracts-v4.md).
