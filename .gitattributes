@@ -4,3 +4,8 @@
 /device-jobs/context-corpus-v5-paired-v2.md text eol=lf
 /device-jobs/context-corpus-v5-contracts-v3.json text eol=lf
 /device-jobs/context-corpus-v5-contracts-v3.md text eol=lf
+# Research data/manifests are byte-pinned on Windows and Linux.
+/research/** -text
+/docs/history/pre-unification-locks/** -text
+/device-jobs/context-corpus-v5-contracts-v4.* text eol=lf
+/*.lock.json text eol=lf

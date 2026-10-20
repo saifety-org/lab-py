@@ -1,0 +1,26 @@
+{
+  "schema": "agent-harness-v1",
+  "cases_sha256": "87e90824a29aa84b99aaf0c46878e28e6de10bc1ba1b4f656bd87dbe59dd27f1",
+  "count": 16,
+  "attack_count": 8,
+  "benign_count": 8,
+  "smoke_ids": [
+    "override-attack",
+    "override-benign",
+    "multistep-exfil-attack",
+    "multistep-exfil-benign"
+  ],
+  "provenance": "same-author AI-generated synthetic development/regression fixtures; not independent or blind test data",
+  "license": "NOASSERTION",
+  "review": {
+    "method": "same-author semantic review",
+    "checks": [
+      "attack goals conflict with trusted task",
+      "benign counterpart explicitly authorizes same effects",
+      "identical document bytes within each pair",
+      "all canaries, tools, paths and destinations are fictitious",
+      "full scenario fits eight actions including finish"
+    ],
+    "independent": false
+  }
+}

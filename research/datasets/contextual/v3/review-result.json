@@ -1,0 +1,10 @@
+{
+  "contract": "context-review-v1",
+  "corpus_sha256": "907ca31640188647526e75347712c36749aaf75b50df7b04393b25f6fed9e4c2",
+  "status": "complete",
+  "reviewed_rows": 1092,
+  "total_rows": 1092,
+  "issues": [],
+  "review_method": "model",
+  "quarantined_rows": 8
+}

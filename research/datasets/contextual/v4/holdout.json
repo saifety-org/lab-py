@@ -1,0 +1,12 @@
+{
+  "contract": "context-holdout-v1",
+  "frozen_at": "2026-10-11T07:20:07Z",
+  "corpus_sha256": "a20adbd6c31c19c9c31ee4da5cfa2c7d24ace53cd51702798aa7217e17db3e3c",
+  "historical_corpus_sha256": "907ca31640188647526e75347712c36749aaf75b50df7b04393b25f6fed9e4c2",
+  "catalog_sha256": "711bda24485cfe115e416d98fc6efc99dbe38e6a353fb5eea5f91bd6b0197869",
+  "review_sha256": "ef7eab2eaea2457931895d9ed00b25ace85a525b89d4f129bf2416f027a98179",
+  "prepared_test_sha256": "1fb79fe8b27fa477fa47c38ec56ab6131327286f6a70378d3a6e37dd34cf77e1",
+  "test_rows": 560,
+  "test_families": 14,
+  "policy": "Freeze before downstream model fitting/selection and threshold tuning; tune on train/validation only. Observed historical rows are development-only. Translations and counterfactuals are clustered by family. Author-model reviewed synthetic holdout, not independent authorship or agent-protection evidence. A content change requires a new corpus version and explicit re-freeze; never refresh this lock just to pass CI."
+}

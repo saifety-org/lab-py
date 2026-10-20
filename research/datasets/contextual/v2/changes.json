@@ -1,0 +1,553 @@
+{
+  "from_version": "v1",
+  "to_version": "v2",
+  "method": "model",
+  "changes": [
+    {
+      "id": "answer-contamination-marker-en-0",
+      "before": {
+        "family": "answer-contamination-marker",
+        "split": "train",
+        "primary_type": "answer-contamination"
+      },
+      "after": {
+        "family": "development-completion-marker",
+        "split": "development",
+        "primary_type": "answer-contamination"
+      }
+    },
+    {
+      "id": "answer-contamination-marker-en-1",
+      "before": {
+        "family": "answer-contamination-marker",
+        "split": "train",
+        "primary_type": "answer-contamination"
+      },
+      "after": {
+        "family": "development-completion-marker",
+        "split": "development",
+        "primary_type": "answer-contamination"
+      }
+    },
+    {
+      "id": "answer-contamination-marker-es-0",
+      "before": {
+        "family": "answer-contamination-marker",
+        "split": "train",
+        "primary_type": "answer-contamination"
+      },
+      "after": {
+        "family": "development-completion-marker",
+        "split": "development",
+        "primary_type": "answer-contamination"
+      }
+    },
+    {
+      "id": "answer-contamination-marker-es-1",
+      "before": {
+        "family": "answer-contamination-marker",
+        "split": "train",
+        "primary_type": "answer-contamination"
+      },
+      "after": {
+        "family": "development-completion-marker",
+        "split": "development",
+        "primary_type": "answer-contamination"
+      }
+    },
+    {
+      "id": "answer-contamination-marker-ru-0",
+      "before": {
+        "family": "answer-contamination-marker",
+        "split": "train",
+        "primary_type": "answer-contamination"
+      },
+      "after": {
+        "family": "development-completion-marker",
+        "split": "development",
+        "primary_type": "answer-contamination"
+      }
+    },
+    {
+      "id": "answer-contamination-marker-ru-1",
+      "before": {
+        "family": "answer-contamination-marker",
+        "split": "train",
+        "primary_type": "answer-contamination"
+      },
+      "after": {
+        "family": "development-completion-marker",
+        "split": "development",
+        "primary_type": "answer-contamination"
+      }
+    },
+    {
+      "id": "answer-contamination-marker-zh-0",
+      "before": {
+        "family": "answer-contamination-marker",
+        "split": "train",
+        "primary_type": "answer-contamination"
+      },
+      "after": {
+        "family": "development-completion-marker",
+        "split": "development",
+        "primary_type": "answer-contamination"
+      }
+    },
+    {
+      "id": "answer-contamination-marker-zh-1",
+      "before": {
+        "family": "answer-contamination-marker",
+        "split": "train",
+        "primary_type": "answer-contamination"
+      },
+      "after": {
+        "family": "development-completion-marker",
+        "split": "development",
+        "primary_type": "answer-contamination"
+      }
+    },
+    {
+      "id": "known-miss-en-answer-contamination",
+      "before": {
+        "family": "known-miss-en-answer-contamination",
+        "split": "development",
+        "primary_type": "answer-contamination"
+      },
+      "after": {
+        "family": "development-completion-marker",
+        "split": "development",
+        "primary_type": "answer-contamination"
+      }
+    },
+    {
+      "id": "known-miss-en-tool-output-policy",
+      "before": {
+        "family": "known-miss-en-tool-output-policy",
+        "split": "development",
+        "primary_type": "answer-contamination"
+      },
+      "after": {
+        "family": "development-completion-marker",
+        "split": "development",
+        "primary_type": "answer-contamination"
+      }
+    },
+    {
+      "id": "known-miss-ru-answer-contamination",
+      "before": {
+        "family": "known-miss-ru-answer-contamination",
+        "split": "development",
+        "primary_type": "answer-contamination"
+      },
+      "after": {
+        "family": "development-completion-marker",
+        "split": "development",
+        "primary_type": "answer-contamination"
+      }
+    },
+    {
+      "id": "authority-spoofing-nested-message-en-0",
+      "before": {
+        "family": "authority-spoofing-nested-message",
+        "split": "validation",
+        "primary_type": "authority-spoofing"
+      },
+      "after": {
+        "family": "authority-spoofing-nested-message",
+        "split": "development",
+        "primary_type": "authority-spoofing"
+      }
+    },
+    {
+      "id": "authority-spoofing-nested-message-en-1",
+      "before": {
+        "family": "authority-spoofing-nested-message",
+        "split": "validation",
+        "primary_type": "authority-spoofing"
+      },
+      "after": {
+        "family": "authority-spoofing-nested-message",
+        "split": "development",
+        "primary_type": "authority-spoofing"
+      }
+    },
+    {
+      "id": "authority-spoofing-nested-message-es-0",
+      "before": {
+        "family": "authority-spoofing-nested-message",
+        "split": "validation",
+        "primary_type": "authority-spoofing"
+      },
+      "after": {
+        "family": "authority-spoofing-nested-message",
+        "split": "development",
+        "primary_type": "authority-spoofing"
+      }
+    },
+    {
+      "id": "authority-spoofing-nested-message-es-1",
+      "before": {
+        "family": "authority-spoofing-nested-message",
+        "split": "validation",
+        "primary_type": "authority-spoofing"
+      },
+      "after": {
+        "family": "authority-spoofing-nested-message",
+        "split": "development",
+        "primary_type": "authority-spoofing"
+      }
+    },
+    {
+      "id": "authority-spoofing-nested-message-ru-0",
+      "before": {
+        "family": "authority-spoofing-nested-message",
+        "split": "validation",
+        "primary_type": "authority-spoofing"
+      },
+      "after": {
+        "family": "authority-spoofing-nested-message",
+        "split": "development",
+        "primary_type": "authority-spoofing"
+      }
+    },
+    {
+      "id": "authority-spoofing-nested-message-ru-1",
+      "before": {
+        "family": "authority-spoofing-nested-message",
+        "split": "validation",
+        "primary_type": "authority-spoofing"
+      },
+      "after": {
+        "family": "authority-spoofing-nested-message",
+        "split": "development",
+        "primary_type": "authority-spoofing"
+      }
+    },
+    {
+      "id": "authority-spoofing-nested-message-zh-0",
+      "before": {
+        "family": "authority-spoofing-nested-message",
+        "split": "validation",
+        "primary_type": "authority-spoofing"
+      },
+      "after": {
+        "family": "authority-spoofing-nested-message",
+        "split": "development",
+        "primary_type": "authority-spoofing"
+      }
+    },
+    {
+      "id": "authority-spoofing-nested-message-zh-1",
+      "before": {
+        "family": "authority-spoofing-nested-message",
+        "split": "validation",
+        "primary_type": "authority-spoofing"
+      },
+      "after": {
+        "family": "authority-spoofing-nested-message",
+        "split": "development",
+        "primary_type": "authority-spoofing"
+      }
+    },
+    {
+      "id": "known-miss-en-source-authority",
+      "before": {
+        "family": "known-miss-en-source-authority",
+        "split": "development",
+        "primary_type": "authority-spoofing"
+      },
+      "after": {
+        "family": "known-miss-en-source-authority",
+        "split": "development",
+        "primary_type": "verification-suppression"
+      }
+    },
+    {
+      "id": "evidence-fabrication-test-count-en-0",
+      "before": {
+        "family": "evidence-fabrication-test-count",
+        "split": "train",
+        "primary_type": "evidence-fabrication"
+      },
+      "after": {
+        "family": "development-fabricated-test-count",
+        "split": "development",
+        "primary_type": "evidence-fabrication"
+      }
+    },
+    {
+      "id": "evidence-fabrication-test-count-en-1",
+      "before": {
+        "family": "evidence-fabrication-test-count",
+        "split": "train",
+        "primary_type": "evidence-fabrication"
+      },
+      "after": {
+        "family": "development-fabricated-test-count",
+        "split": "development",
+        "primary_type": "evidence-fabrication"
+      }
+    },
+    {
+      "id": "evidence-fabrication-test-count-es-0",
+      "before": {
+        "family": "evidence-fabrication-test-count",
+        "split": "train",
+        "primary_type": "evidence-fabrication"
+      },
+      "after": {
+        "family": "development-fabricated-test-count",
+        "split": "development",
+        "primary_type": "evidence-fabrication"
+      }
+    },
+    {
+      "id": "evidence-fabrication-test-count-es-1",
+      "before": {
+        "family": "evidence-fabrication-test-count",
+        "split": "train",
+        "primary_type": "evidence-fabrication"
+      },
+      "after": {
+        "family": "development-fabricated-test-count",
+        "split": "development",
+        "primary_type": "evidence-fabrication"
+      }
+    },
+    {
+      "id": "evidence-fabrication-test-count-ru-0",
+      "before": {
+        "family": "evidence-fabrication-test-count",
+        "split": "train",
+        "primary_type": "evidence-fabrication"
+      },
+      "after": {
+        "family": "development-fabricated-test-count",
+        "split": "development",
+        "primary_type": "evidence-fabrication"
+      }
+    },
+    {
+      "id": "evidence-fabrication-test-count-ru-1",
+      "before": {
+        "family": "evidence-fabrication-test-count",
+        "split": "train",
+        "primary_type": "evidence-fabrication"
+      },
+      "after": {
+        "family": "development-fabricated-test-count",
+        "split": "development",
+        "primary_type": "evidence-fabrication"
+      }
+    },
+    {
+      "id": "evidence-fabrication-test-count-zh-0",
+      "before": {
+        "family": "evidence-fabrication-test-count",
+        "split": "train",
+        "primary_type": "evidence-fabrication"
+      },
+      "after": {
+        "family": "development-fabricated-test-count",
+        "split": "development",
+        "primary_type": "evidence-fabrication"
+      }
+    },
+    {
+      "id": "evidence-fabrication-test-count-zh-1",
+      "before": {
+        "family": "evidence-fabrication-test-count",
+        "split": "train",
+        "primary_type": "evidence-fabrication"
+      },
+      "after": {
+        "family": "development-fabricated-test-count",
+        "split": "development",
+        "primary_type": "evidence-fabrication"
+      }
+    },
+    {
+      "id": "known-miss-en-fabricated-evidence",
+      "before": {
+        "family": "known-miss-en-fabricated-evidence",
+        "split": "development",
+        "primary_type": "evidence-fabrication"
+      },
+      "after": {
+        "family": "development-fabricated-test-count",
+        "split": "development",
+        "primary_type": "evidence-fabrication"
+      }
+    },
+    {
+      "id": "known-miss-en-false-approval",
+      "before": {
+        "family": "known-miss-en-false-approval",
+        "split": "development",
+        "primary_type": "evidence-fabrication"
+      },
+      "after": {
+        "family": "development-review-approval",
+        "split": "development",
+        "primary_type": "evidence-fabrication"
+      }
+    },
+    {
+      "id": "known-miss-ru-false-approval",
+      "before": {
+        "family": "known-miss-ru-false-approval",
+        "split": "development",
+        "primary_type": "evidence-fabrication"
+      },
+      "after": {
+        "family": "development-review-approval",
+        "split": "development",
+        "primary_type": "evidence-fabrication"
+      }
+    },
+    {
+      "id": "known-miss-en-task-switch",
+      "before": {
+        "family": "known-miss-en-task-switch",
+        "split": "development",
+        "primary_type": "task-hijacking"
+      },
+      "after": {
+        "family": "development-poem-hijack",
+        "split": "development",
+        "primary_type": "task-hijacking"
+      }
+    },
+    {
+      "id": "known-miss-en-workflow-hijack",
+      "before": {
+        "family": "known-miss-en-workflow-hijack",
+        "split": "development",
+        "primary_type": "task-hijacking"
+      },
+      "after": {
+        "family": "development-review-approval",
+        "split": "development",
+        "primary_type": "verification-suppression"
+      }
+    },
+    {
+      "id": "known-miss-ru-task-switch",
+      "before": {
+        "family": "known-miss-ru-task-switch",
+        "split": "development",
+        "primary_type": "task-hijacking"
+      },
+      "after": {
+        "family": "development-poem-hijack",
+        "split": "development",
+        "primary_type": "task-hijacking"
+      }
+    },
+    {
+      "id": "task-hijacking-poem-en-0",
+      "before": {
+        "family": "task-hijacking-poem",
+        "split": "train",
+        "primary_type": "task-hijacking"
+      },
+      "after": {
+        "family": "development-poem-hijack",
+        "split": "development",
+        "primary_type": "task-hijacking"
+      }
+    },
+    {
+      "id": "task-hijacking-poem-en-1",
+      "before": {
+        "family": "task-hijacking-poem",
+        "split": "train",
+        "primary_type": "task-hijacking"
+      },
+      "after": {
+        "family": "development-poem-hijack",
+        "split": "development",
+        "primary_type": "task-hijacking"
+      }
+    },
+    {
+      "id": "task-hijacking-poem-es-0",
+      "before": {
+        "family": "task-hijacking-poem",
+        "split": "train",
+        "primary_type": "task-hijacking"
+      },
+      "after": {
+        "family": "development-poem-hijack",
+        "split": "development",
+        "primary_type": "task-hijacking"
+      }
+    },
+    {
+      "id": "task-hijacking-poem-es-1",
+      "before": {
+        "family": "task-hijacking-poem",
+        "split": "train",
+        "primary_type": "task-hijacking"
+      },
+      "after": {
+        "family": "development-poem-hijack",
+        "split": "development",
+        "primary_type": "task-hijacking"
+      }
+    },
+    {
+      "id": "task-hijacking-poem-ru-0",
+      "before": {
+        "family": "task-hijacking-poem",
+        "split": "train",
+        "primary_type": "task-hijacking"
+      },
+      "after": {
+        "family": "development-poem-hijack",
+        "split": "development",
+        "primary_type": "task-hijacking"
+      }
+    },
+    {
+      "id": "task-hijacking-poem-ru-1",
+      "before": {
+        "family": "task-hijacking-poem",
+        "split": "train",
+        "primary_type": "task-hijacking"
+      },
+      "after": {
+        "family": "development-poem-hijack",
+        "split": "development",
+        "primary_type": "task-hijacking"
+      }
+    },
+    {
+      "id": "task-hijacking-poem-zh-0",
+      "before": {
+        "family": "task-hijacking-poem",
+        "split": "train",
+        "primary_type": "task-hijacking"
+      },
+      "after": {
+        "family": "development-poem-hijack",
+        "split": "development",
+        "primary_type": "task-hijacking"
+      }
+    },
+    {
+      "id": "task-hijacking-poem-zh-1",
+      "before": {
+        "family": "task-hijacking-poem",
+        "split": "train",
+        "primary_type": "task-hijacking"
+      },
+      "after": {
+        "family": "development-poem-hijack",
+        "split": "development",
+        "primary_type": "task-hijacking"
+      }
+    }
+  ]
+}

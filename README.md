@@ -1,8 +1,11 @@
 # sAIfety lab-py
 
-Python-инструменты обучения, оценки и ONNX-экспорта для sAIfety.
+Единая исследовательская лаборатория sAIfety: корпуса, Go-инструменты генерации
+и оценки, Python-обучение, ONNX-экспорт и задания для GPU.
 Приложение остаётся на Go; готовому приложению Python не требуется.
-Датасеты имеют один источник — [lab](https://github.com/saifety-org/lab).
+Канонические данные и Go module находятся в [research/](research/README.md).
+`lab` сохранён для истории; новые изменения делаются одним PR в этом репозитории.
+[Границы и происхождение переноса](docs/repository-unification.md).
 Готовые production-модели публикуются отдельно в
 [prompt-injection-model](https://github.com/saifety-org/prompt-injection-model).
 
@@ -12,20 +15,22 @@ Python-инструменты обучения, оценки и ONNX-экспо�
 
 ```sh
 uv sync --locked
-make bootstrap  # установить закреплённые Go-команды, без модели DeBERTa
-make prepare    # загрузить проверенные данные; повторить разбиение из lab
+make bootstrap  # собрать и аттестовать локальные Go-команды, без DeBERTa
+make prepare    # взять локальные данные по SHA256 и повторить разбиение
 make train      # обучить Python-кандидата на канонических Go-признаках
 make compare    # проверить Python/Go parity и оценить кандидат и shipped model
 make misses     # воспроизвести известные пропуски настоящего Go-сканера
 make check      # Ruff, тесты, wheel/sdist
 ```
 
-`bootstrap` закрепляет версию Go-команд; `sources.lock.json` задаёт коммит lab,
-пути и SHA256. Загрузки выполняются только явными bootstrap/prepare/sync-командами.
-Исходные данные кэшируются в исключённом из git `data/source`; подготовленные
-выборки — в `data/comparison`. Код генератора там нужен для проверки provenance,
-Python его не исполняет. Признаки и сканер вызываются через JSONL `model-bridge`;
-копии Go-алгоритмов извлечения признаков здесь нет.
+`bootstrap` собирает команды из `research/`, проверяя `research/tools.lock.json`.
+Активные source locks schema2 закрепляют локальные paths и SHA256 данных;
+`tools.json` записывает source identity и hashes бинарников. Старые locks сохранены
+в `docs/history/pre-unification-locks/` для явного воспроизведения истории.
+Внешние Go dependencies остаются закреплены в go.mod/go.sum; модели сами не скачиваются.
+Кэши и подготовленные выборки остаются в ignored `data/`, бинарники — в `bin/`.
+Признаки и сканер вызываются через JSONL `model-bridge`; копии Go-алгоритмов
+извлечения признаков в Python нет.
 
 Веса, метаданные, predictions и отчёт пишутся в `artifacts/`. Python-кандидат
 не заменяет production-веса. Его SGD воспроизводим в закреплённом Python-окружении;
@@ -107,7 +112,7 @@ max для одного native-кандидата, после чего отде�
   диагностическая оценка классификаторов. Метрики защиты реального агента требуют
   отдельного стенда. Десять известных пропусков не считаются независимым test.
 - Результаты Python-кандидата сравниваются с настоящим Go-инференсом. Performance
-  измерять Go benchmark из lab, а не по времени запуска subprocess из Python.
+  измерять Go benchmark из research/, а не по времени запуска subprocess из Python.
 
 ## Разработка
 
@@ -119,7 +124,7 @@ make test-ml
 ```
 
 CI выполняет отдельные lint/test/build jobs и offline ML smoke с tiny transformer.
-Go interoperability обязателен в CI; локально тест пропускается, если bootstrap
+Go research lint/race/build и interoperability обязательны в общем CI; локально тест пропускается, если bootstrap
 ещё не запускался. Полное обучение и скачивание production-моделей в CI не выполняются.
 Связанный Go-мост: [lab PR #4](https://github.com/saifety-org/lab/pull/4).
 

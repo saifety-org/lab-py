@@ -5,6 +5,7 @@ import subprocess
 from pathlib import Path
 
 from .io import finite, sha256, text_hash
+from .research import executable as resolve_executable
 
 
 class Bridge:
@@ -19,7 +20,7 @@ class Bridge:
         library: Path | None = None,
         attack_index: int = 1,
     ):
-        self.args = [str(executable.resolve()), "-backend", backend]
+        self.args = [str(resolve_executable(executable).resolve()), "-backend", backend]
         self.backend = backend
         for name, value in (
             ("weights", weights),

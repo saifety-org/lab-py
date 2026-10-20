@@ -1,0 +1,24 @@
+{
+  "contract": "context-task-balance-v1",
+  "balanced_cells": {
+    "test": 560,
+    "train": 560,
+    "validation": 560
+  },
+  "supervised_rows": {
+    "test": 560,
+    "train": 560,
+    "validation": 560
+  },
+  "empirical_task_only_accuracy_upper_bound": {
+    "test": 0.5,
+    "train": 0.5,
+    "validation": 0.5
+  },
+  "authorization_pairs": {
+    "test": 70,
+    "train": 70,
+    "validation": 70
+  },
+  "policy": "Development history excluded; require both labels in every exact/canonical task and family/language/kind/trust/document-count cell. This removes marginal task/metadata shortcuts, not all content/semantic shortcuts or dependence."
+}
