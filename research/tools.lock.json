@@ -104,7 +104,7 @@
     },
     {
       "path": "research/internal/contextcollection/contracts.go",
-      "sha256": "a719b29d5ad6c062c51257947aad4093d9228b0194b959b6d2de9c9c1ffb2541"
+      "sha256": "b52d1dca73e8368cf1c596f72126fd9fe07b02413e086eb4c9b753c9fe148b50"
     },
     {
       "path": "research/internal/contextcollection/contracts_test.go",

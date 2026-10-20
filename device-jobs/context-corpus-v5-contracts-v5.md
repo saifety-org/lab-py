@@ -50,7 +50,7 @@ function Invoke-Checked {
 }
 $request = 'device-jobs/context-corpus-v5-contracts-v5.json'
 $requestHash = (Get-FileHash $request -Algorithm SHA256).Hash.ToLowerInvariant()
-if ($requestHash -ne '16759ea29e4ca4f1f46aec9476e2ed6b5a077413d88e835c14231e9a9119c591') { throw 'Request pin differs.' }
+if ($requestHash -ne '61c1185f92aaf51558f20d6504b89dc59469b699f54ae0dff65eef774e86f6dd') { throw 'Request pin differs.' }
 $job = Get-Content $request -Raw | ConvertFrom-Json
 if ($job.license.selected -ne 'NOASSERTION' -or $job.data_policy.storage -ne 'local-only' -or
     $job.data_policy.publish_raw_candidates -or $job.data_policy.publish_full_traces -or

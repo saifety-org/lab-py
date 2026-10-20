@@ -10,7 +10,7 @@
     "source": "same clean accepted checkout as this request; exact HEAD recorded before build/model calls",
     "module": "github.com/saifety-org/lab-py/research/cmd/context-collect",
     "tools_manifest": "research/tools.lock.json",
-    "tools_sha256": "52266bdaa2b4eca207bdf82326839f253dedb1f9d567be661919e98ba30946ea",
+    "tools_sha256": "cdb113e9064d6449f02813b5531c2d4c5f1747cdcc61b8f57d7fcf4528754860",
     "bootstrap": "saifety-lab bootstrap-collector",
     "toolchain": "go1.26.0",
     "output": "bin/context-corpus-v5-contracts-v5",

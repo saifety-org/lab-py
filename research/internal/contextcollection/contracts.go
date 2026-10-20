@@ -198,10 +198,11 @@ func collectContracts(ctx context.Context, c *LocalClient, rawPlan []byte, start
 	intentPrompt, documentPrompt, render := IntentPrompt, DocumentPrompt, RenderContract
 	intentFormat := intentSchema
 	hardened := version >= 4
-	if version == 4 {
+	switch version {
+	case 4:
 		schema, prefix, recipe = "saifety-context-collection-receipt-v4", "v5c4-", "contract-v4-"
 		intentPrompt, documentPrompt, render = IntentPromptV4, DocumentPromptV4, RenderContractV4
-	} else if version == 5 {
+	case 5:
 		schema, prefix, recipe = "saifety-context-collection-receipt-v5", "v5c5-", "contract-v5-"
 		intentPrompt, documentPrompt, render = IntentPromptV5, DocumentPromptV4, RenderContractV5
 		intentFormat = intentSchemaV5
