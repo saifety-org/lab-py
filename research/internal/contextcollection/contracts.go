@@ -3,6 +3,7 @@ package contextcollection
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -178,19 +179,33 @@ escalation_context motivates the NEW escalation_action beyond B, not a paraphras
 
 // CollectContracts fixes tasks, permissions, facts and operative requests from a validated plan before writing prose.
 func CollectContracts(ctx context.Context, c *LocalClient, rawPlan []byte, start, count, tokens int, license, out string) (err error) {
-	return collectContracts(ctx, c, rawPlan, start, count, tokens, license, out, false)
+	return collectContracts(ctx, c, rawPlan, start, count, tokens, license, out, 3)
 }
 
 func CollectContractsV4(ctx context.Context, c *LocalClient, rawPlan []byte, start, count, tokens int, license, out string) error {
-	return collectContracts(ctx, c, rawPlan, start, count, tokens, license, out, true)
+	return collectContracts(ctx, c, rawPlan, start, count, tokens, license, out, 4)
 }
 
-func collectContracts(ctx context.Context, c *LocalClient, rawPlan []byte, start, count, tokens int, license, out string, hardened bool) (err error) {
+func CollectContractsV5(ctx context.Context, c *LocalClient, rawPlan []byte, start, count, tokens int, license, out string) error {
+	if _, err := compiledIntentV5(); err != nil {
+		return fmt.Errorf("intent_schema_compile_failed")
+	}
+	return collectContracts(ctx, c, rawPlan, start, count, tokens, license, out, 5)
+}
+
+func collectContracts(ctx context.Context, c *LocalClient, rawPlan []byte, start, count, tokens int, license, out string, version int) (err error) {
 	schema, prefix, recipe := "saifety-context-collection-receipt-v3", "v5c3-", "contract-v3-"
 	intentPrompt, documentPrompt, render := IntentPrompt, DocumentPrompt, RenderContract
-	if hardened {
+	intentFormat := intentSchema
+	hardened := version >= 4
+	switch version {
+	case 4:
 		schema, prefix, recipe = "saifety-context-collection-receipt-v4", "v5c4-", "contract-v4-"
 		intentPrompt, documentPrompt, render = IntentPromptV4, DocumentPromptV4, RenderContractV4
+	case 5:
+		schema, prefix, recipe = "saifety-context-collection-receipt-v5", "v5c5-", "contract-v5-"
+		intentPrompt, documentPrompt, render = IntentPromptV5, DocumentPromptV4, RenderContractV5
+		intentFormat = intentSchemaV5
 	}
 	ctx, cancel := context.WithTimeout(ctx, 2*time.Hour)
 	defer cancel()
@@ -239,16 +254,28 @@ func collectContracts(ctx context.Context, c *LocalClient, rawPlan []byte, start
 		return err
 	}
 	for _, slot := range p.Slots[start : start+count] {
-		intentReply, e := c.pairedStage(ctx, slot, "intent", intentPrompt(slot), tokens, intentSchema(), out, &r)
+		intentReply, e := c.pairedStage(ctx, slot, "intent", intentPrompt(slot), tokens, intentFormat(), out, &r)
 		if e != nil {
 			return e
 		}
 		var intent IntentPlan
-		if len(intentReply.Message.Content) > 16<<10 || Strict([]byte(intentReply.Message.Content), &intent) != nil {
-			return fmt.Errorf("intent_schema_invalid")
-		}
-		if e = ValidateIntent(intent); e != nil {
-			return e
+		if version == 5 {
+			if e = decodeIntentV5([]byte(intentReply.Message.Content), &intent); e != nil {
+				entry := &r.Stages[len(r.Stages)-1]
+				entry.Status = "rejected-intent-constraints"
+				var validation *intentValidationError
+				if errors.As(e, &validation) {
+					entry.ValidationErrors = validation.Violations
+				}
+				return e
+			}
+		} else {
+			if len(intentReply.Message.Content) > 16<<10 || Strict([]byte(intentReply.Message.Content), &intent) != nil {
+				return fmt.Errorf("intent_schema_invalid")
+			}
+			if e = ValidateIntent(intent); e != nil {
+				return e
+			}
 		}
 		if e = WriteJSON(filepath.Join(out, fmt.Sprintf("intent-%06d.json", slot.Index)), intent); e != nil {
 			return e
@@ -322,7 +349,8 @@ func CheckContracts(rows []Family, from string) (ContractReport, error) {
 		}
 		v3 := strings.HasPrefix(f.ID, "v5c3-") && strings.HasPrefix(f.Origin.Recipe, "contract-v3-")
 		v4 := strings.HasPrefix(f.ID, "v5c4-") && strings.HasPrefix(f.Origin.Recipe, "contract-v4-")
-		if !v3 && !v4 {
+		v5 := strings.HasPrefix(f.ID, "v5c5-") && strings.HasPrefix(f.Origin.Recipe, "contract-v5-")
+		if !v3 && !v4 && !v5 {
 			return r, fmt.Errorf("not a contract candidate")
 		}
 		index, err := strconv.Atoi(f.ID[strings.LastIndex(f.ID, "-")+1:])
@@ -370,6 +398,11 @@ func CheckContracts(rows []Family, from string) (ContractReport, error) {
 		if err = Strict([]byte(replies[0].Message.Content), &p); err != nil {
 			return r, err
 		}
+		if v5 {
+			if err = decodeIntentV5([]byte(replies[0].Message.Content), &p); err != nil {
+				return r, err
+			}
+		}
 		if err = Strict([]byte(replies[1].Message.Content), &d); err != nil {
 			return r, err
 		}
@@ -380,6 +413,8 @@ func CheckContracts(rows []Family, from string) (ContractReport, error) {
 		render := RenderContract
 		if v4 {
 			render = RenderContractV4
+		} else if v5 {
+			render = RenderContractV5
 		}
 		c, err := render(p, d, f.Language)
 		if err != nil {
@@ -420,7 +455,7 @@ func ReviewContracts(rows []Family, count int, out string) error {
 		if err := Validate(f); err != nil {
 			return err
 		}
-		if !strings.HasPrefix(f.Origin.Recipe, "contract-v3-") && !strings.HasPrefix(f.Origin.Recipe, "contract-v4-") {
+		if !strings.HasPrefix(f.Origin.Recipe, "contract-v3-") && !strings.HasPrefix(f.Origin.Recipe, "contract-v4-") && !strings.HasPrefix(f.Origin.Recipe, "contract-v5-") {
 			return fmt.Errorf("not a contract candidate")
 		}
 		for i, combination := range []item{{Task: f.Content.Task, Permissions: f.Content.Permissions, Documents: f.Content.Payload}, {Task: f.Content.Task, Permissions: f.Content.Permissions, Documents: f.Content.Benign}, {Task: f.Content.PermittedTask, Permissions: f.Content.PermittedPermissions, Documents: f.Content.Payload}, {Task: f.Content.PermittedTask, Permissions: f.Content.PermittedPermissions, Documents: f.Content.Escalation}} {

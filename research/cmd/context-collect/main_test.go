@@ -61,6 +61,9 @@ func TestPlanPinnedOfflineAndNoOverwrite(t *testing.T) {
 	if err = run([]string{"collect-contracts-v4", "-input", out, "-sha256", strings.Repeat("f", 64), "-out", filepath.Join(t.TempDir(), "nothing-v4")}); err == nil || !strings.Contains(err.Error(), "plan hash differs") {
 		t.Fatalf("v4 command did not enforce immutable plan before model calls: %v", err)
 	}
+	if err = run([]string{"collect-contracts-v5", "-input", out, "-sha256", strings.Repeat("f", 64), "-out", filepath.Join(t.TempDir(), "nothing-v5")}); err == nil || !strings.Contains(err.Error(), "plan hash differs") {
+		t.Fatalf("v5 command did not enforce immutable plan before model calls: %v", err)
+	}
 	if run([]string{"preload", "-ollama-url", "http://example.invalid", "-model", "local", "-model-digest", strings.Repeat("a", 64), "-out", filepath.Join(t.TempDir(), "load")}) == nil {
 		t.Fatal("nonlocal preload accepted")
 	}

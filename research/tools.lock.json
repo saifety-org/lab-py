@@ -24,11 +24,11 @@
     },
     {
       "path": "research/cmd/context-collect/main.go",
-      "sha256": "7e076feaf3739a26374d1b2377c2ee61aec3e8b429b41636af272129fb2efb80"
+      "sha256": "d01f78a7e7f3da0d07093ec740747f8cb53b67a86883fdd5e3711a84266c4b1c"
     },
     {
       "path": "research/cmd/context-collect/main_test.go",
-      "sha256": "6f9d31e94ea33a182dfee73f11765c40256d6bf27768aa5c24a9a9be3752a05d"
+      "sha256": "505ea68c6201507ed0e845c87e275510f51cea37b71bc2ba74883bcfcecf5f53"
     },
     {
       "path": "research/cmd/context-corpus/main.go",
@@ -88,15 +88,15 @@
     },
     {
       "path": "research/go.mod",
-      "sha256": "db88e9c3e3a026bb5857a40fad3d00c0cf593ea9d70ab2814ab68c84d5d4a135"
+      "sha256": "bb89a42926e49e6e5836d7925336972c8fecce8f29a118e15c94cb9d079793d8"
     },
     {
       "path": "research/go.sum",
-      "sha256": "2d64e6fcfb0ccbc67cbeb6006619522fcc3f1e65b872783b152da088c8058d29"
+      "sha256": "37804ae7219778b9bf47a720865efc16e1a25858709e865e774a8cf0fb935d0a"
     },
     {
       "path": "research/internal/contextcollection/collection.go",
-      "sha256": "7022ff1226196c4d9ff626c20078e072eea7d606d465976b357df7b67f95dcd8"
+      "sha256": "2116c543e5f5a58d0f3eedcec9d7efa54335201d25ca75eefc33c6b503e8209a"
     },
     {
       "path": "research/internal/contextcollection/collection_test.go",
@@ -104,7 +104,7 @@
     },
     {
       "path": "research/internal/contextcollection/contracts.go",
-      "sha256": "000967c8af6e86ab4ca858d49bda678de312bc600be27315874fa9ac98606ec2"
+      "sha256": "b52d1dca73e8368cf1c596f72126fd9fe07b02413e086eb4c9b753c9fe148b50"
     },
     {
       "path": "research/internal/contextcollection/contracts_test.go",
@@ -119,12 +119,20 @@
       "sha256": "d6ccf1d292a98c4357097cd311e33d6a6623a2bf77fa58ebfa1c76409ee8d582"
     },
     {
+      "path": "research/internal/contextcollection/contracts_v5.go",
+      "sha256": "f2cfcf8e2ca5832798493bd395f875c3886fc96886fa44950cc79cb59d1a0266"
+    },
+    {
+      "path": "research/internal/contextcollection/contracts_v5_test.go",
+      "sha256": "47c50082ed722bc03a690cd4534a4f9f4ac3a0fac2c4ab25367142504c902097"
+    },
+    {
       "path": "research/internal/contextcollection/ollama.go",
       "sha256": "14352bc8a5def132edc2b634250f6dfbcca29519a5325be0b2c25ce975865a32"
     },
     {
       "path": "research/internal/contextcollection/paired.go",
-      "sha256": "790b8273066d49e64532a79c904330394a815ac73ecedebf758eb0360e7113c4"
+      "sha256": "ff25810ab24bd17606f709ee8a8fae69d2645cbd9e861d1f6506c464e28aa3b8"
     },
     {
       "path": "research/internal/contextcollection/paired_test.go",

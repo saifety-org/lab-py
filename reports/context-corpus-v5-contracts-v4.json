@@ -1,0 +1,288 @@
+{
+  "schema": "saifety-context-collection-contract-pilot-report-v1",
+  "job": "context-corpus-v5-contracts-v4",
+  "date": "2026-10-20",
+  "attempt": "20261020T060347Z-a826c014",
+  "project_task": "https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=276945651",
+  "project_item": "PVTI_lADOFDST-s4BmY_dzhCB2vM",
+  "tracking_note": "User selected Project tasks instead of Issues; accepted experimental request bytes unchanged.",
+  "verdict": "revise",
+  "execution_status": "stopped-at-first-invalid-intent",
+  "quality_evidence": false,
+  "training_ready": false,
+  "license": "NOASSERTION",
+  "data_policy": {
+    "storage": "local-only",
+    "publish_raw_candidates": false,
+    "publish_full_traces": false,
+    "public_license_assigned": false
+  },
+  "accepted_main": "d37d12f13592e924c074b3275fffe90dca621c64",
+  "main_ci": {
+    "run": 39377865779,
+    "conclusion": "success",
+    "jobs": 10
+  },
+  "model": {
+    "tag": "qwen3:8b-q4_K_M",
+    "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+    "ollama_version": "0.18.0"
+  },
+  "collector": {
+    "repository": "saifety-org/lab-py",
+    "source": "same clean accepted checkout as this request; exact HEAD recorded before build/model calls",
+    "module": "github.com/saifety-org/lab-py/research/cmd/context-collect",
+    "tools_manifest": "research/tools.lock.json",
+    "tools_sha256": "2523d0d91159e91ae36dc4a2b5691292760bb093ce2014202a2597351b73a07e",
+    "bootstrap": "saifety-lab bootstrap-collector",
+    "toolchain": "go1.26.0",
+    "output": "bin/context-corpus-v5-contracts-v4",
+    "operation": "collect-contracts-v4"
+  },
+  "pins": {
+    "request_sha256": "dcf1436f015697f3c44a6e5bcb64e6515224a1bf09dadf0258282da5e9982a2b",
+    "tools_manifest_sha256": "2523d0d91159e91ae36dc4a2b5691292760bb093ce2014202a2597351b73a07e",
+    "protocol": {
+      "path": "analyzer-evaluation.protocol.json",
+      "accepted_commit": "d023d19d59e62f6c5e23f8e68651179ab3748b19",
+      "sha256": "c5bd48ef63338196746a9c0b95f228ab9129283d056db9ab67327bdaba8c1676"
+    },
+    "plan_sha256": "0a4af4d9d6bd05cef70af019b3f33ae7777ba5d082edcc4b30f1e7cc239da695",
+    "collector_binary_sha256": "1fa40a847c2c8d99873cde636707b53aed6bd5cd6236dca8d38edfa123e1c032",
+    "build_info_sha256": "3e00133dfffa013cb94ea17f00d700de3f4422ca47699a590f5b491ad2f06bab",
+    "original_project_task_sha256": "61cdd6b7c443a9f2e0cfa60be33f2224d3d67c0916ec4b50df1757f943f878c8",
+    "intent_request_sha256": "0ac42ef38a288fda42176e1115deca0c55161d98b541036293ffdca4378db408",
+    "intent_response_sha256": "26d0c9ea275a0e2c24b0369bd811ce2cc8267084a1c9237f143eaf5533f9498b",
+    "intent_prompt_sha256": "7f6cc35b861a1ef78c7f211a8577e6ab878ebadc75648442140cdb5d058857fc"
+  },
+  "hardware": {
+    "gpu": [
+      "name, driver_version, memory.total [MiB], memory.free [MiB]",
+      "NVIDIA GeForce RTX 5070 Ti, 610.88, 16303 MiB, 14573 MiB"
+    ],
+    "ram_bytes": 68241707008,
+    "cpu": {
+      "Name": "AMD Ryzen 9 9950X 16-Core Processor            ",
+      "NumberOfCores": 16,
+      "NumberOfLogicalProcessors": 32
+    },
+    "os": {
+      "Caption": "Майкрософт Windows 11 Корпоративная",
+      "Version": "10.0.26200",
+      "BuildNumber": "26200"
+    }
+  },
+  "environment": {
+    "OLLAMA_LOAD_TIMEOUT": "15m",
+    "scope": "dedicated experiment service process only",
+    "OLLAMA_HOST": "127.0.0.1:11435",
+    "OLLAMA_NO_CLOUD": "1"
+  },
+  "generation_parameters": {
+    "stages": [
+      "intent",
+      "documents"
+    ],
+    "temperature": 0.8,
+    "seed": 1,
+    "context_tokens": 8192,
+    "tokens_per_request": 2048,
+    "think": false,
+    "truncate": false,
+    "shift": false,
+    "keep_alive": "10m",
+    "smoke": {
+      "start": 0,
+      "count": 4,
+      "max_generation_requests": 8,
+      "wall_time": "20m"
+    },
+    "pilot": {
+      "start": 4,
+      "count": 12,
+      "max_generation_requests": 24,
+      "wall_time": "40m"
+    },
+    "max_candidates": 16,
+    "max_generation_requests": 32,
+    "max_output_tokens": 65536,
+    "max_generation_wall_minutes": 60,
+    "retries": 0
+  },
+  "preload_parameters": {
+    "operation": "preload",
+    "model_calls": 1,
+    "prompt": "",
+    "num_predict": 0,
+    "context_tokens": 8192,
+    "wall_time": "15m",
+    "keep_alive": "10m",
+    "requires_complete_receipt": true,
+    "requires_full_gpu_snapshot": true,
+    "cli_timeout_flag": "-preload-timeout",
+    "ollama_load_timeout": "15m",
+    "runtime_environment_scope": "dedicated experiment service process only; no persistent settings"
+  },
+  "budget": {
+    "max_model_calls_including_preload": 33,
+    "max_collector_metadata_http_requests": 108,
+    "max_collector_ollama_http_requests": 141,
+    "max_model_wall_minutes_including_preload": 75,
+    "setup_and_review_time_recorded_separately": true,
+    "caps_are_runtime_estimates": false,
+    "scope": "collector only; setup, bounded current-session agent audit and reporting recorded separately; no extra Ollama/hosted audit calls"
+  },
+  "setup": {
+    "started_utc": "2026-10-20T06:01:28.1671054Z",
+    "first_model_process_started_utc": "2026-10-20T06:04:52.1821903Z",
+    "wall_seconds": 204.015085,
+    "scope": "Fresh clone filesystem creation time through preload process start; includes build/checks/Project/tool time. Initial instruction/CI inspection before clone excluded; full turn setup unknown.",
+    "total_turn_setup_seconds": null,
+    "service_starts": 1,
+    "model_calls_before_preload": 0
+  },
+  "phases": {
+    "preload": {
+      "started": true,
+      "complete": true,
+      "exit_code": 0,
+      "model_load_requests": 1,
+      "process_wall_seconds": 15.8181228,
+      "reported_output_tokens": null,
+      "wall_time_cap": "15m0s",
+      "started_utc": "2026-10-20T06:04:52.6227301Z",
+      "completed_utc": "2026-10-20T06:05:08.0101744Z",
+      "receipt_sha256": "3d0bdaf98b96e0d217dde508617df662b6d96624eb833e9f2a60a211c90755d4",
+      "full_gpu_gate_passed": true
+    },
+    "smoke": {
+      "started": true,
+      "complete": false,
+      "exit_code": 1,
+      "requested_candidates": 4,
+      "accepted_pending_candidates": 0,
+      "accepted_intent_plans": 0,
+      "generation_requests": 1,
+      "max_generation_requests": 8,
+      "intent_calls": 1,
+      "document_calls": 0,
+      "rejected_intent_responses": 1,
+      "failure": "plan_action_invalid",
+      "phase": "intent",
+      "process_wall_seconds": 2.1452536,
+      "usage_complete_for_attempted_calls": true,
+      "reported_output_tokens": 162,
+      "reported_prompt_tokens": 196,
+      "stages": [
+        {
+          "name": "intent",
+          "prompt_sha256": "7f6cc35b861a1ef78c7f211a8577e6ab878ebadc75648442140cdb5d058857fc",
+          "request_sha256": "0ac42ef38a288fda42176e1115deca0c55161d98b541036293ffdca4378db408",
+          "response_sha256": "26d0c9ea275a0e2c24b0369bd811ce2cc8267084a1c9237f143eaf5533f9498b",
+          "ticket": 0,
+          "status": "content-unvalidated",
+          "generated_tokens": 162,
+          "prompt_tokens": 196,
+          "usage_complete": true
+        }
+      ],
+      "receipt_sha256": "c70dda1e70b335f4175263564f7815200cf0eac82416eb3fe688b54285465129",
+      "offline_candidate_evidence_gate_passed": null,
+      "post_smoke_full_gpu_gate_passed": null
+    },
+    "pilot": {
+      "started": false,
+      "reason": "Smoke stopped at invalid intent; no automatic retry or continuation."
+    }
+  },
+  "totals": {
+    "model_calls_including_preload": 2,
+    "generation_requests": 1,
+    "accepted_pending_candidates": 0,
+    "reported_generation_output_tokens": 162,
+    "reported_generation_prompt_tokens": 196,
+    "preload_reported_output_tokens": null,
+    "total_output_tokens_including_preload": null,
+    "model_process_wall_seconds": 17.9633764,
+    "retries": 0,
+    "throughput_estimate": null,
+    "throughput_note": "No accepted families; no usable-corpus throughput estimate."
+  },
+  "diagnostics": {
+    "schema": "contract-intent-local-diagnostics-v1",
+    "model_response_rewritten": false,
+    "strict_json_decodes": true,
+    "failure": "plan_action_invalid",
+    "variant": "intent",
+    "ticket": 0,
+    "defects": [
+      "non_send_destination_not_empty",
+      "send_destination_contains_path"
+    ],
+    "baseline_v3_empty_destination_instruction": true,
+    "v4_explicit_empty_destination_instruction": false,
+    "action_schema_destination_constraint": "string only; not conditioned on operation and no hostname pattern",
+    "documents_calls": 0,
+    "candidates": 0,
+    "semantic_audit_cases": 0,
+    "prose_guards_exercised": false,
+    "additional_ollama_or_hosted_audit_calls": 0
+  },
+  "sample_audit": {
+    "families_audited": 0,
+    "cases_audited": 0,
+    "reason": "No candidates; intent rejected before documents.",
+    "judgments_fixed_before_key": null,
+    "reviewed_independent_families": 0,
+    "prose_fidelity_and_language_quality_conclusion": null,
+    "additional_ollama_or_hosted_calls": 0,
+    "current_session_diagnostic_tokens": null,
+    "token_note": "Not exposed separately; unknown, not zero."
+  },
+  "gpu": {
+    "preload_full_residency": true,
+    "size_bytes": 6584668288,
+    "size_vram_bytes": 6584668288,
+    "context_tokens": 8192,
+    "telemetry_samples": 92,
+    "incomplete_rows_ignored": 1,
+    "peak_utilization_percent": 93.0,
+    "peak_memory_used_mib": 7486.0,
+    "telemetry_scope": "Dedicated service launch through stop; driver timestamps host-local UTC+04:00; last incomplete row excluded."
+  },
+  "server_completed_http_requests_by_endpoint": {
+    "/api/version": 6,
+    "/api/tags": 4,
+    "/api/show": 4,
+    "/api/generate": 1,
+    "/api/ps": 2,
+    "/api/chat": 1
+  },
+  "http_count_scope": "All completed server-log requests including readiness/ps diagnostics; receipts distinguish model calls.",
+  "task_processes_stopped": true,
+  "task_processes_stopped_utc": "2026-10-20T06:06:27.8991692Z",
+  "local_artifacts": "artifacts/device-jobs/context-corpus-v5-contracts-v4/20261020T060347Z-a826c014",
+  "manifest": {
+    "path": "artifacts/device-jobs/context-corpus-v5-contracts-v4/20261020T060347Z-a826c014/SHA256SUMS.json",
+    "sha256": "13ee11a22d877421bc3ad44f341e51a3273ce1e6ce630c6a813619f10ad7c22a",
+    "files": 23
+  },
+  "reporting": {
+    "checkpoint_utc": "2026-10-20T06:10:20.131515+00:00",
+    "wall_seconds_since_smoke_stopped": 258.595328,
+    "current_session_tokens": null,
+    "note": "Offline diagnostics/reporting and tools are separate from collector model wall/call caps."
+  },
+  "next_steps": [
+    "Restore an explicit empty-string destination rule for report/write in a new versioned prompt.",
+    "Constrain send destinations to bare fictional hostnames in schema/prompt; validate supported structured-output constraints before claiming they prevent failures.",
+    "Add operation-specific destination regression fixtures and precise per-action diagnostics; do not relax validAction or rewrite replies.",
+    "Any further inference requires a new accepted bounded request; no retry of this attempt."
+  ],
+  "limitations": [
+    "No accepted family, documents, key-hidden semantic audit or pilot; language/prose guard effectiveness remains untested in this attempt.",
+    "Single local model/runtime/seed and first ticket only; no evidence about classifier or agent defense quality.",
+    "Old raw data, frozen v4, model/runtime/driver, thresholds and weights unchanged."
+  ],
+  "next_fix_task": "https://github.com/orgs/saifety-org/projects/1?pane=issue&itemId=276953222"
+}

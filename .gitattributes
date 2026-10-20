@@ -9,3 +9,5 @@
 /docs/history/pre-unification-locks/** -text
 /device-jobs/context-corpus-v5-contracts-v4.* text eol=lf
 /*.lock.json text eol=lf
+
+/device-jobs/context-corpus-v5-contracts-v5.* text eol=lf

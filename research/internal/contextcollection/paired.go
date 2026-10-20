@@ -69,11 +69,12 @@ Do not copy payload or benign_payload, even with casing/whitespace changes. Do n
 
 type StageReceipt struct {
 	StageEvidence
-	Ticket          int    `json:"ticket"`
-	Status          string `json:"status"`
-	GeneratedTokens *int   `json:"generated_tokens"`
-	PromptTokens    *int   `json:"prompt_tokens"`
-	UsageComplete   bool   `json:"usage_complete"`
+	Ticket           int               `json:"ticket"`
+	Status           string            `json:"status"`
+	GeneratedTokens  *int              `json:"generated_tokens"`
+	PromptTokens     *int              `json:"prompt_tokens"`
+	UsageComplete    bool              `json:"usage_complete"`
+	ValidationErrors []IntentViolation `json:"validation_errors,omitempty"`
 }
 type PairedReceipt struct {
 	CollectionReceipt

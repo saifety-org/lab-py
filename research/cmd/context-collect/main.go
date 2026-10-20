@@ -34,7 +34,7 @@ func read(path string, limit int64) ([]byte, error) {
 }
 func run(args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("choose plan, check, check-contracts, review-contracts, publish, merge, preload, collect, collect-paired, collect-contracts or collect-contracts-v4")
+		return fmt.Errorf("choose plan, check, check-contracts, review-contracts, publish, merge, preload, collect, collect-paired, collect-contracts, collect-contracts-v4 or collect-contracts-v5")
 	}
 	cmd := args[0]
 	f := flag.NewFlagSet(cmd, flag.ContinueOnError)
@@ -159,7 +159,7 @@ func run(args []string) error {
 		ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
 		defer stop()
 		return contextcollection.PreloadWithTimeout(ctx, c, *out, *preloadTimeout)
-	case "collect", "collect-paired", "collect-contracts", "collect-contracts-v4":
+	case "collect", "collect-paired", "collect-contracts", "collect-contracts-v4", "collect-contracts-v5":
 		if *wall <= 0 || *wall > 2*time.Hour {
 			return fmt.Errorf("wall-time must be positive and at most2h")
 		}
@@ -178,6 +178,9 @@ func run(args []string) error {
 		defer stop()
 		ctx, cancel := context.WithTimeout(interrupt, *wall)
 		defer cancel()
+		if cmd == "collect-contracts-v5" {
+			return contextcollection.CollectContractsV5(ctx, c, b, *start, *count, *tokens, *license, *out)
+		}
 		if cmd == "collect-contracts-v4" {
 			return contextcollection.CollectContractsV4(ctx, c, b, *start, *count, *tokens, *license, *out)
 		}
